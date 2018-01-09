@@ -1,8 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
-
+import { MaterialModule } from './hsd-ui/material.module';
+import { HsdUiModule } from './hsd-ui';
 import { AppComponent } from './app.component';
+
 
 
 @NgModule({
@@ -10,7 +11,9 @@ import { AppComponent } from './app.component';
     AppComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    MaterialModule,
+    HsdUiModule
   ],
   providers: [],
   bootstrap: [AppComponent]
