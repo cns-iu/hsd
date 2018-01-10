@@ -19,11 +19,6 @@ export class SumTreeComponent implements OnInit {
     this.http.get('./assets/data/sum-tree/spec.json').subscribe((data) => {
       this.render(data);
     });
-    /*vega.loader()
-      .load(this.spec)
-      .then((data) => {
-        this.render(JSON.parse(data));
-      });*/
   }
 
   render(spec) {
