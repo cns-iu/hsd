@@ -108,8 +108,7 @@
           "fields": [
             "level",
             "path",
-            "parentPath",
-            "type"
+            "parentPath"
           ]
         }
       ]
