@@ -1,6 +1,7 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import * as vega from 'vega';
+import * as data from './spec.json';
 
 @Component({
   selector: 'hsd-sum-tree',
@@ -9,16 +10,13 @@ import * as vega from 'vega';
 })
 export class SumTreeComponent implements OnInit {
   private parentNativeElement: any;
-  private spec = '';
 
   constructor(element: ElementRef, private http: HttpClient) {
     this.parentNativeElement = element.nativeElement;
   }
 
   ngOnInit() {
-    this.http.get('./assets/data/sum-tree/spec.json').subscribe((data) => {
-      this.render(data);
-    });
+    this.render(data);
   }
 
   render(spec) {
