@@ -108,7 +108,8 @@
           "fields": [
             "level",
             "path",
-            "parentPath"
+            "parentPath",
+            "type"
           ]
         }
       ]
@@ -325,20 +326,51 @@
       }
     },
     {
-      "type": "symbol",
-      "from": {
-        "data": "subleafWithPosition"
-      },
+      "type": "group",
+      "from": {"data": "subleafWithPosition"},
       "encode": {
         "enter": {
-          "x": {
-            "signal": "datum.subtreeLevel * 800 / 11"
-          },
-          "y": {
-            "field": "y"
+          "x": {"field": "x"},
+          "y": {"field": "y"}
+        }
+      },
+      "data": [
+        {
+          "name": "subrects",
+          "values": [
+            {"type": "Case", "visibility": "Active"},
+            {"type": "Case", "visibility": "Inactive"},
+            {"type": "Case", "visibility": "Hidden"},
+            {"type": "Folder", "visibility": "Active"},
+            {"type": "Folder", "visibility": "Inactive"},
+            {"type": "Folder", "visibility": "Hidden"},
+            {"type": "Leaf", "visibility": "Active"},
+            {"type": "Leaf", "visibility": "Inactive"},
+            {"type": "Leaf", "visibility": "Hidden"}
+          ],
+          "transform": [
+            {
+              "type": "formula",
+              "expr": "parent.path",
+              "as": "path"
+            },
+            {
+              "type": "formula",
+              "expr": "parent.subtreeLevel",
+              "as": "level"
+            }
+          ]
+        }
+      ],
+      "marks": [
+        {
+          "type": "symbol",
+          "encode": {
+            "enter": {
+            }
           }
         }
-      }
+      ]
     }
   ]
 }
