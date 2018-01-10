@@ -1,0 +1,344 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+  "description": "Hsd Vega Specification",
+  "width": 800,
+  "height": 800,
+  "padding": 5,
+  "autosize": "pad",
+  "data": [
+    {
+      "name": "rawData",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "NodeLevel": "number",
+          "SubtreeLevel": "number",
+          "NumberOfPaths": "number"
+        }
+      },
+      "transform": [
+        {
+          "type": "project",
+          "fields": [
+            "NodeLevel",
+            "NodePath",
+            "SubtreeLevel",
+            "ConceptType",
+            "Visibility",
+            "NumberOfPaths"
+          ],
+          "as": [
+            "level",
+            "path",
+            "subtreeLevel",
+            "type",
+            "visibility",
+            "numPaths"
+          ]
+        }
+      ],
+      "values": "NodeLevel,NodePath,SubtreeLevel,ConceptType,Visibility,IsSynonym,TableName,HasMetadataXML,NumberOfPaths\n0,\\PCORI\\,1,Case,Active,N,concept_dimension,N,6\n0,\\PCORI\\,1,Case,Active,N,concept_dimension,Y,1\n0,\\PCORI\\,1,Case,Active,N,patient_dimension,N,1\n0,\\PCORI\\,2,Case,Active,N,concept_dimension,N,9\n0,\\PCORI\\,2,Case,Active,N,patient_dimension,N,3\n0,\\PCORI\\,2,Case,Active,N,patient_dimension,Y,1\n0,\\PCORI\\,2,Case,Active,N,visit_dimension,N,1\n0,\\PCORI\\,2,Folder,Active,N,concept_dimension,N,7\n0,\\PCORI\\,2,Folder,Active,N,patient_dimension,N,1\n0,\\PCORI\\,2,Folder,Inactive,N,concept_dimension,N,6\n0,\\PCORI\\,2,Leaf,Active,N,concept_dimension,Y,3\n0,\\PCORI\\,2,Leaf,Hidden,N,concept_dimension,Y,23\n0,\\PCORI\\,2,Leaf,Hidden,N,visit_dimension,Y,9\n0,\\PCORI\\,2,Leaf,Inactive,N,concept_dimension,N,7\n0,\\PCORI\\,2,Leaf,Inactive,N,visit_dimension,N,1\n0,\\PCORI\\,2,Leaf,Inactive,N,visit_dimension,Y,2\n0,\\PCORI\\,3,Case,Active,N,concept_dimension,N,47\n0,\\PCORI\\,3,Folder,Active,N,concept_dimension,N,62\n0,\\PCORI\\,3,Folder,Active,N,concept_dimension,Y,1\n0,\\PCORI\\,3,Folder,Active,N,patient_dimension,N,10\n0,\\PCORI\\,3,Folder,Active,N,visit_dimension,N,72\n0,\\PCORI\\,3,Leaf,Active,N,concept_dimension,N,4\n0,\\PCORI\\,3,Leaf,Active,N,concept_dimension,Y,2\n0,\\PCORI\\,3,Leaf,Active,N,patient_dimension,N,23\n0,\\PCORI\\,3,Leaf,Active,N,visit_dimension,N,43\n0,\\PCORI\\,3,Leaf,Hidden,N,patient_dimension,N,1\n0,\\PCORI\\,3,Leaf,Inactive,N,concept_dimension,N,2\n0,\\PCORI\\,3,Leaf,Inactive,N,observation_fact,N,3\n0,\\PCORI\\,3,Leaf,Inactive,N,patient_dimension,N,1\n0,\\PCORI\\,3,Leaf,Inactive,N,visit_dimension,N,4\n0,\\PCORI\\,4,Folder,Active,N,concept_dimension,N,1280\n0,\\PCORI\\,4,Folder,Active,N,concept_dimension,Y,1\n0,\\PCORI\\,4,Folder,Active,N,patient_dimension,N,3\n0,\\PCORI\\,4,Folder,Active,Y,concept_dimension,N,92\n0,\\PCORI\\,4,Folder,Inactive,N,concept_dimension,N,1\n0,\\PCORI\\,4,Leaf,Active,N,concept_dimension,N,242\n0,\\PCORI\\,4,Leaf,Active,N,concept_dimension,Y,4\n0,\\PCORI\\,4,Leaf,Active,N,patient_dimension,N,107\n0,\\PCORI\\,4,Leaf,Active,N,visit_dimension,N,1047\n0,\\PCORI\\,4,Leaf,Active,Y,concept_dimension,N,143\n0,\\PCORI\\,4,Leaf,Hidden,N,concept_dimension,N,1\n0,\\PCORI\\,4,Leaf,Inactive,N,concept_dimension,N,82\n0,\\PCORI\\,4,Leaf,Inactive,N,patient_dimension,N,67\n0,\\PCORI\\,5,Folder,Active,N,concept_dimension,N,9270\n0,\\PCORI\\,5,Folder,Active,N,concept_dimension,Y,69\n0,\\PCORI\\,5,Folder,Active,N,patient_dimension,N,3\n0,\\PCORI\\,5,Folder,Active,Y,concept_dimension,N,2882\n0,\\PCORI\\,5,Folder,Hidden,N,concept_dimension,Y,1\n0,\\PCORI\\,5,Folder,Inactive,N,concept_dimension,N,3\n0,\\PCORI\\,5,Folder,Inactive,N,concept_dimension,Y,5\n0,\\PCORI\\,5,Leaf,Active,N,concept_dimension,N,12023\n0,\\PCORI\\,5,Leaf,Active,N,concept_dimension,Y,1\n0,\\PCORI\\,5,Leaf,Active,N,patient_dimension,N,34\n0,\\PCORI\\,5,Leaf,Active,Y,concept_dimension,N,4694\n0,\\PCORI\\,5,Leaf,Active,Y,concept_dimension,Y,3\n0,\\PCORI\\,5,Leaf,Inactive,N,concept_dimension,N,119\n0,\\PCORI\\,5,Leaf,Inactive,Y,concept_dimension,N,66\n0,\\PCORI\\,6,Folder,Active,N,concept_dimension,N,32678\n0,\\PCORI\\,6,Folder,Active,N,concept_dimension,Y,1\n0,\\PCORI\\,6,Folder,Active,Y,concept_dimension,N,4067\n0,\\PCORI\\,6,Folder,Inactive,N,concept_dimension,N,1\n0,\\PCORI\\,6,Leaf,Active,N,concept_dimension,N,36983\n0,\\PCORI\\,6,Leaf,Active,N,concept_dimension,Y,268\n0,\\PCORI\\,6,Leaf,Active,N,patient_dimension,N,94\n0,\\PCORI\\,6,Leaf,Active,Y,concept_dimension,N,14475\n0,\\PCORI\\,6,Leaf,Active,Y,concept_dimension,Y,258\n0,\\PCORI\\,6,Leaf,Hidden,N,concept_dimension,Y,6\n0,\\PCORI\\,6,Leaf,Hidden,Y,concept_dimension,Y,19\n0,\\PCORI\\,6,Leaf,Inactive,N,concept_dimension,N,1396\n0,\\PCORI\\,6,Leaf,Inactive,N,concept_dimension,Y,38\n0,\\PCORI\\,6,Leaf,Inactive,Y,concept_dimension,N,2496\n0,\\PCORI\\,6,Leaf,Inactive,Y,concept_dimension,Y,63\n0,\\PCORI\\,7,Folder,Active,N,concept_dimension,N,56970\n0,\\PCORI\\,7,Folder,Active,Y,concept_dimension,N,2249\n0,\\PCORI\\,7,Leaf,Active,N,concept_dimension,N,74511\n0,\\PCORI\\,7,Leaf,Active,N,concept_dimension,Y,9\n0,\\PCORI\\,7,Leaf,Active,Y,concept_dimension,N,15713\n0,\\PCORI\\,7,Leaf,Active,Y,concept_dimension,Y,54\n0,\\PCORI\\,7,Leaf,Inactive,N,concept_dimension,N,6559\n0,\\PCORI\\,7,Leaf,Inactive,Y,concept_dimension,N,23440\n0,\\PCORI\\,8,Folder,Active,N,concept_dimension,N,73938\n0,\\PCORI\\,8,Folder,Active,Y,concept_dimension,N,632\n0,\\PCORI\\,8,Leaf,Active,N,concept_dimension,N,65790\n0,\\PCORI\\,8,Leaf,Active,Y,concept_dimension,N,18628\n0,\\PCORI\\,8,Leaf,Inactive,N,concept_dimension,N,5993\n0,\\PCORI\\,8,Leaf,Inactive,Y,concept_dimension,N,9969\n0,\\PCORI\\,9,Folder,Active,N,concept_dimension,N,102\n0,\\PCORI\\,9,Folder,Active,Y,concept_dimension,N,20\n0,\\PCORI\\,9,Leaf,Active,N,concept_dimension,N,111697\n0,\\PCORI\\,9,Leaf,Active,Y,concept_dimension,N,146821\n0,\\PCORI\\,9,Leaf,Inactive,N,concept_dimension,N,4508\n0,\\PCORI\\,9,Leaf,Inactive,Y,concept_dimension,N,7211\n0,\\PCORI\\,10,Leaf,Active,N,concept_dimension,N,79\n0,\\PCORI\\,10,Leaf,Active,Y,concept_dimension,N,849\n0,\\PCORI\\,10,Leaf,Inactive,N,concept_dimension,N,6944\n0,\\PCORI\\,10,Leaf,Inactive,Y,concept_dimension,N,9544\n0,\\PCORI\\,11,Leaf,Inactive,N,concept_dimension,N,19\n1,\\PCORI\\DEMOGRAPHIC\\,2,Case,Active,N,patient_dimension,N,3\n1,\\PCORI\\DEMOGRAPHIC\\,2,Case,Active,N,patient_dimension,Y,1\n1,\\PCORI\\DEMOGRAPHIC\\,2,Folder,Active,N,patient_dimension,N,1\n1,\\PCORI\\DEMOGRAPHIC\\,2,Leaf,Hidden,N,concept_dimension,Y,5\n1,\\PCORI\\DEMOGRAPHIC\\,2,Leaf,Inactive,N,concept_dimension,N,1\n1,\\PCORI\\DEMOGRAPHIC\\,3,Folder,Active,N,patient_dimension,N,10\n1,\\PCORI\\DEMOGRAPHIC\\,3,Leaf,Active,N,patient_dimension,N,23\n1,\\PCORI\\DEMOGRAPHIC\\,3,Leaf,Hidden,N,patient_dimension,N,1\n1,\\PCORI\\DEMOGRAPHIC\\,3,Leaf,Inactive,N,patient_dimension,N,1\n1,\\PCORI\\DEMOGRAPHIC\\,4,Folder,Active,N,patient_dimension,N,3\n1,\\PCORI\\DEMOGRAPHIC\\,4,Leaf,Active,N,patient_dimension,N,107\n1,\\PCORI\\DEMOGRAPHIC\\,4,Leaf,Inactive,N,patient_dimension,N,67\n1,\\PCORI\\DEMOGRAPHIC\\,5,Folder,Active,N,patient_dimension,N,3\n1,\\PCORI\\DEMOGRAPHIC\\,5,Leaf,Active,N,patient_dimension,N,34\n1,\\PCORI\\DEMOGRAPHIC\\,6,Leaf,Active,N,patient_dimension,N,94\n2,\\PCORI\\DEMOGRAPHIC\\Age\\,3,Folder,Active,N,patient_dimension,N,10\n2,\\PCORI\\DEMOGRAPHIC\\Age\\,3,Leaf,Active,N,patient_dimension,N,1\n2,\\PCORI\\DEMOGRAPHIC\\Age\\,4,Folder,Active,N,patient_dimension,N,3\n2,\\PCORI\\DEMOGRAPHIC\\Age\\,4,Leaf,Active,N,patient_dimension,N,107\n2,\\PCORI\\DEMOGRAPHIC\\Age\\,4,Leaf,Inactive,N,patient_dimension,N,67\n2,\\PCORI\\DEMOGRAPHIC\\Age\\,5,Folder,Active,N,patient_dimension,N,3\n2,\\PCORI\\DEMOGRAPHIC\\Age\\,5,Leaf,Active,N,patient_dimension,N,34\n2,\\PCORI\\DEMOGRAPHIC\\Age\\,6,Leaf,Active,N,patient_dimension,N,94\n2,\\PCORI\\DEMOGRAPHIC\\BIOBANK_FLAG\\,3,Leaf,Active,N,patient_dimension,N,1\n2,\\PCORI\\DEMOGRAPHIC\\BIOBANK_FLAG\\,3,Leaf,Hidden,N,patient_dimension,N,1\n2,\\PCORI\\DEMOGRAPHIC\\BIRTH_DATE\\,,,,,,,\n2,\\PCORI\\DEMOGRAPHIC\\BIRTH_TIME\\,,,,,,,\n2,\\PCORI\\DEMOGRAPHIC\\HISPANIC\\,3,Leaf,Active,N,patient_dimension,N,5\n2,\\PCORI\\DEMOGRAPHIC\\HISPANIC\\,3,Leaf,Inactive,N,patient_dimension,N,1\n2,\\PCORI\\DEMOGRAPHIC\\RACE\\,3,Leaf,Active,N,patient_dimension,N,10\n2,\\PCORI\\DEMOGRAPHIC\\RAW_HISPANIC\\,,,,,,,\n2,\\PCORI\\DEMOGRAPHIC\\RAW_RACE\\,,,,,,,\n2,\\PCORI\\DEMOGRAPHIC\\RAW_SEX\\,,,,,,,\n2,\\PCORI\\DEMOGRAPHIC\\SEX\\,3,Leaf,Active,N,patient_dimension,N,6\n2,\\PCORI\\DEMOGRAPHIC\\VERSION\\,,,,,,,\n1,\\PCORI\\DIAGNOSIS\\,2,Case,Active,N,concept_dimension,N,1\n1,\\PCORI\\DIAGNOSIS\\,2,Folder,Active,N,concept_dimension,N,1\n1,\\PCORI\\DIAGNOSIS\\,2,Folder,Inactive,N,concept_dimension,N,2\n1,\\PCORI\\DIAGNOSIS\\,2,Leaf,Hidden,N,concept_dimension,Y,4\n1,\\PCORI\\DIAGNOSIS\\,2,Leaf,Inactive,N,concept_dimension,N,1\n1,\\PCORI\\DIAGNOSIS\\,3,Case,Active,N,concept_dimension,N,21\n1,\\PCORI\\DIAGNOSIS\\,3,Folder,Active,N,concept_dimension,N,3\n1,\\PCORI\\DIAGNOSIS\\,4,Folder,Active,N,concept_dimension,N,334\n1,\\PCORI\\DIAGNOSIS\\,4,Folder,Active,Y,concept_dimension,N,92\n1,\\PCORI\\DIAGNOSIS\\,4,Leaf,Active,N,concept_dimension,N,1\n1,\\PCORI\\DIAGNOSIS\\,4,Leaf,Inactive,N,concept_dimension,N,3\n1,\\PCORI\\DIAGNOSIS\\,5,Folder,Active,N,concept_dimension,N,2185\n1,\\PCORI\\DIAGNOSIS\\,5,Folder,Active,Y,concept_dimension,N,1128\n1,\\PCORI\\DIAGNOSIS\\,5,Leaf,Active,N,concept_dimension,N,136\n1,\\PCORI\\DIAGNOSIS\\,5,Leaf,Active,Y,concept_dimension,N,56\n1,\\PCORI\\DIAGNOSIS\\,5,Leaf,Inactive,N,concept_dimension,N,108\n1,\\PCORI\\DIAGNOSIS\\,5,Leaf,Inactive,Y,concept_dimension,N,66\n1,\\PCORI\\DIAGNOSIS\\,6,Folder,Active,N,concept_dimension,N,7857\n1,\\PCORI\\DIAGNOSIS\\,6,Folder,Active,Y,concept_dimension,N,3960\n1,\\PCORI\\DIAGNOSIS\\,6,Leaf,Active,N,concept_dimension,N,4800\n1,\\PCORI\\DIAGNOSIS\\,6,Leaf,Active,Y,concept_dimension,N,1963\n1,\\PCORI\\DIAGNOSIS\\,6,Leaf,Inactive,N,concept_dimension,N,1396\n1,\\PCORI\\DIAGNOSIS\\,6,Leaf,Inactive,Y,concept_dimension,N,2486\n1,\\PCORI\\DIAGNOSIS\\,7,Folder,Active,N,concept_dimension,N,9596\n1,\\PCORI\\DIAGNOSIS\\,7,Folder,Active,Y,concept_dimension,N,2114\n1,\\PCORI\\DIAGNOSIS\\,7,Leaf,Active,N,concept_dimension,N,13401\n1,\\PCORI\\DIAGNOSIS\\,7,Leaf,Active,Y,concept_dimension,N,1050\n1,\\PCORI\\DIAGNOSIS\\,7,Leaf,Inactive,N,concept_dimension,N,6559\n1,\\PCORI\\DIAGNOSIS\\,7,Leaf,Inactive,Y,concept_dimension,N,23440\n1,\\PCORI\\DIAGNOSIS\\,8,Folder,Active,N,concept_dimension,N,9513\n1,\\PCORI\\DIAGNOSIS\\,8,Folder,Active,Y,concept_dimension,N,592\n1,\\PCORI\\DIAGNOSIS\\,8,Leaf,Active,N,concept_dimension,N,22945\n1,\\PCORI\\DIAGNOSIS\\,8,Leaf,Active,Y,concept_dimension,N,498\n1,\\PCORI\\DIAGNOSIS\\,8,Leaf,Inactive,N,concept_dimension,N,5993\n1,\\PCORI\\DIAGNOSIS\\,8,Leaf,Inactive,Y,concept_dimension,N,9969\n1,\\PCORI\\DIAGNOSIS\\,9,Folder,Active,N,concept_dimension,N,61\n1,\\PCORI\\DIAGNOSIS\\,9,Leaf,Active,N,concept_dimension,N,39047\n1,\\PCORI\\DIAGNOSIS\\,9,Leaf,Inactive,N,concept_dimension,N,4508\n1,\\PCORI\\DIAGNOSIS\\,9,Leaf,Inactive,Y,concept_dimension,N,7211\n1,\\PCORI\\DIAGNOSIS\\,10,Leaf,Inactive,N,concept_dimension,N,6944\n1,\\PCORI\\DIAGNOSIS\\,10,Leaf,Inactive,Y,concept_dimension,N,9544\n1,\\PCORI\\DIAGNOSIS\\,11,Leaf,Inactive,N,concept_dimension,N,19\n2,\\PCORI\\DIAGNOSIS\\09\\,3,Folder,Active,N,concept_dimension,N,3\n2,\\PCORI\\DIAGNOSIS\\09\\,4,Folder,Active,N,concept_dimension,N,55\n2,\\PCORI\\DIAGNOSIS\\09\\,4,Leaf,Active,N,concept_dimension,N,1\n2,\\PCORI\\DIAGNOSIS\\09\\,5,Folder,Active,N,concept_dimension,N,364\n2,\\PCORI\\DIAGNOSIS\\09\\,5,Leaf,Active,N,concept_dimension,N,54\n2,\\PCORI\\DIAGNOSIS\\09\\,6,Folder,Active,N,concept_dimension,N,1036\n2,\\PCORI\\DIAGNOSIS\\09\\,6,Leaf,Active,N,concept_dimension,N,1597\n2,\\PCORI\\DIAGNOSIS\\09\\,7,Folder,Active,N,concept_dimension,N,1591\n2,\\PCORI\\DIAGNOSIS\\09\\,7,Leaf,Active,N,concept_dimension,N,4882\n2,\\PCORI\\DIAGNOSIS\\09\\,8,Folder,Active,N,concept_dimension,N,145\n2,\\PCORI\\DIAGNOSIS\\09\\,8,Leaf,Active,N,concept_dimension,N,7268\n2,\\PCORI\\DIAGNOSIS\\09\\,9,Leaf,Active,N,concept_dimension,N,867\n2,\\PCORI\\DIAGNOSIS\\10\\,3,Case,Active,N,concept_dimension,N,21\n2,\\PCORI\\DIAGNOSIS\\10\\,4,Folder,Active,N,concept_dimension,N,279\n2,\\PCORI\\DIAGNOSIS\\10\\,4,Folder,Active,Y,concept_dimension,N,92\n2,\\PCORI\\DIAGNOSIS\\10\\,4,Leaf,Inactive,N,concept_dimension,N,3\n2,\\PCORI\\DIAGNOSIS\\10\\,5,Folder,Active,N,concept_dimension,N,1821\n2,\\PCORI\\DIAGNOSIS\\10\\,5,Folder,Active,Y,concept_dimension,N,1128\n2,\\PCORI\\DIAGNOSIS\\10\\,5,Leaf,Active,N,concept_dimension,N,82\n2,\\PCORI\\DIAGNOSIS\\10\\,5,Leaf,Active,Y,concept_dimension,N,56\n2,\\PCORI\\DIAGNOSIS\\10\\,5,Leaf,Inactive,N,concept_dimension,N,108\n2,\\PCORI\\DIAGNOSIS\\10\\,5,Leaf,Inactive,Y,concept_dimension,N,66\n2,\\PCORI\\DIAGNOSIS\\10\\,6,Folder,Active,N,concept_dimension,N,6821\n2,\\PCORI\\DIAGNOSIS\\10\\,6,Folder,Active,Y,concept_dimension,N,3960\n2,\\PCORI\\DIAGNOSIS\\10\\,6,Leaf,Active,N,concept_dimension,N,3203\n2,\\PCORI\\DIAGNOSIS\\10\\,6,Leaf,Active,Y,concept_dimension,N,1963\n2,\\PCORI\\DIAGNOSIS\\10\\,6,Leaf,Inactive,N,concept_dimension,N,1396\n2,\\PCORI\\DIAGNOSIS\\10\\,6,Leaf,Inactive,Y,concept_dimension,N,2486\n2,\\PCORI\\DIAGNOSIS\\10\\,7,Folder,Active,N,concept_dimension,N,8005\n2,\\PCORI\\DIAGNOSIS\\10\\,7,Folder,Active,Y,concept_dimension,N,2114\n2,\\PCORI\\DIAGNOSIS\\10\\,7,Leaf,Active,N,concept_dimension,N,8519\n2,\\PCORI\\DIAGNOSIS\\10\\,7,Leaf,Active,Y,concept_dimension,N,1050\n2,\\PCORI\\DIAGNOSIS\\10\\,7,Leaf,Inactive,N,concept_dimension,N,6559\n2,\\PCORI\\DIAGNOSIS\\10\\,7,Leaf,Inactive,Y,concept_dimension,N,23440\n2,\\PCORI\\DIAGNOSIS\\10\\,8,Folder,Active,N,concept_dimension,N,9368\n2,\\PCORI\\DIAGNOSIS\\10\\,8,Folder,Active,Y,concept_dimension,N,592\n2,\\PCORI\\DIAGNOSIS\\10\\,8,Leaf,Active,N,concept_dimension,N,15677\n2,\\PCORI\\DIAGNOSIS\\10\\,8,Leaf,Active,Y,concept_dimension,N,498\n2,\\PCORI\\DIAGNOSIS\\10\\,8,Leaf,Inactive,N,concept_dimension,N,5993\n2,\\PCORI\\DIAGNOSIS\\10\\,8,Leaf,Inactive,Y,concept_dimension,N,9969\n2,\\PCORI\\DIAGNOSIS\\10\\,9,Folder,Active,N,concept_dimension,N,61\n2,\\PCORI\\DIAGNOSIS\\10\\,9,Leaf,Active,N,concept_dimension,N,38180\n2,\\PCORI\\DIAGNOSIS\\10\\,9,Leaf,Inactive,N,concept_dimension,N,4508\n2,\\PCORI\\DIAGNOSIS\\10\\,9,Leaf,Inactive,Y,concept_dimension,N,7211\n2,\\PCORI\\DIAGNOSIS\\10\\,10,Leaf,Inactive,N,concept_dimension,N,6944\n2,\\PCORI\\DIAGNOSIS\\10\\,10,Leaf,Inactive,Y,concept_dimension,N,9544\n2,\\PCORI\\DIAGNOSIS\\10\\,11,Leaf,Inactive,N,concept_dimension,N,19\n2,\\PCORI\\DIAGNOSIS\\11\\,,,,,,,\n2,\\PCORI\\DIAGNOSIS\\RAW_DX\\,,,,,,,\n2,\\PCORI\\DIAGNOSIS\\RAW_DX_SOURCE\\,,,,,,,\n2,\\PCORI\\DIAGNOSIS\\RAW_DX_TYPE\\,,,,,,,\n2,\\PCORI\\DIAGNOSIS\\RAW_PDX\\,,,,,,,\n2,\\PCORI\\DIAGNOSIS\\SM\\,,,,,,,\n2,\\PCORI\\DIAGNOSIS\\VERSION\\,,,,,,,\n1,\\PCORI\\ENCOUNTER\\,2,Case,Active,N,concept_dimension,N,5\n1,\\PCORI\\ENCOUNTER\\,2,Case,Active,N,visit_dimension,N,1\n1,\\PCORI\\ENCOUNTER\\,2,Folder,Active,N,concept_dimension,N,1\n1,\\PCORI\\ENCOUNTER\\,2,Leaf,Hidden,N,visit_dimension,Y,9\n1,\\PCORI\\ENCOUNTER\\,2,Leaf,Inactive,N,visit_dimension,N,1\n1,\\PCORI\\ENCOUNTER\\,2,Leaf,Inactive,N,visit_dimension,Y,2\n1,\\PCORI\\ENCOUNTER\\,3,Folder,Active,N,concept_dimension,N,2\n1,\\PCORI\\ENCOUNTER\\,3,Folder,Active,N,visit_dimension,N,72\n1,\\PCORI\\ENCOUNTER\\,3,Leaf,Active,N,concept_dimension,N,2\n1,\\PCORI\\ENCOUNTER\\,3,Leaf,Active,N,visit_dimension,N,42\n1,\\PCORI\\ENCOUNTER\\,3,Leaf,Inactive,N,concept_dimension,N,1\n1,\\PCORI\\ENCOUNTER\\,3,Leaf,Inactive,N,visit_dimension,N,4\n1,\\PCORI\\ENCOUNTER\\,4,Folder,Active,N,concept_dimension,N,54\n1,\\PCORI\\ENCOUNTER\\,4,Leaf,Active,N,visit_dimension,N,1047\n1,\\PCORI\\ENCOUNTER\\,5,Folder,Active,N,concept_dimension,N,51\n1,\\PCORI\\ENCOUNTER\\,5,Leaf,Active,N,concept_dimension,N,749\n1,\\PCORI\\ENCOUNTER\\,6,Folder,Active,N,concept_dimension,N,2\n1,\\PCORI\\ENCOUNTER\\,6,Leaf,Active,N,concept_dimension,N,659\n1,\\PCORI\\ENCOUNTER\\,7,Leaf,Active,N,concept_dimension,N,4\n2,\\PCORI\\ENCOUNTER\\ADMIT_DATE\\,,,,,,,\n2,\\PCORI\\ENCOUNTER\\ADMIT_TIME\\,,,,,,,\n2,\\PCORI\\ENCOUNTER\\ADMITTING_SOURCE\\,3,Leaf,Active,N,visit_dimension,N,14\n2,\\PCORI\\ENCOUNTER\\ADMITTING_SOURCE\\,3,Leaf,Inactive,N,visit_dimension,N,1\n2,\\PCORI\\ENCOUNTER\\Age at visit\\,3,Folder,Active,N,visit_dimension,N,10\n2,\\PCORI\\ENCOUNTER\\Age at visit\\,4,Leaf,Active,N,visit_dimension,N,110\n2,\\PCORI\\ENCOUNTER\\DISCHARGE_DATE\\,,,,,,,\n2,\\PCORI\\ENCOUNTER\\DISCHARGE_DISPOSITION\\,3,Leaf,Active,N,visit_dimension,N,4\n2,\\PCORI\\ENCOUNTER\\DISCHARGE_DISPOSITION\\,3,Leaf,Inactive,N,visit_dimension,N,1\n2,\\PCORI\\ENCOUNTER\\DISCHARGE_STATUS\\,3,Leaf,Active,N,visit_dimension,N,16\n2,\\PCORI\\ENCOUNTER\\DISCHARGE_STATUS\\,3,Leaf,Inactive,N,visit_dimension,N,1\n2,\\PCORI\\ENCOUNTER\\DISCHARGE_TIME\\,,,,,,,\n2,\\PCORI\\ENCOUNTER\\DRG\\,3,Folder,Active,N,concept_dimension,N,2\n2,\\PCORI\\ENCOUNTER\\DRG\\,3,Leaf,Active,N,concept_dimension,N,2\n2,\\PCORI\\ENCOUNTER\\DRG\\,3,Leaf,Inactive,N,concept_dimension,N,1\n2,\\PCORI\\ENCOUNTER\\DRG\\,4,Folder,Active,N,concept_dimension,N,54\n2,\\PCORI\\ENCOUNTER\\DRG\\,5,Folder,Active,N,concept_dimension,N,51\n2,\\PCORI\\ENCOUNTER\\DRG\\,5,Leaf,Active,N,concept_dimension,N,749\n2,\\PCORI\\ENCOUNTER\\DRG\\,6,Folder,Active,N,concept_dimension,N,2\n2,\\PCORI\\ENCOUNTER\\DRG\\,6,Leaf,Active,N,concept_dimension,N,659\n2,\\PCORI\\ENCOUNTER\\DRG\\,7,Leaf,Active,N,concept_dimension,N,4\n2,\\PCORI\\ENCOUNTER\\ENC_TYPE\\,3,Leaf,Active,N,visit_dimension,N,8\n2,\\PCORI\\ENCOUNTER\\ENC_TYPE\\,3,Leaf,Inactive,N,visit_dimension,N,1\n2,\\PCORI\\ENCOUNTER\\FACILITY_LOCATION\\,3,Folder,Active,N,visit_dimension,N,62\n2,\\PCORI\\ENCOUNTER\\FACILITY_LOCATION\\,4,Leaf,Active,N,visit_dimension,N,937\n2,\\PCORI\\ENCOUNTER\\FACILITYID\\,,,,,,,\n2,\\PCORI\\ENCOUNTER\\PROVIDERID\\,,,,,,,\n2,\\PCORI\\ENCOUNTER\\RAW_ADMITTING_SOURCE\\,,,,,,,\n2,\\PCORI\\ENCOUNTER\\RAW_DISCHARGE_DISPOSITION\\,,,,,,,\n2,\\PCORI\\ENCOUNTER\\RAW_DISCHARGE_STATUS\\,,,,,,,\n2,\\PCORI\\ENCOUNTER\\RAW_DRG_TYPE\\,,,,,,,\n2,\\PCORI\\ENCOUNTER\\RAW_ENC_TYPE\\,,,,,,,\n2,\\PCORI\\ENCOUNTER\\VERSION\\,,,,,,,\n1,\\PCORI\\ENROLLMENT\\,2,Case,Active,N,concept_dimension,N,1\n1,\\PCORI\\ENROLLMENT\\,2,Leaf,Hidden,N,concept_dimension,Y,2\n1,\\PCORI\\ENROLLMENT\\,2,Leaf,Inactive,N,concept_dimension,N,1\n1,\\PCORI\\ENROLLMENT\\,3,Leaf,Active,N,visit_dimension,N,1\n1,\\PCORI\\ENROLLMENT\\,3,Leaf,Inactive,N,observation_fact,N,3\n2,\\PCORI\\ENROLLMENT\\ENR_BASIS\\,3,Leaf,Active,N,visit_dimension,N,1\n2,\\PCORI\\ENROLLMENT\\ENR_BASIS\\,3,Leaf,Inactive,N,observation_fact,N,3\n2,\\PCORI\\ENROLLMENT\\ENR_END_DATE\\,,,,,,,\n2,\\PCORI\\ENROLLMENT\\ENR_START_DATE\\,,,,,,,\n2,\\PCORI\\ENROLLMENT\\VERSION\\,,,,,,,\n1,\\PCORI\\LAB_RESULT_CM\\,2,Folder,Active,N,concept_dimension,N,1\n1,\\PCORI\\LAB_RESULT_CM\\,2,Leaf,Inactive,N,concept_dimension,N,1\n1,\\PCORI\\LAB_RESULT_CM\\,3,Folder,Active,N,concept_dimension,N,5\n1,\\PCORI\\LAB_RESULT_CM\\,3,Folder,Active,N,concept_dimension,Y,1\n1,\\PCORI\\LAB_RESULT_CM\\,4,Folder,Active,N,concept_dimension,N,17\n1,\\PCORI\\LAB_RESULT_CM\\,4,Folder,Active,N,concept_dimension,Y,1\n1,\\PCORI\\LAB_RESULT_CM\\,4,Folder,Inactive,N,concept_dimension,N,1\n1,\\PCORI\\LAB_RESULT_CM\\,4,Leaf,Active,N,concept_dimension,Y,4\n1,\\PCORI\\LAB_RESULT_CM\\,5,Folder,Active,N,concept_dimension,N,3\n1,\\PCORI\\LAB_RESULT_CM\\,5,Folder,Active,N,concept_dimension,Y,69\n1,\\PCORI\\LAB_RESULT_CM\\,5,Folder,Hidden,N,concept_dimension,Y,1\n1,\\PCORI\\LAB_RESULT_CM\\,5,Folder,Inactive,N,concept_dimension,N,3\n1,\\PCORI\\LAB_RESULT_CM\\,5,Folder,Inactive,N,concept_dimension,Y,5\n1,\\PCORI\\LAB_RESULT_CM\\,5,Leaf,Active,N,concept_dimension,Y,1\n1,\\PCORI\\LAB_RESULT_CM\\,5,Leaf,Active,Y,concept_dimension,Y,3\n1,\\PCORI\\LAB_RESULT_CM\\,6,Folder,Active,N,concept_dimension,N,8\n1,\\PCORI\\LAB_RESULT_CM\\,6,Folder,Active,N,concept_dimension,Y,1\n1,\\PCORI\\LAB_RESULT_CM\\,6,Leaf,Active,N,concept_dimension,N,46\n1,\\PCORI\\LAB_RESULT_CM\\,6,Leaf,Active,N,concept_dimension,Y,268\n1,\\PCORI\\LAB_RESULT_CM\\,6,Leaf,Active,Y,concept_dimension,N,46\n1,\\PCORI\\LAB_RESULT_CM\\,6,Leaf,Active,Y,concept_dimension,Y,258\n1,\\PCORI\\LAB_RESULT_CM\\,6,Leaf,Hidden,N,concept_dimension,Y,6\n1,\\PCORI\\LAB_RESULT_CM\\,6,Leaf,Hidden,Y,concept_dimension,Y,19\n1,\\PCORI\\LAB_RESULT_CM\\,6,Leaf,Inactive,N,concept_dimension,Y,38\n1,\\PCORI\\LAB_RESULT_CM\\,6,Leaf,Inactive,Y,concept_dimension,N,10\n1,\\PCORI\\LAB_RESULT_CM\\,6,Leaf,Inactive,Y,concept_dimension,Y,63\n1,\\PCORI\\LAB_RESULT_CM\\,7,Leaf,Active,N,concept_dimension,N,16\n1,\\PCORI\\LAB_RESULT_CM\\,7,Leaf,Active,N,concept_dimension,Y,9\n1,\\PCORI\\LAB_RESULT_CM\\,7,Leaf,Active,Y,concept_dimension,N,135\n1,\\PCORI\\LAB_RESULT_CM\\,7,Leaf,Active,Y,concept_dimension,Y,54\n2,\\PCORI\\LAB_RESULT_CM\\LAB_NAME\\,3,Folder,Active,N,concept_dimension,N,5\n2,\\PCORI\\LAB_RESULT_CM\\LAB_NAME\\,3,Folder,Active,N,concept_dimension,Y,1\n2,\\PCORI\\LAB_RESULT_CM\\LAB_NAME\\,4,Folder,Active,N,concept_dimension,N,17\n2,\\PCORI\\LAB_RESULT_CM\\LAB_NAME\\,4,Folder,Active,N,concept_dimension,Y,1\n2,\\PCORI\\LAB_RESULT_CM\\LAB_NAME\\,4,Folder,Inactive,N,concept_dimension,N,1\n2,\\PCORI\\LAB_RESULT_CM\\LAB_NAME\\,4,Leaf,Active,N,concept_dimension,Y,4\n2,\\PCORI\\LAB_RESULT_CM\\LAB_NAME\\,5,Folder,Active,N,concept_dimension,N,3\n2,\\PCORI\\LAB_RESULT_CM\\LAB_NAME\\,5,Folder,Active,N,concept_dimension,Y,69\n2,\\PCORI\\LAB_RESULT_CM\\LAB_NAME\\,5,Folder,Hidden,N,concept_dimension,Y,1\n2,\\PCORI\\LAB_RESULT_CM\\LAB_NAME\\,5,Folder,Inactive,N,concept_dimension,N,3\n2,\\PCORI\\LAB_RESULT_CM\\LAB_NAME\\,5,Folder,Inactive,N,concept_dimension,Y,5\n2,\\PCORI\\LAB_RESULT_CM\\LAB_NAME\\,5,Leaf,Active,N,concept_dimension,Y,1\n2,\\PCORI\\LAB_RESULT_CM\\LAB_NAME\\,5,Leaf,Active,Y,concept_dimension,Y,3\n2,\\PCORI\\LAB_RESULT_CM\\LAB_NAME\\,6,Folder,Active,N,concept_dimension,N,8\n2,\\PCORI\\LAB_RESULT_CM\\LAB_NAME\\,6,Folder,Active,N,concept_dimension,Y,1\n2,\\PCORI\\LAB_RESULT_CM\\LAB_NAME\\,6,Leaf,Active,N,concept_dimension,N,46\n2,\\PCORI\\LAB_RESULT_CM\\LAB_NAME\\,6,Leaf,Active,N,concept_dimension,Y,268\n2,\\PCORI\\LAB_RESULT_CM\\LAB_NAME\\,6,Leaf,Active,Y,concept_dimension,N,46\n2,\\PCORI\\LAB_RESULT_CM\\LAB_NAME\\,6,Leaf,Active,Y,concept_dimension,Y,258\n2,\\PCORI\\LAB_RESULT_CM\\LAB_NAME\\,6,Leaf,Hidden,N,concept_dimension,Y,6\n2,\\PCORI\\LAB_RESULT_CM\\LAB_NAME\\,6,Leaf,Hidden,Y,concept_dimension,Y,19\n2,\\PCORI\\LAB_RESULT_CM\\LAB_NAME\\,6,Leaf,Inactive,N,concept_dimension,Y,38\n2,\\PCORI\\LAB_RESULT_CM\\LAB_NAME\\,6,Leaf,Inactive,Y,concept_dimension,N,10\n2,\\PCORI\\LAB_RESULT_CM\\LAB_NAME\\,6,Leaf,Inactive,Y,concept_dimension,Y,63\n2,\\PCORI\\LAB_RESULT_CM\\LAB_NAME\\,7,Leaf,Active,N,concept_dimension,N,16\n2,\\PCORI\\LAB_RESULT_CM\\LAB_NAME\\,7,Leaf,Active,N,concept_dimension,Y,9\n2,\\PCORI\\LAB_RESULT_CM\\LAB_NAME\\,7,Leaf,Active,Y,concept_dimension,N,135\n2,\\PCORI\\LAB_RESULT_CM\\LAB_NAME\\,7,Leaf,Active,Y,concept_dimension,Y,54\n2,\\PCORI\\LAB_RESULT_CM\\VERSION\\,,,,,,,\n1,\\PCORI\\MEDICATION\\,2,Case,Active,N,concept_dimension,N,1\n1,\\PCORI\\MEDICATION\\,2,Leaf,Hidden,N,concept_dimension,Y,8\n1,\\PCORI\\MEDICATION\\,2,Leaf,Inactive,N,concept_dimension,N,1\n1,\\PCORI\\MEDICATION\\,3,Folder,Active,N,concept_dimension,N,32\n1,\\PCORI\\MEDICATION\\,4,Folder,Active,N,concept_dimension,N,475\n1,\\PCORI\\MEDICATION\\,4,Leaf,Active,N,concept_dimension,N,125\n1,\\PCORI\\MEDICATION\\,4,Leaf,Inactive,N,concept_dimension,N,79\n1,\\PCORI\\MEDICATION\\,5,Folder,Active,N,concept_dimension,N,4860\n1,\\PCORI\\MEDICATION\\,5,Leaf,Active,N,concept_dimension,N,8557\n1,\\PCORI\\MEDICATION\\,5,Leaf,Inactive,N,concept_dimension,N,11\n1,\\PCORI\\MEDICATION\\,6,Folder,Active,N,concept_dimension,N,12462\n1,\\PCORI\\MEDICATION\\,6,Folder,Inactive,N,concept_dimension,N,1\n1,\\PCORI\\MEDICATION\\,6,Leaf,Active,N,concept_dimension,N,22543\n1,\\PCORI\\MEDICATION\\,7,Folder,Active,N,concept_dimension,N,13296\n1,\\PCORI\\MEDICATION\\,7,Leaf,Active,N,concept_dimension,N,56253\n1,\\PCORI\\MEDICATION\\,8,Folder,Active,N,concept_dimension,N,2962\n1,\\PCORI\\MEDICATION\\,8,Leaf,Active,N,concept_dimension,N,38995\n1,\\PCORI\\MEDICATION\\,9,Leaf,Active,N,concept_dimension,N,39\n2,\\PCORI\\MEDICATION\\RAW_RX_FREQUENCY\\,,,,,,,\n2,\\PCORI\\MEDICATION\\RAW_RX_MED_NAME\\,,,,,,,\n2,\\PCORI\\MEDICATION\\RAW_RXNORM_CUI\\,,,,,,,\n2,\\PCORI\\MEDICATION\\RX_END_DATE\\,,,,,,,\n2,\\PCORI\\MEDICATION\\RX_ORDER_DATE\\,,,,,,,\n2,\\PCORI\\MEDICATION\\RX_ORDER_TIME\\,,,,,,,\n2,\\PCORI\\MEDICATION\\RX_PROVIDERID\\,,,,,,,\n2,\\PCORI\\MEDICATION\\RX_START_DATE\\,,,,,,,\n2,\\PCORI\\MEDICATION\\RXNORM_CUI\\,3,Folder,Active,N,concept_dimension,N,32\n2,\\PCORI\\MEDICATION\\RXNORM_CUI\\,4,Folder,Active,N,concept_dimension,N,475\n2,\\PCORI\\MEDICATION\\RXNORM_CUI\\,4,Leaf,Active,N,concept_dimension,N,125\n2,\\PCORI\\MEDICATION\\RXNORM_CUI\\,4,Leaf,Inactive,N,concept_dimension,N,79\n2,\\PCORI\\MEDICATION\\RXNORM_CUI\\,5,Folder,Active,N,concept_dimension,N,4860\n2,\\PCORI\\MEDICATION\\RXNORM_CUI\\,5,Leaf,Active,N,concept_dimension,N,8557\n2,\\PCORI\\MEDICATION\\RXNORM_CUI\\,5,Leaf,Inactive,N,concept_dimension,N,11\n2,\\PCORI\\MEDICATION\\RXNORM_CUI\\,6,Folder,Active,N,concept_dimension,N,12462\n2,\\PCORI\\MEDICATION\\RXNORM_CUI\\,6,Folder,Inactive,N,concept_dimension,N,1\n2,\\PCORI\\MEDICATION\\RXNORM_CUI\\,6,Leaf,Active,N,concept_dimension,N,22543\n2,\\PCORI\\MEDICATION\\RXNORM_CUI\\,7,Folder,Active,N,concept_dimension,N,13296\n2,\\PCORI\\MEDICATION\\RXNORM_CUI\\,7,Leaf,Active,N,concept_dimension,N,56253\n2,\\PCORI\\MEDICATION\\RXNORM_CUI\\,8,Folder,Active,N,concept_dimension,N,2962\n2,\\PCORI\\MEDICATION\\RXNORM_CUI\\,8,Leaf,Active,N,concept_dimension,N,38995\n2,\\PCORI\\MEDICATION\\RXNORM_CUI\\,9,Leaf,Active,N,concept_dimension,N,39\n2,\\PCORI\\MEDICATION\\VERSION\\,,,,,,,\n1,\\PCORI\\PROCEDURE\\,2,Case,Active,N,concept_dimension,N,1\n1,\\PCORI\\PROCEDURE\\,2,Folder,Active,N,concept_dimension,N,2\n1,\\PCORI\\PROCEDURE\\,2,Folder,Inactive,N,concept_dimension,N,4\n1,\\PCORI\\PROCEDURE\\,2,Leaf,Inactive,N,concept_dimension,N,1\n1,\\PCORI\\PROCEDURE\\,3,Case,Active,N,concept_dimension,N,24\n1,\\PCORI\\PROCEDURE\\,3,Folder,Active,N,concept_dimension,N,19\n1,\\PCORI\\PROCEDURE\\,4,Folder,Active,N,concept_dimension,N,399\n1,\\PCORI\\PROCEDURE\\,4,Leaf,Active,N,concept_dimension,N,110\n1,\\PCORI\\PROCEDURE\\,4,Leaf,Active,Y,concept_dimension,N,143\n1,\\PCORI\\PROCEDURE\\,5,Folder,Active,N,concept_dimension,N,2171\n1,\\PCORI\\PROCEDURE\\,5,Folder,Active,Y,concept_dimension,N,1754\n1,\\PCORI\\PROCEDURE\\,5,Leaf,Active,N,concept_dimension,N,2576\n1,\\PCORI\\PROCEDURE\\,5,Leaf,Active,Y,concept_dimension,N,4638\n1,\\PCORI\\PROCEDURE\\,6,Folder,Active,N,concept_dimension,N,12349\n1,\\PCORI\\PROCEDURE\\,6,Folder,Active,Y,concept_dimension,N,107\n1,\\PCORI\\PROCEDURE\\,6,Leaf,Active,N,concept_dimension,N,8935\n1,\\PCORI\\PROCEDURE\\,6,Leaf,Active,Y,concept_dimension,N,12466\n1,\\PCORI\\PROCEDURE\\,7,Folder,Active,N,concept_dimension,N,34078\n1,\\PCORI\\PROCEDURE\\,7,Folder,Active,Y,concept_dimension,N,135\n1,\\PCORI\\PROCEDURE\\,7,Leaf,Active,N,concept_dimension,N,4837\n1,\\PCORI\\PROCEDURE\\,7,Leaf,Active,Y,concept_dimension,N,14528\n1,\\PCORI\\PROCEDURE\\,8,Folder,Active,N,concept_dimension,N,61463\n1,\\PCORI\\PROCEDURE\\,8,Folder,Active,Y,concept_dimension,N,40\n1,\\PCORI\\PROCEDURE\\,8,Leaf,Active,N,concept_dimension,N,3850\n1,\\PCORI\\PROCEDURE\\,8,Leaf,Active,Y,concept_dimension,N,18130\n1,\\PCORI\\PROCEDURE\\,9,Folder,Active,N,concept_dimension,N,41\n1,\\PCORI\\PROCEDURE\\,9,Folder,Active,Y,concept_dimension,N,20\n1,\\PCORI\\PROCEDURE\\,9,Leaf,Active,N,concept_dimension,N,72611\n1,\\PCORI\\PROCEDURE\\,9,Leaf,Active,Y,concept_dimension,N,146821\n1,\\PCORI\\PROCEDURE\\,10,Leaf,Active,N,concept_dimension,N,79\n1,\\PCORI\\PROCEDURE\\,10,Leaf,Active,Y,concept_dimension,N,849\n2,\\PCORI\\PROCEDURE\\09\\,3,Folder,Active,N,concept_dimension,N,18\n2,\\PCORI\\PROCEDURE\\09\\,4,Folder,Active,N,concept_dimension,N,109\n2,\\PCORI\\PROCEDURE\\09\\,5,Folder,Active,N,concept_dimension,N,659\n2,\\PCORI\\PROCEDURE\\09\\,5,Leaf,Active,N,concept_dimension,N,295\n2,\\PCORI\\PROCEDURE\\09\\,6,Leaf,Active,N,concept_dimension,N,3583\n2,\\PCORI\\PROCEDURE\\10\\,3,Case,Active,N,concept_dimension,N,16\n2,\\PCORI\\PROCEDURE\\10\\,4,Folder,Active,N,concept_dimension,N,102\n2,\\PCORI\\PROCEDURE\\10\\,5,Folder,Active,N,concept_dimension,N,845\n2,\\PCORI\\PROCEDURE\\10\\,5,Folder,Active,Y,concept_dimension,N,1690\n2,\\PCORI\\PROCEDURE\\10\\,6,Folder,Active,N,concept_dimension,N,11304\n2,\\PCORI\\PROCEDURE\\10\\,7,Folder,Active,N,concept_dimension,N,32727\n2,\\PCORI\\PROCEDURE\\10\\,8,Folder,Active,N,concept_dimension,N,61271\n2,\\PCORI\\PROCEDURE\\10\\,9,Leaf,Active,N,concept_dimension,N,71924\n2,\\PCORI\\PROCEDURE\\10\\,9,Leaf,Active,Y,concept_dimension,N,143848\n2,\\PCORI\\PROCEDURE\\11\\,,,,,,,\n2,\\PCORI\\PROCEDURE\\CH\\,3,Case,Active,N,concept_dimension,N,8\n2,\\PCORI\\PROCEDURE\\CH\\,3,Folder,Active,N,concept_dimension,N,1\n2,\\PCORI\\PROCEDURE\\CH\\,4,Folder,Active,N,concept_dimension,N,188\n2,\\PCORI\\PROCEDURE\\CH\\,4,Leaf,Active,N,concept_dimension,N,110\n2,\\PCORI\\PROCEDURE\\CH\\,4,Leaf,Active,Y,concept_dimension,N,143\n2,\\PCORI\\PROCEDURE\\CH\\,5,Folder,Active,N,concept_dimension,N,667\n2,\\PCORI\\PROCEDURE\\CH\\,5,Folder,Active,Y,concept_dimension,N,64\n2,\\PCORI\\PROCEDURE\\CH\\,5,Leaf,Active,N,concept_dimension,N,2281\n2,\\PCORI\\PROCEDURE\\CH\\,5,Leaf,Active,Y,concept_dimension,N,4638\n2,\\PCORI\\PROCEDURE\\CH\\,6,Folder,Active,N,concept_dimension,N,1045\n2,\\PCORI\\PROCEDURE\\CH\\,6,Folder,Active,Y,concept_dimension,N,107\n2,\\PCORI\\PROCEDURE\\CH\\,6,Leaf,Active,N,concept_dimension,N,5352\n2,\\PCORI\\PROCEDURE\\CH\\,6,Leaf,Active,Y,concept_dimension,N,12466\n2,\\PCORI\\PROCEDURE\\CH\\,7,Folder,Active,N,concept_dimension,N,1351\n2,\\PCORI\\PROCEDURE\\CH\\,7,Folder,Active,Y,concept_dimension,N,135\n2,\\PCORI\\PROCEDURE\\CH\\,7,Leaf,Active,N,concept_dimension,N,4837\n2,\\PCORI\\PROCEDURE\\CH\\,7,Leaf,Active,Y,concept_dimension,N,14528\n2,\\PCORI\\PROCEDURE\\CH\\,8,Folder,Active,N,concept_dimension,N,192\n2,\\PCORI\\PROCEDURE\\CH\\,8,Folder,Active,Y,concept_dimension,N,40\n2,\\PCORI\\PROCEDURE\\CH\\,8,Leaf,Active,N,concept_dimension,N,3850\n2,\\PCORI\\PROCEDURE\\CH\\,8,Leaf,Active,Y,concept_dimension,N,18130\n2,\\PCORI\\PROCEDURE\\CH\\,9,Folder,Active,N,concept_dimension,N,41\n2,\\PCORI\\PROCEDURE\\CH\\,9,Folder,Active,Y,concept_dimension,N,20\n2,\\PCORI\\PROCEDURE\\CH\\,9,Leaf,Active,N,concept_dimension,N,687\n2,\\PCORI\\PROCEDURE\\CH\\,9,Leaf,Active,Y,concept_dimension,N,2973\n2,\\PCORI\\PROCEDURE\\CH\\,10,Leaf,Active,N,concept_dimension,N,79\n2,\\PCORI\\PROCEDURE\\CH\\,10,Leaf,Active,Y,concept_dimension,N,849\n2,\\PCORI\\PROCEDURE\\LC\\,,,,,,,\n2,\\PCORI\\PROCEDURE\\ND\\,,,,,,,\n2,\\PCORI\\PROCEDURE\\RE\\,,,,,,,\n2,\\PCORI\\PROCEDURE\\VERSION\\,,,,,,,\n1,\\PCORI\\VITAL\\,2,Folder,Active,N,concept_dimension,N,2\n1,\\PCORI\\VITAL\\,2,Leaf,Active,N,concept_dimension,Y,3\n1,\\PCORI\\VITAL\\,2,Leaf,Hidden,N,concept_dimension,Y,4\n1,\\PCORI\\VITAL\\,2,Leaf,Inactive,N,concept_dimension,N,1\n1,\\PCORI\\VITAL\\,3,Case,Active,N,concept_dimension,N,2\n1,\\PCORI\\VITAL\\,3,Folder,Active,N,concept_dimension,N,1\n1,\\PCORI\\VITAL\\,3,Leaf,Active,N,concept_dimension,N,2\n1,\\PCORI\\VITAL\\,3,Leaf,Active,N,concept_dimension,Y,2\n1,\\PCORI\\VITAL\\,3,Leaf,Inactive,N,concept_dimension,N,1\n1,\\PCORI\\VITAL\\,4,Folder,Active,N,concept_dimension,N,1\n1,\\PCORI\\VITAL\\,4,Leaf,Active,N,concept_dimension,N,6\n1,\\PCORI\\VITAL\\,4,Leaf,Hidden,N,concept_dimension,N,1\n1,\\PCORI\\VITAL\\,5,Leaf,Active,N,concept_dimension,N,5\n2,\\PCORI\\VITAL\\BP\\,3,Leaf,Active,N,concept_dimension,Y,2\n2,\\PCORI\\VITAL\\HT\\,,,,,,,\n2,\\PCORI\\VITAL\\ORIGINAL_BMI\\,,,,,,,\n2,\\PCORI\\VITAL\\RAW_BP_POSITION\\,,,,,,,\n2,\\PCORI\\VITAL\\RAW_DIASTOLIC\\,,,,,,,\n2,\\PCORI\\VITAL\\RAW_SYSTOLIC\\,,,,,,,\n2,\\PCORI\\VITAL\\RAW_VITAL_SOURCE\\,,,,,,,\n2,\\PCORI\\VITAL\\TOBACCO\\,3,Case,Active,N,concept_dimension,N,2\n2,\\PCORI\\VITAL\\TOBACCO\\,3,Folder,Active,N,concept_dimension,N,1\n2,\\PCORI\\VITAL\\TOBACCO\\,3,Leaf,Active,N,concept_dimension,N,2\n2,\\PCORI\\VITAL\\TOBACCO\\,3,Leaf,Inactive,N,concept_dimension,N,1\n2,\\PCORI\\VITAL\\TOBACCO\\,4,Folder,Active,N,concept_dimension,N,1\n2,\\PCORI\\VITAL\\TOBACCO\\,4,Leaf,Active,N,concept_dimension,N,6\n2,\\PCORI\\VITAL\\TOBACCO\\,4,Leaf,Hidden,N,concept_dimension,N,1\n2,\\PCORI\\VITAL\\TOBACCO\\,5,Leaf,Active,N,concept_dimension,N,5\n2,\\PCORI\\VITAL\\VERSION\\,,,,,,,\n2,\\PCORI\\VITAL\\WT\\,,,,,,,\n"
+    },
+    {
+      "name": "levelExtentCalculationData",
+      "source": "rawData",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum.subtreeLevel != null"
+        },
+        {
+          "type": "extent",
+          "field": "subtreeLevel",
+          "signal": "rawLevelExtent"
+        }
+      ]
+    },
+    {
+      "name": "levelTotals",
+      "source": "rawData",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": [
+            "level",
+            "path",
+            "subtreeLevel"
+          ],
+          "fields": [
+            "numPaths"
+          ],
+          "ops": [
+            "sum"
+          ],
+          "as": [
+            "levelTotal"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "nodes",
+      "source": "rawData",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": [
+            "level",
+            "path"
+          ]
+        },
+        {
+          "type": "formula",
+          "expr": "lastindexof(slice(datum.path, 0, -1), '\\\\')",
+          "as": "pathSplitIndex"
+        },
+        {
+          "type": "formula",
+          "expr": "slice(datum.path, 0, datum.pathSplitIndex)",
+          "as": "rawParentPath"
+        },
+        {
+          "type": "formula",
+          "expr": "if(datum.rawParentPath != '', datum.rawParentPath + '\\\\', null)",
+          "as": "parentPath"
+        },
+        {
+          "type": "project",
+          "fields": [
+            "level",
+            "path",
+            "parentPath"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "leafs",
+      "source": "nodes",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "!indata('nodes', 'parentPath', datum.path)"
+        }
+      ]
+    },
+    {
+      "name": "leafCountCalculationData",
+      "source": "leafs",
+      "transform": [
+        {
+          "type": "aggregate",
+          "as": [
+            "count"
+          ]
+        },
+        {
+          "type": "extent",
+          "field": "count",
+          "signal": "rawLeafCount"
+        }
+      ]
+    },
+    {
+      "name": "subleafs",
+      "source": "levelTotals",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum.subtreeLevel != null"
+        },
+        {
+          "type": "lookup",
+          "from": "leafs",
+          "key": "path",
+          "fields": [
+            "path"
+          ],
+          "as": [
+            "node"
+          ]
+        },
+        {
+          "type": "filter",
+          "expr": "datum.node != null"
+        }
+      ]
+    },
+    {
+      "name": "tree",
+      "source": "nodes",
+      "transform": [
+        {
+          "type": "stratify",
+          "key": "path",
+          "parentKey": "parentPath"
+        },
+        {
+          "type": "tree",
+          "size": [
+            {
+              "signal": "height"
+            },
+            {
+              "signal": "width"
+            }
+          ]
+        },
+        {
+          "type": "formula",
+          "expr": "datum.x",
+          "as": "y"
+        },
+        {
+          "type": "formula",
+          "expr": "datum.level * 800 / 11",
+          "as": "x"
+        }
+      ]
+    },
+    {
+      "name": "links",
+      "source": "tree",
+      "transform": [
+        {
+          "type": "treelinks",
+          "key": "path"
+        },
+        {
+          "type": "linkpath",
+          "orient": "horizontal"
+        }
+      ]
+    },
+    {
+      "name": "subleafWithPosition",
+      "source": "subleafs",
+      "transform": [
+        {
+          "type": "lookup",
+          "from": "tree",
+          "key": "path",
+          "fields": [
+            "path"
+          ],
+          "values": [
+            "y"
+          ]
+        },
+        {
+          "type": "formula",
+          "expr": "datum.subtreeLevel * 800 / 11",
+          "as": "x"
+        }
+      ]
+    },
+    {
+      "name": "subleafLinks",
+      "source": "subleafWithPosition",
+      "transform": [
+        {
+          "type": "formula",
+          "expr": "'M' + (datum.x - 800 / 11) + ',' + datum.y + 'L' + datum.x + ',' + datum.y",
+          "as": "linkPath"
+        }
+      ]
+    }
+  ],
+  "signals": [
+    {
+      "name": "levelSequence",
+      "description": "A sequence of integers up to # of levels. I.e. [0,n].",
+      "update": "sequence(0, peek(rawLevelExtent) + 1)"
+    },
+    {
+      "name": "leafCount",
+      "description": "The number of leaf nodes in the tree.",
+      "update": "rawLeafCount[0]"
+    }
+  ],
+  "scales": [
+    {
+      "name": "levels",
+      "type": "point",
+      "domain": {
+        "signal": "levelSequence"
+      },
+      "range": "width"
+    }
+  ],
+  "projections": [],
+  "axes": [
+    {
+      "scale": "levels",
+      "orient": "top"
+    }
+  ],
+  "legends": [],
+  "marks": [
+    {
+      "type": "path",
+      "from": {
+        "data": "links"
+      },
+      "encode": {
+        "update": {
+          "path": {
+            "field": "path"
+          },
+          "stroke": {
+            "value": "#ccc"
+          }
+        }
+      }
+    },
+    {
+      "type": "path",
+      "from": {
+        "data": "subleafLinks"
+      },
+      "encode": {
+        "update": {
+          "path": {
+            "field": "linkPath"
+          },
+          "stroke": {
+            "value": "#ccc"
+          }
+        }
+      }
+    },
+    {
+      "type": "symbol",
+      "from": {
+        "data": "tree"
+      },
+      "encode": {
+        "enter": {
+          "x": {
+            "field": "x"
+          },
+          "y": {
+            "field": "y"
+          }
+        }
+      }
+    },
+    {
+      "type": "symbol",
+      "from": {
+        "data": "subleafWithPosition"
+      },
+      "encode": {
+        "enter": {
+          "x": {
+            "signal": "datum.subtreeLevel * 800 / 11"
+          },
+          "y": {
+            "field": "y"
+          }
+        }
+      }
+    }
+  ]
+}

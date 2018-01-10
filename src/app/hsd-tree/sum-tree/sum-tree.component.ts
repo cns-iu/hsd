@@ -1,4 +1,5 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import * as vega from 'vega';
 
 @Component({
@@ -10,16 +11,19 @@ export class SumTreeComponent implements OnInit {
   private parentNativeElement: any;
   private spec = '';
 
-  constructor(element: ElementRef) {
+  constructor(element: ElementRef, private http: HttpClient) {
     this.parentNativeElement = element.nativeElement;
   }
 
   ngOnInit() {
-    vega.loader()
+    this.http.get('./assets/data/sum-tree/spec.json').subscribe((data) => {
+      this.render(data);
+    });
+    /*vega.loader()
       .load(this.spec)
       .then((data) => {
         this.render(JSON.parse(data));
-      });
+      });*/
   }
 
   render(spec) {
