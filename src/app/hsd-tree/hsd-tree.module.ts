@@ -8,7 +8,7 @@ import { SumTreeComponent } from './sum-tree/sum-tree.component';
     CommonModule
   ],
   exports: [
-    SimpleTreeComponent
+    SimpleTreeComponent, SumTreeComponent
   ],
   declarations: [SimpleTreeComponent, SumTreeComponent]
 })
