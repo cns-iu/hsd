@@ -17,6 +17,7 @@
             "SubtreeLevel",
             "ConceptType",
             "Visibility",
+            "IsSynonym",
             "NumberOfPaths"
           ],
           "as": [
@@ -25,8 +26,13 @@
             "subtreeLevel",
             "type",
             "visibility",
+            "isSynonym",
             "numPaths"
           ]
+        },
+        {
+          "type": "filter",
+          "expr": "datum.isSynonym == 'N'"
         },
         {
           "type": "formula",
@@ -323,7 +329,7 @@
       "encode": {
         "enter": {
           "x": {"field": "x"},
-          "y": {"field": "y"}
+          "y": {"signal": "datum.y - 10"}
         }
       },
       "data": [
@@ -333,16 +339,47 @@
           "transform": [
             {
               "type": "filter",
-              "expr": "datum.summaryNodeId == parent.summaryNodeId"
+              "expr": "toString(datum.summaryNodeId) == toString(parent.summaryNodeId)"
+            },
+            {
+              "type": "joinaggregate",
+              "fields": ["numPaths"],
+              "ops": ["sum"],
+              "as": ["totalNumPaths"]
+            },
+            {
+              "type": "formula",
+              "expr": "datum.numPaths / datum.totalNumPaths",
+              "as": "percentage"
+            },
+            {
+              "type": "window",
+              "sort": {
+                "field": ["type", "visibility"]
+              },
+              "fields": ["percentage"],
+              "ops": ["sum"],
+              "as": ["cumPercentage"]
+            },
+            {
+              "type": "formula",
+              "expr": "datum.cumPercentage - datum.percentage",
+              "as": "cumPercentage"
             }
           ]
         }
       ],
       "marks": [
         {
-          "type": "symbol",
+          "type": "rect",
+          "from": {"data": "counts"},
           "encode": {
             "enter": {
+              "tooltip": {"signal": "datum.cumPercentage"},
+              "x": {"value": -5},
+              "y": {"signal": "20 * datum.cumPercentage"},
+              "width": {"value": 10},
+              "height": {"signal": "20 * datum.percentage"}
             }
           }
         }

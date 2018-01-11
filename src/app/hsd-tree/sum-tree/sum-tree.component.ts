@@ -5,7 +5,7 @@ import { environment } from './../../shared';
 import * as sumTreeSpec from './spec.json';
 import { subtreeBreakdown } from './data';
 
-const developmentLogLevel = vega.Info;
+const developmentLogLevel = vega.Warn;
 const logLevel = environment.production ? vega.None : developmentLogLevel;
 
 @Component({
@@ -31,7 +31,7 @@ export class SumTreeComponent implements OnInit, OnDestroy {
 
   render(spec: any): void {
     this.view = new vega.View(vega.parse(spec))
-      .renderer('canvas')
+      .renderer('svg')
       .initialize(this.parentNativeElement)
       .logLevel(logLevel)
       .hover()
