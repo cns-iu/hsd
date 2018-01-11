@@ -1,8 +1,8 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v3.0.json",
   "description": "Hsd Vega Specification",
-  "width": 800,
-  "height": 800,
+  "width": 1030,
+  "height": 2400,
   "padding": 5,
   "autosize": "pad",
   "data": [
@@ -319,8 +319,14 @@
     {
       "name": "color",
       "type": "ordinal",
-      "range": ["#7ec0ee", "#90EE90", "#FFD300", "#000000"],
+      "range": ["#5B9BD5", "#70AD47", "#FFC000"],
       "domain": {"data": "rawNodes", "field": "type"}
+    },
+    {
+      "name": "colorSingle",
+      "type": "ordinal",
+      "range": ["#4C78AA"],
+      "domain":{"data": "rawNodes", "field": "type"}
     }
   ],
   "projections": [],
@@ -331,18 +337,57 @@
     }
   ],
   "legends": [
-    {"fill": "color",
+    {
+      "fill": "color",
       "title": "Single Concept",
       "padding": 50,
       "offset": 100,
       "zindex": 10,
-      "wrap": { "value": true },
       "encode": {
         "title": {
           "update": {
             "fontSize": {"value": 12},
             "dx": {"value": -47}
-
+          }
+        },
+        "labels": {
+          "interactive": true,
+          "update": {
+            "align": {"value": "right"},
+            "fontSize": {"value": 12},
+            "fill": {"value": "black"},
+            "dx": {"value": -30}
+          }
+        },
+        "symbols": {
+          "interactive" : true,
+          "update": {
+            "stroke": {"value": "transparent"},
+              "size": {"value": 300}
+          },
+          "hover": {
+            "stroke": {"value": "black"}
+          }
+        },
+        "legend": {
+          "update": {
+            "stroke": {"value": "#000000"},
+            "strokeWidth": {"value": 1.5}
+          }
+        }
+      }
+    },
+    {
+      "fill": "colorSingle",
+      "title": "Multiple Concept",
+      "padding": 50,
+      "offset": 100,
+      "zindex": 10,
+      "encode": {
+        "title": {
+          "update": {
+            "fontSize": {"value": 12},
+            "dx": {"value": -47}
           }
         },
         "labels": {
@@ -352,14 +397,12 @@
             "fontSize": {"value": 12},
             "fill": {"value": "black"},
             "dx": {"value": -27}
-          },
-          "hover": {
-            "fill": {"value": "firebrick"}
           }
         },
         "symbols": {
           "interactive" : true,
           "update": {
+            "shape": {"value": "square"},
             "stroke": {"value": "transparent"}
           },
           "hover": {
@@ -377,17 +420,11 @@
       "marks": [
         {
           "type": "path",
-          "from": {
-            "data": "links"
-          },
+          "from": {"data": "links"},
           "encode": {
             "update": {
-              "path": {
-                "field": "path"
-              },
-              "stroke": {
-                "value": "#ccc"
-              }
+              "path": {"field": "path"},
+              "stroke": {"value": "#ccc"}
             }
           }
         },
@@ -409,18 +446,49 @@
         },
         {
           "type": "symbol",
+          "from": {"data": "tree"},
+          "encode": {
+            "enter": {
+              "x": {"field": "x"},
+              "y": {"field": "y"},
+              "size": {"value": 300},
+              "fill": {"scale": "color", "field": "type"},
+              "stroke": {"value": "black"},
+              "strokeWidth":{"value": 0.7}
+            }
+          }
+        },
+        {
+          "type": "text",
+          "from": {"data": "tree"},
+          "encode": {
+            "enter": {
+              "text": {"field": "name"},
+              "align": {"value": "center"},
+              "dy": {"value": -9.5},
+              "x": {"field": "x"},
+              "y": {"field": "y"},
+              "fill": {"value": "black"},
+              "fontSize": {"value": 11},
+              "baseline": {"value": "bottom"}
+            }
+          }
+        },
+        {
+          "type": "text",
           "from": {
             "data": "tree"
           },
           "encode": {
             "enter": {
-              "x": {
-                "field": "x"
-              },
-              "y": {
-                "field": "y"
-              },
-              "fill": {"scale": "color", "field": "type"}
+              "fill": {"value": "#000"},
+              "text": {"value": "1"},
+              "opacity": {"value": 1},
+              "x": {"field": "x"},
+              "y": {"field": "y"},
+              "dy": {"value": 4},
+              "dx": {"value": -3},
+              "fontSize": {"value": 11}
             }
           }
         },
@@ -431,12 +499,9 @@
           },
           "encode": {
             "enter": {
-              "x": {
-                "signal": "datum.subtreeLevel * 800 / 11"
-              },
-              "y": {
-                "field": "y"
-              }
+              "shape": {"value": "square"},
+              "x": {"signal": "datum.subtreeLevel * 800 / 11"},
+              "y": {"field": "y"}
             }
           }
         }
