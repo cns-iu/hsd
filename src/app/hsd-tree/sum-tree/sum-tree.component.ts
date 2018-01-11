@@ -5,7 +5,7 @@ import { environment } from './../../shared';
 import * as sumTreeSpec from './spec.json';
 import { subtreeBreakdown } from './data';
 
-const developmentLogLevel = vega.Warn;
+const developmentLogLevel = vega.Info;
 const logLevel = environment.production ? vega.None : developmentLogLevel;
 
 @Component({
@@ -36,7 +36,6 @@ export class SumTreeComponent implements OnInit, OnDestroy {
       .logLevel(logLevel)
       .hover()
       .insert('subtreeBreakdown', subtreeBreakdown)
-      .insert('rawData', subtreeBreakdown)
       .run();
   }
 }

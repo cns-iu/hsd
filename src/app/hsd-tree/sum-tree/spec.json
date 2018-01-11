@@ -30,41 +30,20 @@
         },
         {
           "type": "formula",
-          "expr": "datum.path + ':' + datum.level",
+          "expr": "[slice(datum.path, 0, -1), datum.level, datum.subtreeLevel]",
+          "as": "summaryNodeId"
+        },
+        {
+          "type": "formula",
+          "expr": "slice(datum.summaryNodeId, 0, -1)",
           "as": "internalNodeId"
         }
       ]
     },
 
-
-
     {
-      "name": "rawData",
-      "transform": [
-        {
-          "type": "project",
-          "fields": [
-            "NodeLevel",
-            "NodePath",
-            "SubtreeLevel",
-            "ConceptType",
-            "Visibility",
-            "NumberOfPaths"
-          ],
-          "as": [
-            "level",
-            "path",
-            "subtreeLevel",
-            "type",
-            "visibility",
-            "numPaths"
-          ]
-        }
-      ]
-    },
-    {
-      "name": "levelExtentCalculationData",
-      "source": "rawData",
+      "name": "levelSequence",
+      "source": "subtreeBreakdown",
       "transform": [
         {
           "type": "filter",
@@ -73,20 +52,30 @@
         {
           "type": "extent",
           "field": "subtreeLevel",
-          "signal": "rawLevelExtent"
+          "signal": "treeLevelExtent"
+        },
+        {
+          "type": "sequence",
+          "start": 0,
+          "stop": {
+            "signal": "peek(treeLevelExtent) + 1"
+          }
+        },
+        {
+          "type": "filter",
+          "expr": "datum.data != null"
         }
       ]
     },
+
     {
-      "name": "levelTotals",
-      "source": "rawData",
+      "name": "subtreeNodeCounts",
+      "source": "subtreeBreakdown",
       "transform": [
         {
           "type": "aggregate",
           "groupby": [
-            "level",
-            "path",
-            "subtreeLevel"
+            "summaryNodeId"
           ],
           "fields": [
             "numPaths"
@@ -95,107 +84,95 @@
             "sum"
           ],
           "as": [
-            "levelTotal"
+            "count"
           ]
         }
       ]
     },
+
     {
-      "name": "nodes",
-      "source": "rawData",
+      "name": "internalNodes",
+      "source": "subtreeBreakdown",
       "transform": [
         {
           "type": "aggregate",
           "groupby": [
-            "level",
-            "path"
+            "internalNodeId"
           ]
         },
         {
           "type": "formula",
-          "expr": "lastindexof(slice(datum.path, 0, -1), '\\\\')",
-          "as": "pathSplitIndex"
+          "expr": "lastindexof(datum.internalNodeId[0], '\\\\')",
+          "as": "splitIndex"
         },
         {
           "type": "formula",
-          "expr": "slice(datum.path, 0, datum.pathSplitIndex)",
-          "as": "rawParentPath"
-        },
-        {
-          "type": "formula",
-          "expr": "if(datum.rawParentPath != '', datum.rawParentPath + '\\\\', null)",
+          "expr": "slice(datum.internalNodeId[0], 0, datum.splitIndex)",
           "as": "parentPath"
         },
         {
-          "type": "project",
-          "fields": [
-            "level",
-            "path",
-            "parentPath"
-          ]
-        }
-      ]
-    },
-    {
-      "name": "leafs",
-      "source": "nodes",
-      "transform": [
-        {
-          "type": "filter",
-          "expr": "!indata('nodes', 'parentPath', datum.path)"
-        }
-      ]
-    },
-    {
-      "name": "leafCountCalculationData",
-      "source": "leafs",
-      "transform": [
-        {
-          "type": "aggregate",
-          "as": [
-            "count"
-          ]
+          "type": "formula",
+          "expr": "[datum.parentPath, datum.internalNodeId[1] - 1]",
+          "as": "parentInternalNodeId"
         },
         {
-          "type": "extent",
-          "field": "count",
-          "signal": "rawLeafCount"
+          "type": "formula",
+          "expr": "if(datum.parentPath == '', null, datum.parentInternalNodeId)",
+          "as": "parentInternalNodeId"
         }
       ]
     },
+
     {
-      "name": "subleafs",
-      "source": "levelTotals",
+      "name": "internalLeafs",
+      "source": "internalNodes",
       "transform": [
         {
           "type": "filter",
-          "expr": "datum.subtreeLevel != null"
+          "expr": "!indata('internalNodes', 'parentInternalNodeId', datum.internalNodeId)"
+        }
+      ]
+    },
+
+    {
+      "name": "summaryNodes",
+      "source": "subtreeNodeCounts",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum.summaryNodeId[2] != null"
+        },
+        {
+          "type": "formula",
+          "expr": "slice(datum.summaryNodeId, 0, -1)",
+          "as": "internalNodeId"
         },
         {
           "type": "lookup",
-          "from": "leafs",
-          "key": "path",
+          "from": "internalLeafs",
+          "key": "internalNodeId",
           "fields": [
-            "path"
+            "internalNodeId"
           ],
           "as": [
-            "node"
+            "superNode"
           ]
         },
         {
           "type": "filter",
-          "expr": "datum.node != null"
+          "expr": "datum.superNode != null"
         }
       ]
     },
+
     {
-      "name": "tree",
-      "source": "nodes",
+      "name": "internalTree",
+      "source": "internalNodes",
       "transform": [
         {
           "type": "stratify",
-          "key": "path",
-          "parentKey": "parentPath"
+          "key": "internalNodeId",
+          "parentKey": "parentInternalNodeId"
         },
         {
           "type": "tree",
@@ -215,18 +192,19 @@
         },
         {
           "type": "formula",
-          "expr": "datum.level * 800 / 11",
+          "expr": "datum.internalNodeId[1] * height / peek(treeLevelExtent)",
           "as": "x"
         }
       ]
     },
+
     {
-      "name": "links",
-      "source": "tree",
+      "name": "internalLinks",
+      "source": "internalTree",
       "transform": [
         {
           "type": "treelinks",
-          "key": "path"
+          "key": "internalNodeId"
         },
         {
           "type": "linkpath",
@@ -234,16 +212,17 @@
         }
       ]
     },
+
     {
-      "name": "subleafWithPosition",
-      "source": "subleafs",
+      "name": "summaryTree",
+      "source": "summaryNodes",
       "transform": [
         {
           "type": "lookup",
-          "from": "tree",
-          "key": "path",
+          "from": "internalTree",
+          "key": "internalNodeId",
           "fields": [
-            "path"
+            "internalNodeId"
           ],
           "values": [
             "y"
@@ -251,41 +230,32 @@
         },
         {
           "type": "formula",
-          "expr": "datum.subtreeLevel * 800 / 11",
+          "expr": "datum.summaryNodeId[2] * height / peek(treeLevelExtent)",
           "as": "x"
         }
       ]
     },
+
     {
-      "name": "subleafLinks",
-      "source": "subleafWithPosition",
+      "name": "summaryLinks",
+      "source": "summaryTree",
       "transform": [
         {
           "type": "formula",
-          "expr": "'M' + (datum.x - 800 / 11) + ',' + datum.y + 'L' + datum.x + ',' + datum.y",
-          "as": "linkPath"
+          "expr": "'M' + (datum.x - height / peek(treeLevelExtent)) + ',' + datum.y + 'L' + datum.x + ',' + datum.y",
+          "as": "path"
         }
       ]
     }
   ],
-  "signals": [
-    {
-      "name": "levelSequence",
-      "description": "A sequence of integers up to # of levels. I.e. [0,n].",
-      "update": "sequence(0, peek(rawLevelExtent) + 1)"
-    },
-    {
-      "name": "leafCount",
-      "description": "The number of leaf nodes in the tree.",
-      "update": "rawLeafCount[0]"
-    }
-  ],
+  "signals": [],
   "scales": [
     {
       "name": "levels",
       "type": "point",
       "domain": {
-        "signal": "levelSequence"
+        "data": "levelSequence",
+        "field": "data"
       },
       "range": "width"
     }
@@ -302,7 +272,7 @@
     {
       "type": "path",
       "from": {
-        "data": "links"
+        "data": "internalLinks"
       },
       "encode": {
         "update": {
@@ -318,12 +288,12 @@
     {
       "type": "path",
       "from": {
-        "data": "subleafLinks"
+        "data": "summaryLinks"
       },
       "encode": {
         "update": {
           "path": {
-            "field": "linkPath"
+            "field": "path"
           },
           "stroke": {
             "value": "#ccc"
@@ -334,7 +304,7 @@
     {
       "type": "symbol",
       "from": {
-        "data": "tree"
+        "data": "internalTree"
       },
       "encode": {
         "enter": {
@@ -349,7 +319,7 @@
     },
     {
       "type": "group",
-      "from": {"data": "subleafWithPosition"},
+      "from": {"data": "summaryTree"},
       "encode": {
         "enter": {
           "x": {"field": "x"},
@@ -358,28 +328,12 @@
       },
       "data": [
         {
-          "name": "subrects",
-          "values": [
-            {"type": "Case", "visibility": "Active"},
-            {"type": "Case", "visibility": "Inactive"},
-            {"type": "Case", "visibility": "Hidden"},
-            {"type": "Folder", "visibility": "Active"},
-            {"type": "Folder", "visibility": "Inactive"},
-            {"type": "Folder", "visibility": "Hidden"},
-            {"type": "Leaf", "visibility": "Active"},
-            {"type": "Leaf", "visibility": "Inactive"},
-            {"type": "Leaf", "visibility": "Hidden"}
-          ],
+          "name": "counts",
+          "source": "subtreeBreakdown",
           "transform": [
             {
-              "type": "formula",
-              "expr": "parent.path",
-              "as": "path"
-            },
-            {
-              "type": "formula",
-              "expr": "parent.subtreeLevel",
-              "as": "level"
+              "type": "filter",
+              "expr": "datum.summaryNodeId == parent.summaryNodeId"
             }
           ]
         }
