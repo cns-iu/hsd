@@ -10,7 +10,7 @@ export const subtreeBreakdown = vegaRead(subtreeBreakdownCsv, {
     NumberOfPaths: 'integer'
   }
 }).filter((item) => {
-  return item.NodeLevel != null && !Number.isNaN(item.NodeLevel);
+    return item.NodeLevel != null && !Number.isNaN(item.NodeLevel);
 });
 
 export const nodes = vegaRead(nodesCsv, {

@@ -24,7 +24,8 @@
             "NodeName",
             "NodeType",
             "NodeVisibility",
-            "NumberOfPaths"
+            "NumberOfPaths",
+            "NodeIsSynonym"
           ],
           "as": [
             "level",
@@ -32,8 +33,13 @@
             "name",
             "type",
             "visibility",
-            "numPaths"
+            "numPaths",
+            "NodeIsSynonym"
           ]
+        },
+        {
+          "type": "filter",
+          "expr": "datum.NodeIsSynonym == 'N'"
         }
       ]
     },
@@ -240,7 +246,8 @@
           "from": "rawNodes",
           "key": "path",
           "values": ["type", "name"],
-          "fields": ["path"]
+          "fields": ["path"],
+          "default": "Leaf"
         }
       ]
     },
@@ -318,12 +325,12 @@
       "name": "color",
       "type": "ordinal",
       "range": ["#5B9BD5", "#70AD47", "#FFC000"],
-      "domain": {"data": "rawNodes", "field": "type"}
+      "domain": {"data": "tree", "field": "type"}
     },
     {
       "name": "colorSingle",
       "type": "ordinal",
-      "range": ["#4C78AA"],
+      "range": ["white"],
       "domain":{"data": "rawNodes", "field": "type"}
     }
   ],
@@ -337,31 +344,32 @@
   "legends": [
     {
       "fill": "color",
-      "title": "Single Concept",
-      "padding": 50,
-      "offset": 100,
+      "title": "Single Concept   ",
+      "padding": 10,
+      "offset": 10,
       "zindex": 10,
       "encode": {
         "title": {
           "update": {
             "fontSize": {"value": 12},
-            "dx": {"value": -47}
+            "dx": {"value": 0}
           }
         },
         "labels": {
           "interactive": true,
           "update": {
-            "align": {"value": "right"},
+            "align": {"value": "left"},
             "fontSize": {"value": 12},
             "fill": {"value": "#000000"},
-            "dx": {"value": -30}
+            "dx": {"value": 0}
           }
         },
         "symbols": {
           "interactive" : true,
           "update": {
-            "stroke": {"value": "transparent"},
-              "size": {"value": 300}
+            "stroke": {"value": "#4374A0"},
+            "size": {"value": 300},
+            "dx": {"value": 0}
           },
           "hover": {
             "stroke": {"value": "#000000"}
@@ -378,30 +386,32 @@
     {
       "fill": "colorSingle",
       "title": "Multiple Concept",
-      "padding": 50,
-      "offset": 100,
+      "padding": 10,
+      "offset": 10,
       "zindex": 10,
       "encode": {
         "title": {
           "update": {
             "fontSize": {"value": 12},
-            "dx": {"value": -47}
+            "dx": {"value": 0}
           }
         },
         "labels": {
           "interactive": true,
           "update": {
-            "align": {"value": "right"},
+            "align": {"value": "left"},
             "fontSize": {"value": 12},
             "fill": {"value": "#000000"},
-            "dx": {"value": -27}
+            "dx": {"value": 0}
           }
         },
         "symbols": {
           "interactive" : true,
           "update": {
             "shape": {"value": "square"},
-            "stroke": {"value": "transparent"}
+            "stroke": {"value": "#4374A0"},
+            "size": {"value": 300},
+            "dx": {"value": 0}
           },
           "hover": {
             "stroke": {"value": "#000000"}
@@ -414,7 +424,8 @@
           }
         }
       }
-      }],
+    }
+  ],
       "marks": [
         {
           "type": "path",
@@ -463,11 +474,11 @@
             "enter": {
               "text": {"field": "name"},
               "align": {"value": "center"},
-              "dy": {"value": -9.5},
+              "dy": {"value": -9.6},
               "x": {"field": "x"},
               "y": {"field": "y"},
               "fill": {"value": "black"},
-              "fontSize": {"value": 11},
+              "fontSize": {"value": 10},
               "baseline": {"value": "bottom"}
             }
           }
@@ -479,27 +490,38 @@
           },
           "encode": {
             "enter": {
-              "fill": {"value": "#F2F7FC"},
+              "fill": [
+                {
+                  "test": "(datum.type == 'Leaf')",
+                  "value": "#000000"
+                },
+                {
+                  "value": "#F2F7FC"
+                }
+              ],
               "text": {"value": "1"},
               "opacity": {"value": 1},
               "x": {"field": "x"},
               "y": {"field": "y"},
-              "dy": {"value": 3},
-              "dx": {"value": -3},
-              "fontSize": {"value": 8.5}
+              "dy": {"value": 1.6},
+              "dx": {"value": -2},
+              "fontSize": {"value": 6}
             }
           }
         },
         {
-          "type": "symbol",
+          "type": "rect",
           "from": {
             "data": "subleafWithPosition"
           },
           "encode": {
             "enter": {
-              "shape": {"value": "square"},
               "x": {"signal": "datum.subtreeLevel * 800 / 11"},
-              "y": {"field": "y"}
+              "y": {"signal": "datum.y - 10"},
+              "width": {"value": 15},
+              "height": {"value": 20},
+              "fill": {"value": "white"},
+              "stroke": {"value": "#4374A0"}
             }
           }
         }
