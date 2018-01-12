@@ -1,6 +1,12 @@
 <div class="main-content">
-  <mat-tab-group>
-    <mat-tab label="Home">This is Home!</mat-tab>
+  <mat-tab-group [selectedIndex]="2">
+    <mat-tab label="Home">
+      <h1>HSD Demo</h1>
+      <br>
+      <h2> This is a work in progress!</h2>
+      <br>
+      Choose a tab to see individual visualizations.
+    </mat-tab>
     <mat-tab label="Tree">
       <hsd-simple-tree></hsd-simple-tree>
     </mat-tab>

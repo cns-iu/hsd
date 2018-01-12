@@ -46,7 +46,37 @@
         }
       ]
     },
-
+    {
+      "name": "rawNodes",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "NodeName": "string",
+          "NodeType": "string"
+        }
+      },
+      "transform": [
+        {
+          "type": "project",
+          "fields": [
+            "NodeLevel",
+            "NodePath",
+            "NodeName",
+            "NodeType",
+            "NodeVisibility",
+            "NumberOfPaths"
+          ],
+          "as": [
+            "level",
+            "path",
+            "name",
+            "type",
+            "visibility",
+            "numPaths"
+          ]
+        }
+      ]
+    },
     {
       "name": "levelSequence",
       "source": "subtreeBreakdown",
@@ -264,6 +294,12 @@
         "field": "data"
       },
       "range": "width"
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "range": ["#5B9BD5", "#70AD47", "#FFC000"],
+      "domain": {"data": "rawNodes", "field": "type"}
     }
   ],
   "projections": [],
@@ -375,6 +411,7 @@
           "from": {"data": "counts"},
           "encode": {
             "enter": {
+              "cornerRadius": {"value": 1.5},
               "tooltip": {"signal": "datum.cumPercentage"},
               "x": {"value": -5},
               "y": {"signal": "20 * datum.cumPercentage"},
