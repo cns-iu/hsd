@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v3.0.json",
   "description": "Hsd Vega Specification",
-  "width": 1030,
+  "width": 800,
   "height": 2400,
   "padding": 5,
   "autosize": "pad",
@@ -355,7 +355,7 @@
           "update": {
             "align": {"value": "right"},
             "fontSize": {"value": 12},
-            "fill": {"value": "black"},
+            "fill": {"value": "#000000"},
             "dx": {"value": -30}
           }
         },
@@ -366,12 +366,12 @@
               "size": {"value": 300}
           },
           "hover": {
-            "stroke": {"value": "black"}
+            "stroke": {"value": "#000000"}
           }
         },
         "legend": {
           "update": {
-            "stroke": {"value": "#000000"},
+            "stroke": {"value": "#4374A0"},
             "strokeWidth": {"value": 1.5}
           }
         }
@@ -395,7 +395,7 @@
           "update": {
             "align": {"value": "right"},
             "fontSize": {"value": 12},
-            "fill": {"value": "black"},
+            "fill": {"value": "#000000"},
             "dx": {"value": -27}
           }
         },
@@ -406,12 +406,12 @@
             "stroke": {"value": "transparent"}
           },
           "hover": {
-            "stroke": {"value": "black"}
+            "stroke": {"value": "#000000"}
           }
         },
         "legend": {
           "update": {
-            "stroke": {"value": "#000000"},
+            "stroke": {"value": "#4374A0"},
             "strokeWidth": {"value": 1.5}
           }
         }
@@ -453,7 +453,7 @@
               "y": {"field": "y"},
               "size": {"value": 300},
               "fill": {"scale": "color", "field": "type"},
-              "stroke": {"value": "black"},
+              "stroke": {"value": "#4374A0"},
               "strokeWidth":{"value": 0.7}
             }
           }
@@ -481,14 +481,14 @@
           },
           "encode": {
             "enter": {
-              "fill": {"value": "#000"},
+              "fill": {"value": "#F2F7FC"},
               "text": {"value": "1"},
               "opacity": {"value": 1},
               "x": {"field": "x"},
               "y": {"field": "y"},
-              "dy": {"value": 4},
+              "dy": {"value": 3},
               "dx": {"value": -3},
-              "fontSize": {"value": 11}
+              "fontSize": {"value": 8.5}
             }
           }
         },
