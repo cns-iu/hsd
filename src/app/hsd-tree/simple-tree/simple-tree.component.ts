@@ -29,11 +29,11 @@ export class SimpleTreeComponent implements OnInit, OnDestroy {
     this.view.finalize();
   }
 
-  render(spec: any): void {
+  render(vegaSpec: any): void {
     if (this.view) {
       this.view.finalize();
     }
-    this.view = new vega.View(vega.parse(spec))
+    this.view = new vega.View(vega.parse(vegaSpec))
       .renderer('svg')
       .initialize(this.parentNativeElement)
       .logLevel(this.logLevel)
