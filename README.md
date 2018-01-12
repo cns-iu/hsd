@@ -3,6 +3,10 @@
 ## Work In Progress
 This repo is a work in progress. Come back later. 
 
+## Demo site
+
+https://cns-iu.github.io/hsd/
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
