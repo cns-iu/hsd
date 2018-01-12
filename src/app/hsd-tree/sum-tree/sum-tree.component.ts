@@ -1,28 +1,41 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
 import * as vega from 'vega';
-import * as data from './spec.json';
+
+import { environment } from './../../shared';
+import * as sumTreeSpec from './spec.json';
+import { subtreeBreakdown } from './data';
+
+const developmentLogLevel = vega.Warn;
+const logLevel = environment.production ? vega.None : developmentLogLevel;
 
 @Component({
   selector: 'hsd-sum-tree',
   templateUrl: './sum-tree.component.html',
   styleUrls: ['./sum-tree.component.sass']
 })
-export class SumTreeComponent implements OnInit {
+export class SumTreeComponent implements OnInit, OnDestroy {
   private parentNativeElement: any;
+  private view: any;
 
   constructor(element: ElementRef) {
     this.parentNativeElement = element.nativeElement;
   }
 
   ngOnInit() {
-    this.render(data);
+    this.render(sumTreeSpec);
   }
 
-  render(spec) {
-    const view = new vega.View(vega.parse(spec))
-      .renderer('canvas')  // set renderer (canvas or svg)
-      .initialize(this.parentNativeElement) // initialize view within parent DOM container
-      .hover()             // enable hover encode set processing
+  ngOnDestroy() {
+    this.view.finalize();
+  }
+
+  render(spec: any): void {
+    this.view = new vega.View(vega.parse(spec))
+      .renderer('svg')
+      .initialize(this.parentNativeElement)
+      .logLevel(logLevel)
+      .hover()
+      .insert('subtreeBreakdown', subtreeBreakdown)
       .run();
   }
 }
