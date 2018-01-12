@@ -163,7 +163,7 @@
           "type": "lookup",
           "from": "rawNodes",
           "key": "internalNodeId",
-          "values": ["type", "name"],
+          "values": ["type", "name", "visibility"],
           "fields": ["internalNodeId"],
           "default": "Leaf"
         }
@@ -246,7 +246,7 @@
           "type": "lookup",
           "from": "rawNodes",
           "key": "internalNodeId",
-          "values": ["type", "name"],
+          "values": ["type", "name", "visibility"],
           "fields": ["internalNodeId"],
           "default": "Leaf"
         }
@@ -280,7 +280,7 @@
             "internalNodeId"
           ],
           "values": [
-            "y"
+            "y", "visibility"
           ]
         },
         {
@@ -411,6 +411,49 @@
           }
         }
       }
+    },
+    {
+      "fill": "color",
+      "title": "Inactive                ",
+      "padding": 9.5,
+      "offset": 10,
+      "zindex": 10,
+      "encode": {
+        "title": {
+          "update": {
+            "fontSize": {"value": 12},
+            "dx": {"value": 0}
+          }
+        },
+        "labels": {
+          "interactive": true,
+          "update": {
+            "align": {"value": "left"},
+            "fontSize": {"value": 12},
+            "fill": {"value": "#000000"},
+            "dx": {"value": 0}
+          }
+        },
+        "symbols": {
+          "interactive" : true,
+          "update": {
+            "shape": {"value": "square"},
+            "stroke": {"value": "#4374A0"},
+            "fillOpacity": {"value": 0.3},
+            "size": {"value": 300},
+            "dx": {"value": 0}
+          },
+          "hover": {
+            "stroke": {"value": "#000000"}
+          }
+        },
+        "legend": {
+          "update": {
+            "stroke": {"value": "#4374A0"},
+            "strokeWidth": {"value": 1.5}
+          }
+        }
+      }
     }
   ],
   "marks": [
@@ -461,6 +504,10 @@
           },
           "size": {"value": 300},
           "fill": {"scale": "color", "field": "type"},
+          "fillOpacity":[
+            {"test": "datum.visibility == 'Inactive'", "value": 0.3},
+            {"value": 1.0}
+          ],
           "stroke": {"value": "#4374A0"},
           "strokeWidth":{"value": 0.7},
           "tooltip": {"signal": "datum.internalNodeId[0] + datum.type"}
@@ -491,7 +538,7 @@
       "encode": {
         "enter": {
           "fill": [
-            {"test": "datum.type == 'Leaf'", "value": "black"},
+            {"test": "datum.type == 'Leaf' || datum.visibility == 'Inactive'", "value": "black"},
             {"value": "#F2F7FC"}
           ],
           "text": {"value": "1"},
@@ -559,6 +606,10 @@
               "fill": {"scale": "color", "field": "type"},
               "stroke": {"value": "#4374A0"},
               "strokeWidth":{"value": 0.7},
+              "fillOpacity":[
+                {"test": "datum.visibility == 'Inactive'", "value": 0.3},
+                {"value": 1.0}
+              ],
               "tooltip": {"signal": "datum.cumPercentage"},
               "x": {"value": -5},
               "y": {"signal": "20 * datum.cumPercentage"},

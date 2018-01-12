@@ -38,8 +38,9 @@ export class SumTreeComponent implements OnInit, OnDestroy {
       .initialize(this.parentNativeElement)
       .logLevel(this.logLevel)
       .hover()
-      .insert('subtreeBreakdown', this.subtreeBreakdown)
       .insert('rawNodes', this.nodes)
+      .insert('subtreeBreakdown', this.subtreeBreakdown)
       .run();
+    console.log('sum-tree',this.view);
   }
 }
