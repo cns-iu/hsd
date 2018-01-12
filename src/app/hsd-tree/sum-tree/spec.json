@@ -567,7 +567,7 @@
           "transform": [
             {
               "type": "filter",
-              "expr": "toString(datum.summaryNodeId) == toString(parent.summaryNodeId)"
+              "expr": "toString(datum.summaryNodeId) == toString(parent.summaryNodeId) && datum.isSynonym == 'N'"
             },
             {
               "type": "joinaggregate",
@@ -610,7 +610,7 @@
                 {"test": "datum.visibility == 'Inactive'", "value": 0.3},
                 {"value": 1.0}
               ],
-              "tooltip": {"signal": "datum.cumPercentage"},
+              "tooltip": {"signal": "'# Concepts: ' + datum.numPaths + ' / ' + datum.totalNumPaths"},
               "x": {"value": -5},
               "y": {"signal": "20 * datum.cumPercentage"},
               "width": {"value": 15},

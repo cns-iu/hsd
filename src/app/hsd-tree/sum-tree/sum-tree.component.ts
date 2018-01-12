@@ -41,6 +41,9 @@ export class SumTreeComponent implements OnInit, OnDestroy {
       .insert('rawNodes', this.nodes)
       .insert('subtreeBreakdown', this.subtreeBreakdown)
       .run();
-    console.log('sum-tree',this.view);
+
+    if (this.logLevel >= 2) {
+      console.log('sum-tree', this);
+    }
   }
 }

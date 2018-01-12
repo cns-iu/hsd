@@ -41,5 +41,9 @@ export class SimpleTreeComponent implements OnInit, OnDestroy {
       .insert('rawData', this.subtreeBreakdown)
       .insert('rawNodes', this.nodes)
       .run();
+
+    if (this.logLevel >= 2) {
+      console.log('simple-tree', this);
+    }
   }
 }
