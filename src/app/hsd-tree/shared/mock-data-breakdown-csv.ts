@@ -1,6 +1,4 @@
-import { read as vegaRead } from 'vega';
-
-const subtreeBreakdownCsv =
+export const subtreeBreakdownCsv =
 `NodeLevel,NodePath,SubtreeLevel,ConceptType,Visibility,IsSynonym,TableName,HasMetadataXML,NumberOfPaths
 0,\\PCORI\\,1,Case,Active,N,concept_dimension,N,6
 0,\\PCORI\\,1,Case,Active,N,concept_dimension,Y,1
@@ -500,14 +498,3 @@ const subtreeBreakdownCsv =
 2,\\PCORI\\VITAL\\TOBACCO\\,5,Leaf,Active,N,concept_dimension,N,5
 2,\\PCORI\\VITAL\\VERSION\\,,,,,,,
 2,\\PCORI\\VITAL\\WT\\,,,,,,,`;
-
-export const subtreeBreakdown = vegaRead(subtreeBreakdownCsv, {
-  type: 'csv',
-  parse: {
-    NodeLevel: 'integer',
-    SubtreeLevel: 'integer',
-    NumberOfPaths: 'integer'
-  }
-}).filter((item) => {
-  return item.NodeLevel != null && !Number.isNaN(item.NodeLevel);
-});

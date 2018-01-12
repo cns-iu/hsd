@@ -2,7 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega/v3.0.json",
   "description": "Hsd Vega Specification",
   "width": 800,
-  "height": 800,
+  "height": 2400,
   "padding": 5,
   "autosize": "pad",
   "data": [
@@ -31,10 +31,6 @@
           ]
         },
         {
-          "type": "filter",
-          "expr": "datum.isSynonym == 'N'"
-        },
-        {
           "type": "formula",
           "expr": "[slice(datum.path, 0, -1), datum.level, datum.subtreeLevel]",
           "as": "summaryNodeId"
@@ -46,7 +42,44 @@
         }
       ]
     },
-
+    {
+      "name": "rawNodes",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "NodeName": "string",
+          "NodeType": "string"
+        }
+      },
+      "transform": [
+        {
+          "type": "project",
+          "fields": [
+            "NodeLevel",
+            "NodePath",
+            "NodeName",
+            "NodeType",
+            "NodeVisibility",
+            "NodeIsSynonym",
+            "NumberOfPaths"
+          ],
+          "as": [
+            "level",
+            "path",
+            "name",
+            "type",
+            "visibility",
+            "isSynonym",
+            "numPaths"
+          ]
+        },
+        {
+          "type": "formula",
+          "expr": "[slice(datum.path, 0, -1), datum.level]",
+          "as": "internalNodeId"
+        }
+      ]
+    },
     {
       "name": "levelSequence",
       "source": "subtreeBreakdown",
@@ -125,6 +158,14 @@
           "type": "formula",
           "expr": "if(datum.parentPath == '', null, datum.parentInternalNodeId)",
           "as": "parentInternalNodeId"
+        },
+        {
+          "type": "lookup",
+          "from": "rawNodes",
+          "key": "internalNodeId",
+          "values": ["type", "name", "visibility"],
+          "fields": ["internalNodeId"],
+          "default": "Leaf"
         }
       ]
     },
@@ -198,8 +239,16 @@
         },
         {
           "type": "formula",
-          "expr": "datum.internalNodeId[1] * height / peek(treeLevelExtent)",
+          "expr": "datum.internalNodeId[1] * width / peek(treeLevelExtent)",
           "as": "x"
+        },
+        {
+          "type": "lookup",
+          "from": "rawNodes",
+          "key": "internalNodeId",
+          "values": ["type", "name", "visibility"],
+          "fields": ["internalNodeId"],
+          "default": "Leaf"
         }
       ]
     },
@@ -231,12 +280,12 @@
             "internalNodeId"
           ],
           "values": [
-            "y"
+            "y", "visibility"
           ]
         },
         {
           "type": "formula",
-          "expr": "datum.summaryNodeId[2] * height / peek(treeLevelExtent)",
+          "expr": "datum.summaryNodeId[2] * width / peek(treeLevelExtent)",
           "as": "x"
         }
       ]
@@ -248,7 +297,7 @@
       "transform": [
         {
           "type": "formula",
-          "expr": "'M' + (datum.x - height / peek(treeLevelExtent)) + ',' + datum.y + 'L' + datum.x + ',' + datum.y",
+          "expr": "'M' + (datum.x - width / peek(treeLevelExtent)) + ',' + datum.y + 'L' + datum.x + ',' + datum.y",
           "as": "path"
         }
       ]
@@ -264,6 +313,12 @@
         "field": "data"
       },
       "range": "width"
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "range": ["#5B9BD5", "#70AD47", "#FFC000"],
+      "domain": {"data": "rawNodes", "field": "type"}
     }
   ],
   "projections": [],
@@ -273,7 +328,134 @@
       "orient": "top"
     }
   ],
-  "legends": [],
+  "legends": [
+    {
+      "fill": "color",
+      "title": "Single Concept   ",
+      "padding": 10,
+      "offset": 10,
+      "zindex": 10,
+      "encode": {
+        "title": {
+          "update": {
+            "fontSize": {"value": 12},
+            "dx": {"value": 0}
+          }
+        },
+        "labels": {
+          "interactive": true,
+          "update": {
+            "align": {"value": "left"},
+            "fontSize": {"value": 12},
+            "fill": {"value": "#000000"},
+            "dx": {"value": 0}
+          }
+        },
+        "symbols": {
+          "interactive" : true,
+          "update": {
+            "stroke": {"value": "#4374A0"},
+            "size": {"value": 300},
+            "dx": {"value": 0}
+          },
+          "hover": {
+            "stroke": {"value": "#000000"}
+          }
+        },
+        "legend": {
+          "update": {
+            "stroke": {"value": "#4374A0"},
+            "strokeWidth": {"value": 1.5}
+          }
+        }
+      }
+    },
+    {
+      "fill": "color",
+      "title": "Multiple Concept",
+      "padding": 10,
+      "offset": 10,
+      "zindex": 10,
+      "encode": {
+        "title": {
+          "update": {
+            "fontSize": {"value": 12},
+            "dx": {"value": 0}
+          }
+        },
+        "labels": {
+          "interactive": true,
+          "update": {
+            "align": {"value": "left"},
+            "fontSize": {"value": 12},
+            "fill": {"value": "#000000"},
+            "dx": {"value": 0}
+          }
+        },
+        "symbols": {
+          "interactive" : true,
+          "update": {
+            "shape": {"value": "square"},
+            "stroke": {"value": "#4374A0"},
+            "size": {"value": 300},
+            "dx": {"value": 0}
+          },
+          "hover": {
+            "stroke": {"value": "#000000"}
+          }
+        },
+        "legend": {
+          "update": {
+            "stroke": {"value": "#4374A0"},
+            "strokeWidth": {"value": 1.5}
+          }
+        }
+      }
+    },
+    {
+      "fill": "color",
+      "title": "Inactive                ",
+      "padding": 9.5,
+      "offset": 10,
+      "zindex": 10,
+      "encode": {
+        "title": {
+          "update": {
+            "fontSize": {"value": 12},
+            "dx": {"value": 0}
+          }
+        },
+        "labels": {
+          "interactive": true,
+          "update": {
+            "align": {"value": "left"},
+            "fontSize": {"value": 12},
+            "fill": {"value": "#000000"},
+            "dx": {"value": 0}
+          }
+        },
+        "symbols": {
+          "interactive" : true,
+          "update": {
+            "shape": {"value": "square"},
+            "stroke": {"value": "#4374A0"},
+            "fillOpacity": {"value": 0.3},
+            "size": {"value": 300},
+            "dx": {"value": 0}
+          },
+          "hover": {
+            "stroke": {"value": "#000000"}
+          }
+        },
+        "legend": {
+          "update": {
+            "stroke": {"value": "#4374A0"},
+            "strokeWidth": {"value": 1.5}
+          }
+        }
+      }
+    }
+  ],
   "marks": [
     {
       "type": "path",
@@ -319,7 +501,53 @@
           },
           "y": {
             "field": "y"
-          }
+          },
+          "size": {"value": 300},
+          "fill": {"scale": "color", "field": "type"},
+          "fillOpacity":[
+            {"test": "datum.visibility == 'Inactive'", "value": 0.3},
+            {"value": 1.0}
+          ],
+          "stroke": {"value": "#4374A0"},
+          "strokeWidth":{"value": 0.7},
+          "tooltip": {"signal": "datum.internalNodeId[0] + datum.type"}
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": {"data": "internalTree"},
+      "encode": {
+        "enter": {
+          "text": {"field": "name"},
+          "align": {"value": "center"},
+          "dy": {"value": -9.6},
+          "x": {"field": "x"},
+          "y": {"field": "y"},
+          "fill": {"value": "black"},
+          "fontSize": {"value": 10},
+          "baseline": {"value": "bottom"}
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": {
+        "data": "internalTree"
+      },
+      "encode": {
+        "enter": {
+          "fill": [
+            {"test": "datum.type == 'Leaf' || datum.visibility == 'Inactive'", "value": "black"},
+            {"value": "#F2F7FC"}
+          ],
+          "text": {"value": "1"},
+          "opacity": {"value": 1},
+          "x": {"field": "x"},
+          "y": {"field": "y"},
+          "dy": {"value": 1.6},
+          "dx": {"value": -2.0},
+          "fontSize": {"value": 6}
         }
       }
     },
@@ -339,7 +567,7 @@
           "transform": [
             {
               "type": "filter",
-              "expr": "toString(datum.summaryNodeId) == toString(parent.summaryNodeId)"
+              "expr": "toString(datum.summaryNodeId) == toString(parent.summaryNodeId) && datum.isSynonym == 'N'"
             },
             {
               "type": "joinaggregate",
@@ -375,10 +603,17 @@
           "from": {"data": "counts"},
           "encode": {
             "enter": {
-              "tooltip": {"signal": "datum.cumPercentage"},
+              "fill": {"scale": "color", "field": "type"},
+              "stroke": {"value": "#4374A0"},
+              "strokeWidth":{"value": 0.7},
+              "fillOpacity":[
+                {"test": "datum.visibility == 'Inactive'", "value": 0.3},
+                {"value": 1.0}
+              ],
+              "tooltip": {"signal": "'# Concepts: ' + datum.numPaths + ' / ' + datum.totalNumPaths"},
               "x": {"value": -5},
               "y": {"signal": "20 * datum.cumPercentage"},
-              "width": {"value": 10},
+              "width": {"value": 15},
               "height": {"signal": "20 * datum.percentage"}
             }
           }

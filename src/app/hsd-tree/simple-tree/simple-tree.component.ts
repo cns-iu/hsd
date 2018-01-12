@@ -1,38 +1,49 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
-import * as vega from 'vega';
-import * as data from './spec.json';
+import { Component, Input, OnInit, OnDestroy, ElementRef } from '@angular/core';
+
+import { vega, defaultLogLevel } from '../../vega';
+import * as spec from './spec.json';
+import { subtreeBreakdown, nodes } from '../shared/mock-data';
 
 @Component({
   selector: 'hsd-simple-tree',
   templateUrl: './simple-tree.component.html',
   styleUrls: ['./simple-tree.component.sass']
 })
-export class SimpleTreeComponent implements OnInit {
+export class SimpleTreeComponent implements OnInit, OnDestroy {
   private parentNativeElement: any;
+  private view: any;
+
+  @Input() subtreeBreakdown: any[] = subtreeBreakdown;
+  @Input() nodes: any[] = nodes;
+  @Input() logLevel = defaultLogLevel;
 
   constructor(element: ElementRef) {
-    this.parentNativeElement = element.nativeElement; // to get native parent element of this component
+    this.parentNativeElement = element.nativeElement;
   }
 
   ngOnInit() {
-  this.render();
+    this.render(spec);
   }
 
-  render() {
-    const view = new vega.View(vega.parse(data))
-      .renderer('canvas')  // set renderer (canvas or svg)
-      .initialize(this.parentNativeElement) // initialize view within parent DOM container
-      .hover()             // enable hover encode set processing
+  ngOnDestroy() {
+    this.view.finalize();
+  }
+
+  render(vegaSpec: any): void {
+    if (this.view) {
+      this.view.finalize();
+    }
+    this.view = new vega.View(vega.parse(vegaSpec))
+      .renderer('svg')
+      .initialize(this.parentNativeElement)
+      .logLevel(this.logLevel)
+      .hover()
+      .insert('rawData', this.subtreeBreakdown)
+      .insert('rawNodes', this.nodes)
       .run();
-    // for exporting to png
-    //   view.toImageURL('png').then((url) => {
-    //   const link = document.createElement('a');
-    //   link.setAttribute('href', url);
-    //   link.setAttribute('target', '_blank');
-    //   link.setAttribute('download', 'vega-export.png');
-    //   link.dispatchEvent(new MouseEvent('click'));
-    // }).catch((error) => { /* error handling */ });
 
+    if (this.logLevel >= 2) {
+      console.log('simple-tree', this);
+    }
   }
-
 }
