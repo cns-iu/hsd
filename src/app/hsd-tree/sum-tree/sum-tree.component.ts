@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, OnDestroy, ElementRef } from '@angular/core';
 
 import { vega, defaultLogLevel } from '../../vega';
-import * as sumTreeSpec from './spec.json';
+import * as spec from './spec.json';
 import { subtreeBreakdown, nodes } from '../shared/mock-data';
 
 @Component({
@@ -22,7 +22,7 @@ export class SumTreeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.render(sumTreeSpec);
+    this.render(spec);
   }
 
   ngOnDestroy() {
