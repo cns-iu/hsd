@@ -111,6 +111,10 @@
       "source": "subtreeBreakdown",
       "transform": [
         {
+          "type": "filter",
+          "expr": "datum.isSynonym == 'N'"
+        },
+        {
           "type": "aggregate",
           "groupby": [
             "summaryNodeId"
@@ -807,6 +811,42 @@
           }
         }
       ]
+    },
+    {
+      "type": "text",
+      "from": {
+        "data": "summaryTree"
+      },
+      "encode": {
+        "enter": {
+          "text": {
+            "field": "count"
+          },
+          "dx": {
+            "value": 0
+          },
+          "dy": {
+            "value": -9.6
+          },
+          "align": {
+            "value": "center"
+          },
+          "baseline": {
+            "value": "bottom"
+          },
+          "fontSize": {
+            "value": 10
+          }
+        },
+        "update": {
+          "x": {
+            "field": "x"
+          },
+          "y": {
+            "field": "y"
+          }
+        }
+      }
     }
   ]
 }
