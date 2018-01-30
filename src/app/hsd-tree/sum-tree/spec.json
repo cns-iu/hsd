@@ -128,6 +128,16 @@
           "as": [
             "count"
           ]
+        },
+        {
+          "type": "extent",
+          "field": "count",
+          "signal": "countExtent"
+        },
+        {
+          "type": "formula",
+          "expr": "log(max(1, 100 * datum.count / peek(countExtent))) / log(100) * .75 + .25",
+          "as": "multiplier"
         }
       ]
     },
@@ -704,12 +714,12 @@
         "data": "summaryTree"
       },
       "encode": {
-        "enter": {
+        "update": {
           "x": {
             "field": "x"
           },
           "y": {
-            "signal": "datum.y - 10"
+            "signal": "datum.y - 20 * datum.multiplier / 2"
           }
         }
       },
@@ -799,13 +809,13 @@
                 "value": -7.5
               },
               "y": {
-                "signal": "20 * datum.cumPercentage"
+                "signal": "20 * parent.multiplier * datum.cumPercentage"
               },
               "width": {
                 "value": 15
               },
               "height": {
-                "signal": "20 * datum.percentage"
+                "signal": "20 * parent.multiplier * datum.percentage"
               }
             }
           }
