@@ -128,16 +128,6 @@
           "as": [
             "count"
           ]
-        },
-        {
-          "type": "extent",
-          "field": "count",
-          "signal": "countExtent"
-        },
-        {
-          "type": "formula",
-          "expr": "log(max(1, 100 * datum.count / peek(countExtent))) / log(100) * .75 + .25",
-          "as": "multiplier"
         }
       ]
     },
@@ -307,6 +297,16 @@
           "type": "formula",
           "expr": "datum.summaryNodeId[2] * width / peek(treeLevelExtent)",
           "as": "x"
+        },
+        {
+          "type": "extent",
+          "field": "count",
+          "signal": "countExtent"
+        },
+        {
+          "type": "formula",
+          "expr": "log(max(1, 100 * datum.count / peek(countExtent))) / log(100) * .75 + .25",
+          "as": "multiplier"
         }
       ]
     },
