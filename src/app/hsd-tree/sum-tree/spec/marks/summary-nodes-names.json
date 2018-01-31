@@ -30,9 +30,6 @@
       },
       "y": {
         "field": "y"
-      },
-      "opacity": {
-        "field": "opacity"
       }
     }
   }

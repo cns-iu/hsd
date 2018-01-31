@@ -13,8 +13,6 @@ import * as summaryNodes from './summary-nodes.json';
 import * as summaryNodesTree from './summary-nodes-tree.json';
 import * as summaryNodesLinks from './summary-nodes-links.json';
 
-import * as clickedLeafs from './clicked-leafs.json';
-
 // Abbreviations
 // (E) - External data source
 // (D) [names] - Data dependencies
@@ -27,14 +25,12 @@ export default [].concat(
   levelSequence, // (D) [barBreakdown] (S) [levelExtent]
   barValueTotals, // (D) [barBreakdown]
 
-  clickedLeafs, // (D) [leafClicked]
-
   singleNodes, // (D) [barBreakdown, nodeLookup]
   singleNodeLeafs, // (D) [singleNodes]
   singleNodesTree, // (D) [singleNodes, nodeLookup, levelExtent]
   singleNodesLinks, // (D) [singleNodesTree]
 
   summaryNodes, // (D) [barValueTotals, singleNodeLeafs]
-  summaryNodesTree, // (D) [summaryNodes, singleNodesTree, clickedLeafs, levelExtent] (S) [countExtent]
+  summaryNodesTree, // (D) [summaryNodes, singleNodesTree, levelExtent] (S) [countExtent]
   summaryNodesLinks // (D) [summaryNodesTree, levelExtent]
 );

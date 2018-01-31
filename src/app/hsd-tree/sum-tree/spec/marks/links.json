@@ -27,9 +27,6 @@
         },
         "stroke": {
           "value": "#ccc"
-        },
-        "opacity": {
-          "field": "opacity"
         }
       }
     }

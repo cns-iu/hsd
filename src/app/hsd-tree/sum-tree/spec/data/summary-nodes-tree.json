@@ -28,11 +28,6 @@
       "type": "formula",
       "expr": "log(max(1, 100 * datum.count / peek(countExtent))) / log(100) * .75 + .25",
       "as": "multiplier"
-    },
-    {
-      "type": "formula",
-      "expr": "if(indata('clickedLeafs', 'internalNodeId', datum.internalNodeId), 0, 1)",
-      "as": "opacity"
     }
   ]
 }

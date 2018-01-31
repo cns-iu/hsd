@@ -1,6 +1,5 @@
 {
   "type": "text",
-  "name": "singleNodesValue",
   "from": {
     "data": "singleNodesTree"
   },

@@ -1,6 +1,5 @@
 {
   "type": "symbol",
-  "name": "singleNodesSymbol",
   "from": {
     "data": "singleNodesTree"
   },

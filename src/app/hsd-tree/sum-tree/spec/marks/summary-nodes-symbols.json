@@ -107,11 +107,6 @@
           "height": {
             "signal": "20 * parent.multiplier * datum.percentage"
           }
-        },
-        "update": {
-          "opacity": {
-            "signal": "parent.opacity"
-          }
         }
       }
     }
