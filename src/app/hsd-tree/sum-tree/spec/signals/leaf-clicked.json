@@ -1,0 +1,15 @@
+{
+  "name": "leafClicked",
+  "on": [
+    {
+      "events": "@singleNodesSymbol:click",
+      "update": "datum",
+      "force": true
+    },
+    {
+      "events": "@singleNodesValue:click",
+      "update": "datum",
+      "force": true
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "name": "clickedLeafs",
+  "on": [
+    {
+      "trigger": "leafClicked",
+      "toggle": "{internalNodeId: leafClicked.internalNodeId}"
+    }
+  ]
+}
