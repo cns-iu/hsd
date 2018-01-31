@@ -1,0 +1,30 @@
+{
+  "name": "summaryNodes",
+  "source": "barValueTotals",
+  "transform": [
+    {
+      "type": "filter",
+      "expr": "datum.summaryNodeId[2] != null"
+    },
+    {
+      "type": "formula",
+      "expr": "slice(datum.summaryNodeId, 0, -1)",
+      "as": "internalNodeId"
+    },
+    {
+      "type": "lookup",
+      "from": "singleNodeLeafs",
+      "key": "internalNodeId",
+      "fields": [
+        "internalNodeId"
+      ],
+      "as": [
+        "superNode"
+      ]
+    },
+    {
+      "type": "filter",
+      "expr": "datum.superNode != null"
+    }
+  ]
+}

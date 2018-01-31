@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, OnDestroy, ElementRef } from '@angular/core';
 
 import { vega, defaultLogLevel } from '../../vega';
-import * as spec from './spec.json';
+import spec from './spec';
 import { subtreeBreakdown, nodes } from '../shared/mock-data';
 
 @Component({
@@ -38,8 +38,8 @@ export class SumTreeComponent implements OnInit, OnDestroy {
       .initialize(this.parentNativeElement)
       .logLevel(this.logLevel)
       .hover()
-      .insert('rawNodes', this.nodes)
-      .insert('subtreeBreakdown', this.subtreeBreakdown)
+      .insert('nodeLookup', this.nodes)
+      .insert('barBreakdown', this.subtreeBreakdown)
       .run();
 
     if (this.logLevel >= 2) {

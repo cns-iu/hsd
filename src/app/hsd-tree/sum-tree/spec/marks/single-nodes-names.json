@@ -1,0 +1,34 @@
+{
+  "type": "text",
+  "from": {
+    "data": "singleNodesTree"
+  },
+  "encode": {
+    "enter": {
+      "text": {
+        "field": "name"
+      },
+      "align": {
+        "value": "center"
+      },
+      "dy": {
+        "value": -9.6
+      },
+      "x": {
+        "field": "x"
+      },
+      "y": {
+        "field": "y"
+      },
+      "fill": {
+        "value": "black"
+      },
+      "fontSize": {
+        "value": 10
+      },
+      "baseline": {
+        "value": "bottom"
+      }
+    }
+  }
+}
