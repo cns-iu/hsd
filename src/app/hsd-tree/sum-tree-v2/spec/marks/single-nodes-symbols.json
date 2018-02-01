@@ -1,0 +1,44 @@
+{
+  "type": "symbol",
+  "name": "singleNodesSymbol",
+  "from": {
+    "data": "singleNodesTree"
+  },
+  "encode": {
+    "enter": {
+      "size": {
+        "value": 300
+      },
+      "fill": {
+        "scale": "color",
+        "field": "type"
+      },
+      "fillOpacity": [
+        {
+          "test": "datum.visibility == 'Inactive'",
+          "value": 0.3
+        },
+        {
+          "value": 1
+        }
+      ],
+      "stroke": {
+        "value": "#4374A0"
+      },
+      "strokeWidth": {
+        "value": 0.7
+      },
+      "tooltip": {
+        "signal": "datum.internalNodeId[0] + ' - ' + datum.type"
+      }
+    },
+    "update": {
+      "x": {
+        "field": "x"
+      },
+      "y": {
+        "field": "y"
+      }
+    }
+  }
+}

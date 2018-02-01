@@ -1,0 +1,36 @@
+[
+  {
+    "name": "clickedNodes",
+    "on": [
+      {
+        "trigger": "nodeClicked",
+        "insert": "{data: nodeClicked}"
+      }
+    ]
+  },
+  {
+    "name": "collapsedNodes",
+    "source": [
+      "nodeLookup",
+      "clickedNodes"
+    ],
+    "transform": [
+      {
+        "type": "cross",
+        "filter": "!datum.node.data && datum.parent.data",
+        "as": [
+          "node", "parent"
+        ]
+      },
+      {
+        "type": "filter",
+        "expr": "datum.node.internalNodeId[0] !== datum.parent.data && indexof(datum.node.internalNodeId[0], datum.parent.data) === 0"
+      },
+      {
+        "type": "formula",
+        "expr": "datum.node.internalNodeId",
+        "as": "id"
+      }
+    ]
+  }
+]

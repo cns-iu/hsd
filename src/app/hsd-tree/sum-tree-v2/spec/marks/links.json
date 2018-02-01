@@ -1,0 +1,34 @@
+[
+  {
+    "type": "path",
+    "from": {
+      "data": "singleNodesLinks"
+    },
+    "encode": {
+      "update": {
+        "path": {
+          "field": "path"
+        },
+        "stroke": {
+          "value": "#ccc"
+        }
+      }
+    }
+  },
+  {
+    "type": "path",
+    "from": {
+      "data": "summaryNodesLinks"
+    },
+    "encode": {
+      "update": {
+        "path": {
+          "field": "path"
+        },
+        "stroke": {
+          "value": "#ccc"
+        }
+      }
+    }
+  }
+]

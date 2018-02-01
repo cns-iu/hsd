@@ -1,0 +1,13 @@
+{
+  "name": "color",
+  "type": "ordinal",
+  "range": [
+    "#5B9BD5",
+    "#70AD47",
+    "#FFC000"
+  ],
+  "domain": {
+    "data": "nodeLookup",
+    "field": "type"
+  }
+}

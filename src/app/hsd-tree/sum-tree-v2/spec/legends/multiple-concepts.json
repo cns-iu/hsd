@@ -1,0 +1,68 @@
+{
+  "fill": "color",
+  "title": "Multiple Concept",
+  "padding": 10,
+  "offset": 10,
+  "zindex": 10,
+  "encode": {
+    "title": {
+      "update": {
+        "fontSize": {
+          "value": 12
+        },
+        "dx": {
+          "value": 0
+        }
+      }
+    },
+    "labels": {
+      "interactive": true,
+      "update": {
+        "align": {
+          "value": "left"
+        },
+        "fontSize": {
+          "value": 12
+        },
+        "fill": {
+          "value": "#000000"
+        },
+        "dx": {
+          "value": 0
+        }
+      }
+    },
+    "symbols": {
+      "interactive": true,
+      "update": {
+        "shape": {
+          "value": "square"
+        },
+        "stroke": {
+          "value": "#4374A0"
+        },
+        "size": {
+          "value": 300
+        },
+        "dx": {
+          "value": 0
+        }
+      },
+      "hover": {
+        "stroke": {
+          "value": "#000000"
+        }
+      }
+    },
+    "legend": {
+      "update": {
+        "stroke": {
+          "value": "#4374A0"
+        },
+        "strokeWidth": {
+          "value": 1.5
+        }
+      }
+    }
+  }
+}
