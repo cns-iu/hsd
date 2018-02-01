@@ -12,7 +12,8 @@
           "markname": "singleNodesValue"
         }
       ],
-      "update": "datum.internalNodeId[0]"
+      "update": "datum.internalNodeId[0]",
+      "force": true
     }
   ]
 }
