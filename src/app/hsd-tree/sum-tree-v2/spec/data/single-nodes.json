@@ -40,7 +40,11 @@
       "fields": [
         "internalNodeId"
       ],
-      "default": "Leaf"
+      "default": null
+    },
+    {
+      "type": "filter",
+      "expr": "datum.name"
     },
     {
       "type": "filter",
