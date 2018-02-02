@@ -1,0 +1,46 @@
+{
+  "name": "singleNodesTree",
+  "source": "singleNodes",
+  "transform": [
+    {
+      "type": "stratify",
+      "key": "internalNodeId",
+      "parentKey": "parentInternalNodeId"
+    },
+    {
+      "type": "tree",
+      "size": [
+        {
+          "signal": "height"
+        },
+        {
+          "signal": "width"
+        }
+      ]
+    },
+    {
+      "type": "formula",
+      "expr": "datum.x",
+      "as": "y"
+    },
+    {
+      "type": "formula",
+      "expr": "datum.internalNodeId[1] * width / peek(levelExtent)",
+      "as": "x"
+    },
+    {
+      "type": "lookup",
+      "from": "nodeLookup",
+      "key": "internalNodeId",
+      "values": [
+        "type",
+        "name",
+        "visibility"
+      ],
+      "fields": [
+        "internalNodeId"
+      ],
+      "default": "Leaf"
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "name": "barValueTotals",
+  "source": "barBreakdown",
+  "transform": [
+    {
+      "type": "filter",
+      "expr": "datum.isSynonym == 'N'"
+    },
+    {
+      "type": "aggregate",
+      "groupby": [
+        "summaryNodeId"
+      ],
+      "fields": [
+        "numPaths"
+      ],
+      "ops": [
+        "sum"
+      ],
+      "as": [
+        "count"
+      ]
+    }
+  ]
+}

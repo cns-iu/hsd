@@ -43,7 +43,8 @@
         }
       ]
     },
-    { "name": "processedNodes",
+    {
+      "name": "processedNodes",
       "source": "rawNodes",
       "transform": [
         {
@@ -245,8 +246,14 @@
           "type": "lookup",
           "from": "rawNodes",
           "key": "path",
-          "values": ["type", "name", "visibility"],
-          "fields": ["path"],
+          "values": [
+            "type",
+            "name",
+            "visibility"
+          ],
+          "fields": [
+            "path"
+          ],
           "default": "Leaf"
         }
       ]
@@ -298,7 +305,6 @@
         }
       ]
     }
-
   ],
   "signals": [
     {
@@ -324,14 +330,26 @@
     {
       "name": "color",
       "type": "ordinal",
-      "range": ["#5B9BD5", "#70AD47", "#FFC000"],
-      "domain": {"data": "tree", "field": "type"}
+      "range": [
+        "#5B9BD5",
+        "#70AD47",
+        "#FFC000"
+      ],
+      "domain": {
+        "data": "tree",
+        "field": "type"
+      }
     },
     {
       "name": "colorSingle",
       "type": "ordinal",
-      "range": ["white"],
-      "domain":{"data": "rawNodes", "field": "type"}
+      "range": [
+        "white"
+      ],
+      "domain": {
+        "data": "rawNodes",
+        "field": "type"
+      }
     }
   ],
   "projections": [],
@@ -351,34 +369,58 @@
       "encode": {
         "title": {
           "update": {
-            "fontSize": {"value": 12},
-            "dx": {"value": 0}
+            "fontSize": {
+              "value": 12
+            },
+            "dx": {
+              "value": 0
+            }
           }
         },
         "labels": {
           "interactive": true,
           "update": {
-            "align": {"value": "left"},
-            "fontSize": {"value": 12},
-            "fill": {"value": "#000000"},
-            "dx": {"value": 0}
+            "align": {
+              "value": "left"
+            },
+            "fontSize": {
+              "value": 12
+            },
+            "fill": {
+              "value": "#000000"
+            },
+            "dx": {
+              "value": 0
+            }
           }
         },
         "symbols": {
-          "interactive" : true,
+          "interactive": true,
           "update": {
-            "stroke": {"value": "#4374A0"},
-            "size": {"value": 300},
-            "dx": {"value": 0}
+            "stroke": {
+              "value": "#4374A0"
+            },
+            "size": {
+              "value": 300
+            },
+            "dx": {
+              "value": 0
+            }
           },
           "hover": {
-            "stroke": {"value": "#000000"}
+            "stroke": {
+              "value": "#000000"
+            }
           }
         },
         "legend": {
           "update": {
-            "stroke": {"value": "#4374A0"},
-            "strokeWidth": {"value": 1.5}
+            "stroke": {
+              "value": "#4374A0"
+            },
+            "strokeWidth": {
+              "value": 1.5
+            }
           }
         }
       }
@@ -392,35 +434,61 @@
       "encode": {
         "title": {
           "update": {
-            "fontSize": {"value": 12},
-            "dx": {"value": 0}
+            "fontSize": {
+              "value": 12
+            },
+            "dx": {
+              "value": 0
+            }
           }
         },
         "labels": {
           "interactive": true,
           "update": {
-            "align": {"value": "left"},
-            "fontSize": {"value": 12},
-            "fill": {"value": "#000000"},
-            "dx": {"value": 0}
+            "align": {
+              "value": "left"
+            },
+            "fontSize": {
+              "value": 12
+            },
+            "fill": {
+              "value": "#000000"
+            },
+            "dx": {
+              "value": 0
+            }
           }
         },
         "symbols": {
-          "interactive" : true,
+          "interactive": true,
           "update": {
-            "shape": {"value": "square"},
-            "stroke": {"value": "#4374A0"},
-            "size": {"value": 300},
-            "dx": {"value": 0}
+            "shape": {
+              "value": "square"
+            },
+            "stroke": {
+              "value": "#4374A0"
+            },
+            "size": {
+              "value": 300
+            },
+            "dx": {
+              "value": 0
+            }
           },
           "hover": {
-            "stroke": {"value": "#000000"}
+            "stroke": {
+              "value": "#000000"
+            }
           }
         },
         "legend": {
           "update": {
-            "stroke": {"value": "#4374A0"},
-            "strokeWidth": {"value": 1.5}
+            "stroke": {
+              "value": "#4374A0"
+            },
+            "strokeWidth": {
+              "value": 1.5
+            }
           }
         }
       }
@@ -434,143 +502,238 @@
       "encode": {
         "title": {
           "update": {
-            "fontSize": {"value": 12},
-            "dx": {"value": 0}
+            "fontSize": {
+              "value": 12
+            },
+            "dx": {
+              "value": 0
+            }
           }
         },
         "labels": {
           "interactive": true,
           "update": {
-            "align": {"value": "left"},
-            "fontSize": {"value": 12},
-            "fill": {"value": "#000000"},
-            "dx": {"value": 0}
+            "align": {
+              "value": "left"
+            },
+            "fontSize": {
+              "value": 12
+            },
+            "fill": {
+              "value": "#000000"
+            },
+            "dx": {
+              "value": 0
+            }
           }
         },
         "symbols": {
-          "interactive" : true,
+          "interactive": true,
           "update": {
-
-            "stroke": {"value": "#4374A0"},
-            "fillOpacity": {"value": 0.3},
-            "size": {"value": 300},
-            "dx": {"value": 0}
+            "stroke": {
+              "value": "#4374A0"
+            },
+            "fillOpacity": {
+              "value": 0.3
+            },
+            "size": {
+              "value": 300
+            },
+            "dx": {
+              "value": 0
+            }
           },
           "hover": {
-            "stroke": {"value": "#000000"}
+            "stroke": {
+              "value": "#000000"
+            }
           }
         },
         "legend": {
           "update": {
-            "stroke": {"value": "#4374A0"},
-            "strokeWidth": {"value": 1.5}
+            "stroke": {
+              "value": "#4374A0"
+            },
+            "strokeWidth": {
+              "value": 1.5
+            }
           }
         }
       }
     }
   ],
-      "marks": [
-        {
-          "type": "path",
-          "from": {"data": "links"},
-          "encode": {
-            "update": {
-              "path": {"field": "path"},
-              "stroke": {"value": "#ccc"}
-            }
-          }
-        },
-        {
-          "type": "path",
-          "from": {
-            "data": "subleafLinks"
+  "marks": [
+    {
+      "type": "path",
+      "from": {
+        "data": "links"
+      },
+      "encode": {
+        "update": {
+          "path": {
+            "field": "path"
           },
-          "encode": {
-            "update": {
-              "path": {
-                "field": "linkPath"
-              },
-              "stroke": {
-                "value": "#ccc"
-              }
-            }
-          }
-        },
-        {
-          "type": "symbol",
-          "from": {"data": "tree"},
-          "encode": {
-            "enter": {
-              "x": {"field": "x"},
-              "y": {"field": "y"},
-              "size": {"value": 300},
-              "fill": {"scale": "color", "field": "type"},
-              "fillOpacity":[
-                {"test": "datum.visibility == 'Inactive'", "value": 0.3},
-                {"value": 1.0}
-              ],
-              "stroke": {"value": "#4374A0"},
-              "strokeWidth":{"value": 0.7}
-            }
-          }
-        },
-        {
-          "type": "text",
-          "from": {"data": "tree"},
-          "encode": {
-            "enter": {
-              "text": {"field": "name"},
-              "align": {"value": "center"},
-              "dy": {"value": -9.6},
-              "x": {"field": "x"},
-              "y": {"field": "y"},
-              "fill": {"value": "black"},
-              "fontSize": {"value": 10},
-              "baseline": {"value": "bottom"}
-            }
-          }
-        },
-        {
-          "type": "text",
-          "from": {
-            "data": "tree"
-          },
-          "encode": {
-            "enter": {
-              "fill": [
-                {
-                  "test": "(datum.type == 'Leaf'|| datum.visibility == 'Inactive')",
-                  "value": "#000000"
-                },
-                {
-                  "value": "#F2F7FC"
-                }
-              ],
-              "text": {"value": "1"},
-              "opacity": {"value": 1},
-              "x": {"field": "x"},
-              "y": {"field": "y"},
-              "dy": {"value": 1.6},
-              "dx": {"value": -2},
-              "fontSize": {"value": 6}
-            }
-          }
-        },
-        {
-          "type": "rect",
-          "from": {
-            "data": "subleafWithPosition"
-          },
-          "encode": {
-            "enter": {
-              "x": {"signal": "datum.subtreeLevel * 800 / 11"},
-              "y": {"signal": "datum.y - 10"},
-              "width": {"value": 15},
-              "height": {"value": 20},
-              "fill": {"value": "white"},
-              "stroke": {"value": "#4374A0"}
-            }
+          "stroke": {
+            "value": "#ccc"
           }
         }
-      ]
+      }
+    },
+    {
+      "type": "path",
+      "from": {
+        "data": "subleafLinks"
+      },
+      "encode": {
+        "update": {
+          "path": {
+            "field": "linkPath"
+          },
+          "stroke": {
+            "value": "#ccc"
+          }
+        }
+      }
+    },
+    {
+      "type": "symbol",
+      "from": {
+        "data": "tree"
+      },
+      "encode": {
+        "enter": {
+          "x": {
+            "field": "x"
+          },
+          "y": {
+            "field": "y"
+          },
+          "size": {
+            "value": 300
+          },
+          "fill": {
+            "scale": "color",
+            "field": "type"
+          },
+          "fillOpacity": [
+            {
+              "test": "datum.visibility == 'Inactive'",
+              "value": 0.3
+            },
+            {
+              "value": 1
+            }
+          ],
+          "stroke": {
+            "value": "#4374A0"
+          },
+          "strokeWidth": {
+            "value": 0.7
+          }
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": {
+        "data": "tree"
+      },
+      "encode": {
+        "enter": {
+          "text": {
+            "field": "name"
+          },
+          "align": {
+            "value": "center"
+          },
+          "dy": {
+            "value": -9.6
+          },
+          "x": {
+            "field": "x"
+          },
+          "y": {
+            "field": "y"
+          },
+          "fill": {
+            "value": "black"
+          },
+          "fontSize": {
+            "value": 10
+          },
+          "baseline": {
+            "value": "bottom"
+          }
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": {
+        "data": "tree"
+      },
+      "encode": {
+        "enter": {
+          "fill": [
+            {
+              "test": "(datum.type == 'Leaf'|| datum.visibility == 'Inactive')",
+              "value": "#000000"
+            },
+            {
+              "value": "#F2F7FC"
+            }
+          ],
+          "text": {
+            "value": "1"
+          },
+          "opacity": {
+            "value": 1
+          },
+          "x": {
+            "field": "x"
+          },
+          "y": {
+            "field": "y"
+          },
+          "dy": {
+            "value": 1.6
+          },
+          "dx": {
+            "value": -2
+          },
+          "fontSize": {
+            "value": 6
+          }
+        }
+      }
+    },
+    {
+      "type": "rect",
+      "from": {
+        "data": "subleafWithPosition"
+      },
+      "encode": {
+        "enter": {
+          "x": {
+            "signal": "datum.subtreeLevel * 800 / 11 - 7.5"
+          },
+          "y": {
+            "signal": "datum.y - 10"
+          },
+          "width": {
+            "value": 15
+          },
+          "height": {
+            "value": 20
+          },
+          "fill": {
+            "value": "white"
+          },
+          "stroke": {
+            "value": "#4374A0"
+          }
+        }
+      }
     }
+  ]
+}

@@ -5,11 +5,11 @@ import spec from './spec';
 import { subtreeBreakdown, nodes } from '../shared/mock-data';
 
 @Component({
-  selector: 'hsd-sum-tree',
-  templateUrl: './sum-tree.component.html',
-  styleUrls: ['./sum-tree.component.sass']
+  selector: 'hsd-sum-tree-v2',
+  templateUrl: './sum-tree-v2.component.html',
+  styleUrls: ['./sum-tree-v2.component.sass']
 })
-export class SumTreeComponent implements OnInit, OnDestroy {
+export class SumTreeV2Component implements OnInit, OnDestroy {
   private parentNativeElement: any;
   private view: any;
 

@@ -1,0 +1,9 @@
+{
+  "name": "levels",
+  "type": "point",
+  "domain": {
+    "data": "levelSequence",
+    "field": "data"
+  },
+  "range": "width"
+}

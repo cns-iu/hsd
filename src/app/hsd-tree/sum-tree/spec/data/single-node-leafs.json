@@ -1,0 +1,10 @@
+{
+  "name": "singleNodeLeafs",
+  "source": "singleNodes",
+  "transform": [
+    {
+      "type": "filter",
+      "expr": "!indata('singleNodes', 'parentInternalNodeId', datum.internalNodeId)"
+    }
+  ]
+}
