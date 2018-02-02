@@ -68,6 +68,7 @@
   "marks": [
     {
       "type": "rect",
+      "name": "summaryNodesSymbol",
       "from": {
         "data": "counts"
       },
