@@ -5,6 +5,10 @@
       {
         "trigger": "nodeClicked",
         "toggle": "{data: nodeClicked}"
+      },
+      {
+        "trigger": "boxClicked",
+        "remove": "{data: boxClicked}"
       }
     ]
   },
