@@ -10,17 +10,20 @@
     {
       "type": "tree",
       "method": "cluster",
-      "size": [
-        {
-          "signal": "height"
-        },
-        {
-          "signal": "width"
-        }
-      ],
+      "nodeSize": [1, 40],
       "as": [
-        "y", "ignored"
+        "y2", "ignored"
       ]
+    },
+    {
+      "type": "extent",
+      "field": "y2",
+      "signal": "yExtent"
+    },
+    {
+      "type": "formula",
+      "expr": "32 * (datum.y2 - yExtent[0]) + 25",
+      "as": "y"
     },
     {
       "type": "formula",

@@ -8,7 +8,8 @@
     },
     {
       "type": "linkpath",
-      "orient": "horizontal"
+      "orient": "horizontal",
+      "shape": "diagonal"
     }
   ]
 }
