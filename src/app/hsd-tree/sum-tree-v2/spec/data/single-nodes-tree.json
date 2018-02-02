@@ -22,7 +22,7 @@
     },
     {
       "type": "formula",
-      "expr": "35 * (datum.y2 - yExtent[0]) + 35",
+      "expr": "32 * (datum.y2 - yExtent[0]) + 25",
       "as": "y"
     },
     {
