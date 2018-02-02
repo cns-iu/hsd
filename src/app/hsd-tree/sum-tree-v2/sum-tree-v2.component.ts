@@ -13,9 +13,18 @@ export class SumTreeV2Component implements OnInit, OnDestroy {
   private parentNativeElement: any;
   private view: any;
 
+  @Input() logLevel = defaultLogLevel;
   @Input() subtreeBreakdown: any[] = subtreeBreakdown;
   @Input() nodes: any[] = nodes;
-  @Input() logLevel = defaultLogLevel;
+  @Input() initialClicked: string[] = [
+    '\\PCORI\\DEMOGRAPHIC',
+    '\\PCORI\\DIAGNOSIS',
+    '\\PCORI\\ENCOUNTER',
+    '\\PCORI\\ENROLLMENT',
+    '\\PCORI\\LAB_RESULT_CM',
+    '\\PCORI\\MEDICATION',
+    '\\PCORI\\VITAL'
+  ];
 
   constructor(element: ElementRef) {
     this.parentNativeElement = element.nativeElement;
@@ -40,6 +49,7 @@ export class SumTreeV2Component implements OnInit, OnDestroy {
       .hover()
       .insert('nodeLookup', this.nodes)
       .insert('barBreakdown', this.subtreeBreakdown)
+      .insert('clickedNodes', this.initialClicked.map((path) => ({data: path})))
       .run();
 
     if (this.logLevel >= 2) {
