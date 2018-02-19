@@ -43,6 +43,11 @@
         "internalNodeId"
       ],
       "default": "Leaf"
+    },
+    {
+      "type": "formula",
+      "expr": "replace(datum.name, /zz /, '')",
+      "as": "displayName"
     }
   ]
 }

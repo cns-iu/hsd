@@ -6,7 +6,7 @@
   "encode": {
     "enter": {
       "text": {
-        "field": "name"
+        "field": "displayName"
       },
       "align": {
         "value": "center"
