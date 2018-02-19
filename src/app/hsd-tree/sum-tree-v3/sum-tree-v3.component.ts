@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnDestroy, ElementRef } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, ElementRef, ViewEncapsulation } from '@angular/core';
 
 import { vega, defaultLogLevel } from '../../vega';
 import spec from './spec';
@@ -7,7 +7,8 @@ import { subtreeBreakdown, nodes } from '../shared/mock-data';
 @Component({
   selector: 'hsd-sum-tree-v3',
   templateUrl: './sum-tree-v3.component.html',
-  styleUrls: ['./sum-tree-v3.component.sass']
+  styleUrls: ['./sum-tree-v3.component.sass'],
+  encapsulation: ViewEncapsulation.None
 })
 export class SumTreeV3Component implements OnInit, OnDestroy {
   private parentNativeElement: any;
