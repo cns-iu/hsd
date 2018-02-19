@@ -1,4 +1,5 @@
 {
   "scale": "levels",
-  "orient": "top"
+  "orient": "top",
+  "title": "Ontology Depth (c_hlevel)"
 }
