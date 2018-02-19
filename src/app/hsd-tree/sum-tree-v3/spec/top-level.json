@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v3.0.json",
   "description": "Hsd Vega Specification",
-  "width": 800,
+  "width": 1000,
   "height": 2400,
   "padding": 5,
   "autosize": "pad"
