@@ -1,0 +1,18 @@
+{
+  "name": "boxClicked",
+  "on": [
+    {
+      "events": {
+        "type": "click",
+        "markname": "summaryNodesSymbol",
+        "filter": [
+          "item().datum",
+          "item().datum.summaryNodeId",
+          "item().datum.summaryNodeId[1] == (item().datum.summaryNodeId[2] - 1)"
+        ]
+      },
+      "update": "datum.summaryNodeId[0]",
+      "force": true
+    }
+  ]
+}

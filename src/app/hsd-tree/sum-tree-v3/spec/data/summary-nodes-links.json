@@ -1,0 +1,11 @@
+{
+  "name": "summaryNodesLinks",
+  "source": "summaryNodesTree",
+  "transform": [
+    {
+      "type": "formula",
+      "expr": "'M' + (datum.x - width / peek(levelExtent)) + ',' + datum.y + 'L' + datum.x + ',' + datum.y",
+      "as": "path"
+    }
+  ]
+}

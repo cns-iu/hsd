@@ -1,0 +1,15 @@
+{
+  "name": "singleNodesLinks",
+  "source": "singleNodesTree",
+  "transform": [
+    {
+      "type": "treelinks",
+      "key": "internalNodeId"
+    },
+    {
+      "type": "linkpath",
+      "orient": "horizontal",
+      "shape": "diagonal"
+    }
+  ]
+}
