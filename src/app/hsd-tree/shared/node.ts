@@ -10,6 +10,8 @@ export enum VisibilityType {
   Hidden
 }
 
+export type Node = SingleNode | SummaryNode;
+
 export interface NodeInfo {
   concept: ConceptType;
   visibility: VisibilityType;
@@ -18,7 +20,8 @@ export interface NodeInfo {
   numPaths: number;
 }
 
-export interface Node {
+export interface SingleNode {
+  type: 'SingleNode';
   level: number;
   path: string;
   label: string;
@@ -26,6 +29,7 @@ export interface Node {
 }
 
 export interface SummaryNode {
+  type: 'SummaryNode';
   level: number;
   path: string;
   breakdown: NodeInfo[];
@@ -36,7 +40,8 @@ export interface SummaryNode {
 
 export function normalizePath(path: string): string {
   // Turns the path into lower case and removes any trailing backslashes
-  return (path.match(/(.+?)\\*$/) || [''])[1].toLowerCase();
+  const match = path.toLowerCase().match(/(.+?)\\*$/);
+  return match ? match[1] : '';
 }
 
 
@@ -66,4 +71,35 @@ export function stringToVisibility(visibilityString: string): VisibilityType {
 
 export function stringToIsSynonym(isSynonymString: string): boolean {
   return isSynonymString.toLowerCase() === 'y';
+}
+
+
+// Node tree utility
+
+export function parentPathFor(node: Node | string): string {
+  // Removes the last \[segment]
+  const path = typeof node === 'string' ? node : node.path;
+  const match = path.match(/(.*?)\\[^\\]+$/);
+  return match ? match[1] : '';
+}
+
+export function isParentOf(parent: Node, node: Node): boolean {
+  if (node.path === parent.path && node.level === (parent.level + 1)) {
+    return true; // SingleNode/SummaryNode + SummaryNode
+  } else if (parentPathFor(node) === parent.path) {
+    // SingleNode + SingleNode
+    return true;
+  } else {
+    return false;
+  }
+}
+
+export function isAncestorOf(ancestor: Node, node: Node): boolean {
+  if (node.path === ancestor.path && node.level > ancestor.level) {
+    return true; // SingleNode/SummaryNode + SummaryNode
+  } else if (node.path.startsWith(ancestor.path)) {
+    return true; // SingleNode + SingleNode/SummaryNode
+  } else {
+    return false;
+  }
 }

@@ -1,11 +1,4 @@
 {
   "name": "summaries",
-  "values": [],
-  "transform": [
-    {
-      "type": "formula",
-      "expr": "'summary'",
-      "as": "nodeType"
-    }
-  ]
+  "values": []
 }

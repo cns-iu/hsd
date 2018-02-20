@@ -24,6 +24,7 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('vegaInput') inputElement: ElementRef;
 
   @Input() vegaLogLevel = defaultLogLevel;
+  @Input() initialNodePaths = ['\\pcori'];
 
   constructor(private service: SumTreeDataService) { }
 
@@ -60,8 +61,7 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
     instance.addSignalListener(outputSignalNames.opacityName,
       this.onOpacityFieldChange.bind(this));
 
-    // Insert the initial data
-    instance.insert(inputDataSetNames.nodesName, this.service.getInitialNodes());
+    // TODO insert data
 
     // Run visualization
     instance.run();
@@ -81,15 +81,15 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
     // TODO
   }
 
-  private onSummaryTypeChange(name: string, value: any): void {
+  private onSummaryTypeChange(name: string, value: string): void {
     // TODO
   }
 
-  private onColorFieldChange(name: string, value: any): void {
+  private onColorFieldChange(name: string, value: string): void {
     // TODO
   }
 
-  private onOpacityFieldChange(name: string, value: any): void {
+  private onOpacityFieldChange(name: string, value: string): void {
     // TODO
   }
 }
