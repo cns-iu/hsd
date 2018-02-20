@@ -1,0 +1,11 @@
+{
+  "name": "nodes",
+  "values": [],
+  "transform": [
+    {
+      "type": "formula",
+      "expr": "'node'",
+      "as": "nodeType"
+    }
+  ]
+}

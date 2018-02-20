@@ -1,0 +1,10 @@
+{
+  "name": "Summary Type",
+  "bind": {
+    "input": "select",
+    "options": [
+      "Cummulative",
+      "By Level"
+    ]
+  }
+}

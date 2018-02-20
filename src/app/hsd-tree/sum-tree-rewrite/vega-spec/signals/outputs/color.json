@@ -1,0 +1,13 @@
+{
+  "name": "Color Field",
+  "bind": {
+    "input": "select",
+    "options": [
+      "Concept",
+      "Visibility",
+      "Table Name",
+      "Synonym",
+      "Has XML MetaData"
+    ]
+  }
+}
