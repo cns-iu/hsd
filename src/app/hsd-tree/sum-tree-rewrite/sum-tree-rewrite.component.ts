@@ -10,6 +10,8 @@ import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/toArray';
 
+import { bind as Bind } from 'bind-decorator';
+
 import { vega, defaultLogLevel } from '../../vega';
 import { SumTreeDataService } from '../shared/sum-tree-data.service';
 import {
@@ -109,27 +111,27 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
       summaryTypeName, colorName, opacityName
     } = outputSignalNames;
 
-    instance.addSignalListener(nodeClickName, this.onNodeClick.bind(this));
-    instance.addSignalListener(summaryClickName, this.onSummaryClick.bind(this));
+    instance.addSignalListener(nodeClickName, this.onNodeClick);
+    instance.addSignalListener(summaryClickName, this.onSummaryClick);
 
-    instance.addSignalListener(summaryTypeName, this.onSummaryTypeChange.bind(this));
-    instance.addSignalListener(colorName, this.onColorFieldChange.bind(this));
-    instance.addSignalListener(opacityName, this.onOpacityFieldChange.bind(this));
+    instance.addSignalListener(summaryTypeName, this.onSummaryTypeChange);
+    instance.addSignalListener(colorName, this.onColorFieldChange);
+    instance.addSignalListener(opacityName, this.onOpacityFieldChange);
   }
 
   // Data loading helpers
+  @Bind
   private loadSingleNodes(paths: string[]): Observable<SingleNode[]> {
-    const boundQueryNode = this.service.queryNode.bind(this.service);
-    const nodeObservables: Observable<SingleNode>[] = paths.map(boundQueryNode);
+    const nodeObservables = paths.map(this.service.queryNode);
 
     // toArray ensures all nodes are returned at once since
     // it would be bad to insert/process a partial tree.
     return Observable.merge(...nodeObservables).toArray();
   }
 
+  @Bind
   private loadSummaryNodes(paths: string[]): Observable<SummaryNode[]> {
-    const boundQuerySummaryNodes = this.service.querySummaryNodes.bind(this.service);
-    const nodeObservables: Observable<SummaryNode>[] = paths.map(boundQuerySummaryNodes);
+    const nodeObservables = paths.map(this.service.querySummaryNodes);
 
     // Like loadSingleNodes it would be bad to return partial results, but
     // it is fine to return the results for each path independently.
@@ -137,22 +139,27 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   // Events
+  @Bind
   private onNodeClick(name: string, value: any): void {
     // TODO
   }
 
+  @Bind
   private onSummaryClick(name: string, value: any): void {
     // TODO
   }
 
+  @Bind
   private onSummaryTypeChange(name: string, value: string): void {
     // TODO
   }
 
+  @Bind
   private onColorFieldChange(name: string, value: string): void {
     // TODO
   }
 
+  @Bind
   private onOpacityFieldChange(name: string, value: string): void {
     // TODO
   }

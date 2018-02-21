@@ -5,6 +5,8 @@ import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/map';
 
+import { bind as Bind } from 'bind-decorator';
+
 import {
   Node, SingleNode, SummaryNode,
   ConceptType, VisibilityType,
@@ -35,6 +37,7 @@ function rawNodeToSingleNode(node: any): SingleNode {
 export class SumTreeDataService {
   constructor() { }
 
+  @Bind
   queryNode(path: string): Observable<SingleNode> {
     path = normalizePath(path);
     return Observable.from(nodes).filter((node) => {
@@ -42,6 +45,7 @@ export class SumTreeDataService {
     }).map(rawNodeToSingleNode);
   }
 
+  @Bind
   queryChildNodes(path: string): Observable<SingleNode> {
     path = normalizePath(path);
     return Observable.from(nodes).filter((node) => {
@@ -49,6 +53,7 @@ export class SumTreeDataService {
     }).map(rawNodeToSingleNode);
   }
 
+  @Bind
   querySummaryNodes(path: string): Observable<SummaryNode> {
     path = normalizePath(path);
     return Observable.of(); // TODO
