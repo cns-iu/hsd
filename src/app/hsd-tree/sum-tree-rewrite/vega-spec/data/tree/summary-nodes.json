@@ -1,0 +1,10 @@
+{
+  "name": "summaryNodes",
+  "source": "nodeTree",
+  "transform": [
+    {
+      "type": "filter",
+      "expr": "datum.type === 'SummaryNode'"
+    }
+  ]
+}
