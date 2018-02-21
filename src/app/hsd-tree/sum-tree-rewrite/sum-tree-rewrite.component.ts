@@ -32,7 +32,15 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
   @Input() vegaLogLevel = defaultLogLevel;
   @Input() initialNodePaths = [
     '\\pcori',
-      '\\pcori\\procedure'
+      '\\pcori\\procedure',
+        '\\pcori\\procedure\\09',
+        '\\pcori\\procedure\\10',
+        '\\pcori\\procedure\\11',
+        '\\pcori\\procedure\\ch',
+        '\\pcori\\procedure\\lc',
+        '\\pcori\\procedure\\nd',
+        '\\pcori\\procedure\\re',
+        '\\pcori\\procedure\\version'
   ];
 
   constructor(private service: SumTreeDataService) { }
