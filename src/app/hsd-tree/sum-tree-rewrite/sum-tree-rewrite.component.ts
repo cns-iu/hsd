@@ -103,8 +103,17 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private setSignalValues(instance: any): Observable<any> {
-    instance.signal(inputSignalNames.maxLevelName, 11); // TODO fix value
-    // TODO
+    const {
+      maxLevelName,
+      yMultiplierName, yOffsetName
+    } = inputSignalNames;
+
+    // Required
+    instance.signal(maxLevelName, 11); // TODO fix value
+
+    // Optional
+    instance.signal(yMultiplierName, 25);
+    // instance.signal(yOffsetName, 30);
 
     return Observable.empty();
   }
@@ -167,13 +176,28 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
 
   // Events
   @Bind
-  private onNodeClick(name: string, value: any): void {
+  private onNodeClick(name: string, node: SingleNode): void {
     // TODO
+    // Outline
+    // Determine if node is collapsed or expanded by searching for children
+    // with isParentOf
+    // If expanded
+    //  Remove direct and indirect children with isAncestorOf
+    //  Remove summaries for direct and indirect children with isAncestorOf
+    //  Add summary for this node
+    // Else
+    //  Remove summaries for this node with isAncestorOf
+    //  Add direct children
+    //  Add summaries for direct children
   }
 
   @Bind
-  private onSummaryClick(name: string, value: any): void {
+  private onSummaryClick(name: string, node: SummaryNode): void {
     // TODO
+    // Outline
+    // Remove this node and direct and indirect children with isAncestorOf
+    // Add SingleNodes for this node's parent
+    // Add summaries for the inserted nodes
   }
 
   @Bind
