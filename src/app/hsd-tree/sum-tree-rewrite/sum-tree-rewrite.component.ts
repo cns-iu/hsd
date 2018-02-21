@@ -168,7 +168,6 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
   // Events
   @Bind
   private onNodeClick(name: string, value: any): void {
-    console.log(value);
     // TODO
   }
 

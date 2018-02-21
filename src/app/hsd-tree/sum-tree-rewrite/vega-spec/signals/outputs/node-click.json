@@ -1,5 +1,15 @@
 {
   "name": "nodeClick",
   "on": [
+    {
+      "events": [
+        {
+          "type": "click",
+          "markname": "singleNodesSymbol"
+        }
+      ],
+      "update": "datum",
+      "force": true
+    }
   ]
 }
