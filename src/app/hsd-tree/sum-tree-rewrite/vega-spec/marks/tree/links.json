@@ -1,0 +1,18 @@
+[
+  {
+    "type": "path",
+    "from": {
+      "data": "nodeTreeLinks"
+    },
+    "encode": {
+      "update": {
+        "path": {
+          "field": "path"
+        },
+        "stroke": {
+          "value": "#ccc"
+        }
+      }
+    }
+  }
+]

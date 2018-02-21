@@ -1,0 +1,22 @@
+{
+  "type": "symbol",
+  "shape": "circle",
+  "name": "singleNodesSymbol",
+  "from": {
+    "data": "singleNodes"
+  },
+  "encode": {
+    "update": {
+      "x": {
+        "field": "x"
+      },
+      "y": {
+        "field": "y"
+      },
+
+      "size": {
+        "value": 300
+      }
+    }
+  }
+}

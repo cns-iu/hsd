@@ -123,7 +123,7 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
 
     // Load and process single nodes
     const singleNodes = this.loadSingleNodes(this.initialNodePaths).do(
-      insert.bind(instance, nodesName)
+      insert.bind(instance, nodesName) // TODO Might have to do some other processing here
     );
 
     // Extract leaf paths
@@ -133,7 +133,7 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
 
     // Load and process summary nodes
     const summaryNodes = leafPaths.mergeMap(this.loadSummaryNodes).do(
-      insert.bind(instance, summariesName)
+      insert.bind(instance, summariesName) // TODO Might have to do some other processing here
     );
 
     return summaryNodes;
