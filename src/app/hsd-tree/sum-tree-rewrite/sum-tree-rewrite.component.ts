@@ -60,6 +60,7 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
     this.destroyVegaInstance();
   }
 
+  // Vega setup
   private createVegaInstance(): void {
     const parsedSpec = vega.parse(vegaSpec);
     const instance = this.vegaInstance = new vega.View(parsedSpec)
@@ -68,22 +69,10 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
       .logLevel(this.vegaLogLevel)
       .hover(); // Enable default handling of hover
 
-    // Attach signal listeners
-    instance.addSignalListener(outputSignalNames.nodeClickName,
-      this.onNodeClick.bind(this));
-    instance.addSignalListener(outputSignalNames.summaryClickName,
-      this.onSummaryClick.bind(this));
-
-    instance.addSignalListener(outputSignalNames.summaryTypeName,
-      this.onSummaryTypeChange.bind(this));
-    instance.addSignalListener(outputSignalNames.colorName,
-      this.onColorFieldChange.bind(this));
-    instance.addSignalListener(outputSignalNames.opacityName,
-      this.onOpacityFieldChange.bind(this));
+    this.attachSignalListeners(instance);
 
     // Set signal data
     instance.signal(inputSignalNames.maxLevelName, 11); // TODO fix value
-    // TODO insert signal data
 
     // Load single nodes
     const singleNodes = this.loadSingleNodes(this.initialNodePaths);
@@ -112,6 +101,20 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
     if (this.vegaInstance) {
       this.vegaInstance.finalize();
     }
+  }
+
+  private attachSignalListeners(instance: any): void {
+    const {
+      nodeClickName, summaryClickName,
+      summaryTypeName, colorName, opacityName
+    } = outputSignalNames;
+
+    instance.addSignalListener(nodeClickName, this.onNodeClick.bind(this));
+    instance.addSignalListener(summaryClickName, this.onSummaryClick.bind(this));
+
+    instance.addSignalListener(summaryTypeName, this.onSummaryTypeChange.bind(this));
+    instance.addSignalListener(colorName, this.onColorFieldChange.bind(this));
+    instance.addSignalListener(opacityName, this.onOpacityFieldChange.bind(this));
   }
 
   // Data loading helpers
