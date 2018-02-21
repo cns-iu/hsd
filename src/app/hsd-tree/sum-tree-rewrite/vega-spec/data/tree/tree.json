@@ -16,7 +16,7 @@
     },
     {
       "type": "tree",
-      "method": "tidy",
+      "method": "cluster",
       "nodeSize": [
         1,
         1

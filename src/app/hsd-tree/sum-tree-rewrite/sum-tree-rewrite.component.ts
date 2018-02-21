@@ -9,6 +9,7 @@ import 'rxjs/add/observable/empty';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/mergeMap';
+import 'rxjs/add/operator/reduce';
 import 'rxjs/add/operator/toArray';
 
 import { bind as Bind } from 'bind-decorator';
@@ -38,6 +39,12 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
   @Input() vegaLogLevel = defaultLogLevel;
   @Input() initialNodePaths = [
     '\\pcori',
+      '\\pcori\\demographic',
+      '\\pcori\\diagnosis',
+      '\\pcori\\encounter',
+      '\\pcori\\enrollment',
+      '\\pcori\\lab_result_cm',
+      '\\pcori\\medication',
       '\\pcori\\procedure',
         '\\pcori\\procedure\\09',
         '\\pcori\\procedure\\10',
@@ -46,7 +53,8 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
         '\\pcori\\procedure\\lc',
         '\\pcori\\procedure\\nd',
         '\\pcori\\procedure\\re',
-        '\\pcori\\procedure\\version'
+        '\\pcori\\procedure\\version',
+      '\\pcori\\vital'
   ];
 
   constructor(private service: SumTreeDataService) { }
@@ -119,11 +127,10 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
 
   private setDataTuples(instance: any): Observable<any> {
     const { nodesName, summariesName } = inputDataSetNames;
-    const insert = instance.insert;
 
     // Load and process single nodes
     const singleNodes = this.loadSingleNodes(this.initialNodePaths).do(
-      insert.bind(instance, nodesName) // TODO Might have to do some other processing here
+      instance.insert.bind(instance, nodesName) // TODO Might have to do some other processing here
     );
 
     // Extract leaf paths
@@ -132,9 +139,9 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
     });
 
     // Load and process summary nodes
-    const summaryNodes = leafPaths.mergeMap(this.loadSummaryNodes).do(
-      insert.bind(instance, summariesName) // TODO Might have to do some other processing here
-    );
+    const summaryNodes = leafPaths.mergeMap(this.loadSummaryNodes).reduce(
+      (acc, nodes) => acc.insert(nodes), vega.changeset()
+    ).do(instance.change.bind(instance, summariesName)); // TODO Might have to do some other processing here
 
     return summaryNodes;
   }
@@ -161,6 +168,7 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
   // Events
   @Bind
   private onNodeClick(name: string, value: any): void {
+    console.log(value);
     // TODO
   }
 

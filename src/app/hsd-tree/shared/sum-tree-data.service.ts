@@ -8,10 +8,10 @@ import 'rxjs/add/operator/map';
 import { bind as Bind } from 'bind-decorator';
 
 import {
-  Node, SingleNode, SummaryNode,
+  Node, NodeInfo, SingleNode, SummaryNode,
   ConceptType, VisibilityType,
   normalizePath,
-  stringToConcept, stringToVisibility, stringToIsSynonym,
+  stringToConcept, stringToVisibility, stringToIsSynonym, stringToHasMetaData,
   parentPathFor
 } from './node';
 
@@ -27,9 +27,19 @@ function rawNodeToSingleNode(node: any): SingleNode {
       concept: stringToConcept(node['NodeType']),
       visibility: stringToVisibility(node['NodeVisibility']),
       isSynonym: stringToIsSynonym(node['NodeIsSynonym']),
-      hasMetaData: false,
+      hasMetaData: stringToHasMetaData(node['NodeHasMetadataXML']),
       numPaths: +node['NumberOfPaths']
     }
+  };
+}
+
+function rawSummaryNodeToSummaryNodeInfo(node: any): NodeInfo {
+  return {
+    concept: stringToConcept(node['ConceptType']),
+    visibility: stringToVisibility(node['Visibility']),
+    isSynonym: stringToIsSynonym(node['IsSynonym']),
+    hasMetaData: stringToHasMetaData(node['HasMetadataXML']),
+    numPaths: +node['NumberOfPaths']
   };
 }
 
@@ -56,6 +66,28 @@ export class SumTreeDataService {
   @Bind
   querySummaryNodes(path: string): Observable<SummaryNode> {
     path = normalizePath(path);
-    return Observable.of(); // TODO
+
+    const entries = (subtreeBreakdown as any[]).filter((node) => {
+      return normalizePath(node['NodePath']) === path;
+    });
+    const byLevel = entries.reduce((acc, node) => {
+      const level = node['SubtreeLevel'];
+      const nodesAcc = acc[level] || (acc[level] = []);
+      nodesAcc.push(node);
+
+      return acc;
+    }, {});
+    const summaryNodes = Object.entries(byLevel).filter(([level]) => !isNaN(+level)).map(([level, acc]) => {
+      const breakdown = acc.map(rawSummaryNodeToSummaryNodeInfo);
+      return {
+        type: 'SummaryNode',
+        level: +level,
+        path: path,
+        breakdown: breakdown
+      } as SummaryNode;
+    });
+
+
+    return Observable.from(summaryNodes);
   }
 }

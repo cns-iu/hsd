@@ -73,6 +73,10 @@ export function stringToIsSynonym(isSynonymString: string): boolean {
   return isSynonymString.toLowerCase() === 'y';
 }
 
+export function stringToHasMetaData(hasMetaDataString: string): boolean {
+  return hasMetaDataString.toLowerCase() === 'y';
+}
+
 
 // Node tree utility
 
