@@ -5,6 +5,7 @@ import {
 } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/empty';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/mergeMap';
@@ -71,29 +72,17 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
       .logLevel(this.vegaLogLevel)
       .hover(); // Enable default handling of hover
 
-    this.attachSignalListeners(instance);
+    const signalsInitialized = this.setSignalValues(instance);
+    const signalsAttached = this.attachSignalListeners(instance);
+    const dataInitialized = this.setDataTuples(instance);
 
-    // Set signal data
-    instance.signal(inputSignalNames.maxLevelName, 11); // TODO fix value
-
-    // Load single nodes
-    const singleNodes = this.loadSingleNodes(this.initialNodePaths);
-
-    // Process single nodes
-    const leafs = singleNodes.do((nodes) => {
-      instance.insert(inputDataSetNames.nodesName, nodes);
-    }).map(filterLeafs).map((leafNodes) => leafNodes.map((node) => node.path));
-
-    // Load summary nodes
-    const summaryNodes: Observable<SummaryNode[]> = leafs.mergeMap(this.loadSummaryNodes.bind(this));
-
-    // Process summary nodes
-    const results = summaryNodes.do((nodes) => {
-      instance.insert(inputDataSetNames.summariesName, nodes);
-    }).toArray();
+    const initialized = Observable.merge(
+      signalsInitialized, signalsAttached,
+      dataInitialized
+    );
 
     // Run visualization
-    results.subscribe(() => instance.run());
+    initialized.subscribe(undefined, undefined, () => instance.run());
 
     // Temporary - Debugging
     console.log(instance);
@@ -105,7 +94,14 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  private attachSignalListeners(instance: any): void {
+  private setSignalValues(instance: any): Observable<any> {
+    instance.signal(inputSignalNames.maxLevelName, 11); // TODO fix value
+    // TODO
+
+    return Observable.empty();
+  }
+
+  private attachSignalListeners(instance: any): Observable<any> {
     const {
       nodeClickName, summaryClickName,
       summaryTypeName, colorName, opacityName
@@ -117,6 +113,30 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
     instance.addSignalListener(summaryTypeName, this.onSummaryTypeChange);
     instance.addSignalListener(colorName, this.onColorFieldChange);
     instance.addSignalListener(opacityName, this.onOpacityFieldChange);
+
+    return Observable.empty();
+  }
+
+  private setDataTuples(instance: any): Observable<any> {
+    const { nodesName, summariesName } = inputDataSetNames;
+    const insert = instance.insert;
+
+    // Load and process single nodes
+    const singleNodes = this.loadSingleNodes(this.initialNodePaths).do(
+      insert.bind(instance, nodesName)
+    );
+
+    // Extract leaf paths
+    const leafPaths = singleNodes.map(filterLeafs).map((nodes) => {
+      return nodes.map((node) => node.path);
+    });
+
+    // Load and process summary nodes
+    const summaryNodes = leafPaths.mergeMap(this.loadSummaryNodes).do(
+      insert.bind(instance, summariesName)
+    );
+
+    return summaryNodes;
   }
 
   // Data loading helpers
