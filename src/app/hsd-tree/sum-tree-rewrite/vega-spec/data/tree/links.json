@@ -1,0 +1,17 @@
+{
+  "name": "nodeTreeLinks",
+  "source": "nodeTree",
+  "transform": [
+    {
+      "type": "treelinks",
+      "key": {
+        "expr": "datum.path + ':' + datum.level"
+      }
+    },
+    {
+      "type": "linkpath",
+      "orient": "horizontal",
+      "shape": "diagonal"
+    }
+  ]
+}
