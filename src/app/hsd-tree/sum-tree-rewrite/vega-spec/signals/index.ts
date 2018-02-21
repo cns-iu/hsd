@@ -1,6 +1,7 @@
+import inputSignals, * as inputSignalNames from './inputs';
 import outputSignals, * as outputSignalNames from './outputs';
 
-export { outputSignalNames };
+export { inputSignalNames, outputSignalNames };
 export default [].concat(
-  outputSignals
+  inputSignals, outputSignals
 );

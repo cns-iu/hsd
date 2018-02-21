@@ -50,6 +50,7 @@ export class SumTreeDataService {
   }
 
   querySummaryNodes(path: string): Observable<SummaryNode> {
+    path = normalizePath(path);
     return Observable.of(); // TODO
   }
 }

@@ -76,7 +76,7 @@ export function stringToIsSynonym(isSynonymString: string): boolean {
 
 // Node tree utility
 
-export function parentPathFor(node: Node | string): string {
+export function parentPathFor(node: SingleNode | string): string {
   // Removes the last \[segment]
   const path = typeof node === 'string' ? node : node.path;
   const match = path.match(/(.*?)\\[^\\]+$/);
@@ -86,9 +86,8 @@ export function parentPathFor(node: Node | string): string {
 export function isParentOf(parent: Node, node: Node): boolean {
   if (node.path === parent.path && node.level === (parent.level + 1)) {
     return true; // SingleNode/SummaryNode + SummaryNode
-  } else if (parentPathFor(node) === parent.path) {
-    // SingleNode + SingleNode
-    return true;
+  } else if (parentPathFor(node.path) === parent.path) {
+    return true; // SingleNode + SingleNode
   } else {
     return false;
   }
@@ -102,4 +101,19 @@ export function isAncestorOf(ancestor: Node, node: Node): boolean {
   } else {
     return false;
   }
+}
+
+export function filterLeafs(nodes: SingleNode[]): SingleNode[] {
+  const leafMap: {[path: string]: boolean} = nodes.reduce((map, node) => {
+    map[parentPathFor(node)] = false;
+    if (!(node.path in map)) {
+      map[node.path] = true;
+    }
+
+    return map;
+  }, {});
+
+  return nodes.filter((node) => {
+    return leafMap[node.path];
+  });
 }

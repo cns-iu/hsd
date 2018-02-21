@@ -6,10 +6,16 @@ import {
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/merge';
+import 'rxjs/add/operator/do';
+import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/toArray';
 
 import { vega, defaultLogLevel } from '../../vega';
 import { SumTreeDataService } from '../shared/sum-tree-data.service';
+import {
+  Node, SingleNode, SummaryNode,
+  filterLeafs
+} from '../shared/node';
 import vegaSpec, { inputDataSetNames, outputSignalNames } from './vega-spec';
 
 @Component({
@@ -24,7 +30,10 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('vegaInput') inputElement: ElementRef;
 
   @Input() vegaLogLevel = defaultLogLevel;
-  @Input() initialNodePaths = ['\\pcori'];
+  @Input() initialNodePaths = [
+    '\\pcori',
+      '\\pcori\\procedure'
+  ];
 
   constructor(private service: SumTreeDataService) { }
 
@@ -61,10 +70,29 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
     instance.addSignalListener(outputSignalNames.opacityName,
       this.onOpacityFieldChange.bind(this));
 
-    // TODO insert data
+    // TODO insert signal data
+
+    // Load single nodes
+    const singleNodes = this.loadSingleNodes(this.initialNodePaths);
+
+    // Process single nodes
+    const leafs = singleNodes.do((nodes) => {
+      instance.insert(inputDataSetNames.nodesName, nodes);
+    }).map(filterLeafs).map((leafNodes) => leafNodes.map((node) => node.path));
+
+    // Load summary nodes
+    const summaryNodes: Observable<SummaryNode[]> = leafs.mergeMap(this.loadSummaryNodes.bind(this));
+
+    // Process summary nodes
+    const results = summaryNodes.do((nodes) => {
+      instance.insert(inputDataSetNames.summariesName, nodes);
+    }).toArray();
 
     // Run visualization
-    instance.run();
+    results.subscribe(() => instance.run());
+
+    // Temporary - Debugging
+    console.log(instance);
   }
 
   private destroyVegaInstance(): void {
@@ -73,6 +101,26 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
+  // Data loading helpers
+  private loadSingleNodes(paths: string[]): Observable<SingleNode[]> {
+    const boundQueryNode = this.service.queryNode.bind(this.service);
+    const nodeObservables: Observable<SingleNode>[] = paths.map(boundQueryNode);
+
+    // toArray ensures all nodes are returned at once since
+    // it would be bad to insert/process a partial tree.
+    return Observable.merge(...nodeObservables).toArray();
+  }
+
+  private loadSummaryNodes(paths: string[]): Observable<SummaryNode[]> {
+    const boundQuerySummaryNodes = this.service.querySummaryNodes.bind(this.service);
+    const nodeObservables: Observable<SummaryNode>[] = paths.map(boundQuerySummaryNodes);
+
+    // Like loadSingleNodes it would be bad to return partial results, but
+    // it is fine to return the results for each path independently.
+    return Observable.merge(...nodeObservables.map((nodes) => nodes.toArray()));
+  }
+
+  // Events
   private onNodeClick(name: string, value: any): void {
     // TODO
   }
