@@ -16,7 +16,10 @@ import {
   Node, SingleNode, SummaryNode,
   filterLeafs
 } from '../shared/node';
-import vegaSpec, { inputDataSetNames, outputSignalNames } from './vega-spec';
+import vegaSpec, {
+  inputDataSetNames,
+  inputSignalNames, outputSignalNames
+} from './vega-spec';
 
 @Component({
   selector: 'hsd-sum-tree-rewrite',
@@ -78,6 +81,8 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
     instance.addSignalListener(outputSignalNames.opacityName,
       this.onOpacityFieldChange.bind(this));
 
+    // Set signal data
+    instance.signal(inputSignalNames.maxLevelName, 11); // TODO fix value
     // TODO insert signal data
 
     // Load single nodes

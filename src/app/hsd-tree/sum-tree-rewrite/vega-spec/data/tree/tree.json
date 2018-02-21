@@ -23,13 +23,23 @@
       ],
       "as": [
         "rawY",
-        "ignore"
+        "__ignore"
       ]
     },
     {
       "type": "extent",
       "field": "rawY",
       "signal": "rawYExtent"
+    },
+    {
+      "type": "formula",
+      "expr": "datum.level * width / maxLevel",
+      "as": "x"
+    },
+    {
+      "type": "formula",
+      "expr": "yMultiplier * (datum.rawY - rawYExtent[0]) + yOffset",
+      "as": "y"
     }
   ]
 }
