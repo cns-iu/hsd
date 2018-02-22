@@ -192,6 +192,8 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   // Events
+  // Do not call vegaInstance.run() directly in the callbacks!
+  // Use vegaInstance.runAfter(vegaInstance.run.bind(vegaInstance))
   @Bind
   private onNodeClick(name: string, node: InternalSingleNode): void {
     if (node === undefined) {
@@ -227,18 +229,6 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
 
       events.push(childSummaryNodes);
     }
-    // TODO
-    // Outline
-    // Determine if node is collapsed or expanded by searching for children
-    // with isParentOf
-    // If expanded
-    //  Remove direct and indirect children with isAncestorOf
-    //  Remove summaries for direct and indirect children with isAncestorOf
-    //  Add summary for this node
-    // Else
-    //  Remove summaries for this node with isAncestorOf
-    //  Add direct children
-    //  Add summaries for direct children
 
     // Apply changes after all events have completed and rerun dataflow
     Observable.merge(...events).subscribe(undefined, undefined, () => {
