@@ -105,7 +105,8 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
   private setSignalValues(instance: any): Observable<any> {
     const {
       maxLevelName,
-      yMultiplierName, yOffsetName
+      yMultiplierName, yOffsetName,
+      summaryBoxSizeName
     } = inputSignalNames;
 
     // Required
@@ -114,6 +115,11 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
     // Optional
     instance.signal(yMultiplierName, 30);
     // instance.signal(yOffsetName, 30);
+
+    // instance.signal(summaryBoxSizeName, {
+    //   width: 15,
+    //   height: 20
+    // });
 
     return Observable.empty();
   }
@@ -135,34 +141,43 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private setDataTuples(instance: any): Observable<any> {
-    const { nodesName, summariesName } = inputDataSetNames;
+    const { summariesName } = inputDataSetNames;
 
-    // Load and process single nodes
-    const singleNodes = this.service.queryNodes(this.initialNodePaths).do(
-      instance.insert.bind(instance, nodesName) // TODO Might have to do some other processing here
-    );
-
-    // Extract leaf paths
-    const leafPaths = singleNodes.map(filterLeafs).map((nodes) => {
-      return nodes.map((node) => node.path);
+    const singleNodes = this.setSingleNodeTuples(instance, this.initialNodePaths);
+    const leafPaths = singleNodes.map(filterLeafs)
+      .map((nodes) => nodes.map((node) => node.path));
+    const summaryNodes = leafPaths.mergeMap((paths) => {
+      return this.setSummaryNodeTuples(instance, paths);
     });
-
-    // Load and process summary nodes
-    const summaryNodes = leafPaths.mergeMap(this.loadSummaryNodes).reduce(
-      (acc, nodes) => acc.insert(nodes), vega.changeset()
-    ).do(instance.change.bind(instance, summariesName)); // TODO Might have to do some other processing here
 
     return summaryNodes;
   }
 
-  // Data loading helpers
-  @Bind
-  private loadSummaryNodes(paths: string[]): Observable<SummaryNode[]> {
-    const nodeObservables = paths.map(this.service.querySummaryNodes);
+  private setSingleNodeTuples(instance: any, paths: string[]): Observable<SingleNode[]> {
+    const dataset = inputDataSetNames.nodesName;
+    const nodes = this.service.queryNodes(paths)
+      .reduce((acc, nodeGroup) => acc.concat(nodeGroup), [])
+      .do((allNodes) => {
+        // TODO calculate color + opacity fields
+        instance.insert(dataset, allNodes);
+      });
 
-    // Like loadSingleNodes it would be bad to return partial results, but
-    // it is fine to return the results for each path independently.
-    return Observable.merge(...nodeObservables.map((nodes) => nodes.toArray()));
+    return nodes;
+  }
+
+  private setSummaryNodeTuples(instance: any, paths: string[]): Observable<SummaryNode[]> {
+    const dataset = inputDataSetNames.summariesName;
+    const nodes = this.service.querySummaryNodes(paths)
+      .reduce((acc, nodeGroup) => acc.concat(nodeGroup), [])
+      .do((allNodes) => {
+        allNodes.forEach((node: any) => {
+          node.count = node.breakdown.reduce((acc, b) => acc + b.numPaths, 0);
+        });
+        // TODO calculate multiplier + cumPercentage + count
+        instance.insert(dataset, allNodes);
+      });
+
+    return nodes;
   }
 
   // Events
@@ -192,7 +207,7 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   @Bind
-  private onSummaryTypeChange(name: string, value: string): void {
+  private onSummaryTypeChange(name: string, type: string): void {
     // TODO
   }
 

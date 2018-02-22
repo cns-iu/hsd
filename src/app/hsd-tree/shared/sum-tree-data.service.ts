@@ -17,9 +17,27 @@ import {
 
 import { nodes, subtreeBreakdown } from './mock-data';
 
-function normalizeAllPaths(paths: string | string[]): string[] {
+function makePathFilter(
+  paths: string | string[], field: string, modifier?: (path: string) => string
+): (node: any) => boolean {
   paths = Array.isArray(paths) ? paths : [paths];
-  return paths.map(normalizePath);
+  paths = paths.map(normalizePath);
+
+  if (modifier === undefined) {
+    return (node) => paths.includes(normalizePath(node[field]));
+  } else {
+    return (node) => paths.includes(modifier(normalizePath(node[field])));
+  }
+}
+
+function groupBy(items: any[], field: string): {} {
+  return items.reduce((acc, item) => {
+    const key = item[field];
+    const group = acc[key] || (acc[key] = []);
+
+    group.push(item);
+    return acc;
+  }, {});
 }
 
 function rawNodeToSingleNode(node: any): SingleNode {
@@ -54,45 +72,37 @@ export class SumTreeDataService {
 
   @Bind
   queryNodes(paths: string | string[]): Observable<SingleNode[]> {
-    paths = normalizeAllPaths(paths);
-    return Observable.from(nodes).filter((node) => {
-      return paths.includes(normalizePath(node['NodePath']));
-    }).map(rawNodeToSingleNode).toArray();
+    const pathFilter = makePathFilter(paths, 'NodePath');
+    return Observable.from(nodes).filter(pathFilter)
+      .map(rawNodeToSingleNode).toArray();
   }
 
   @Bind
-  queryChildNodes(path: string): Observable<SingleNode> {
-    path = normalizePath(path);
-    return Observable.from(nodes).filter((node) => {
-      return parentPathFor(normalizePath(node['NodePath'])) === path;
-    }).map(rawNodeToSingleNode);
+  queryChildNodes(paths: string | string[]): Observable<SingleNode[]> {
+    const pathFilter = makePathFilter(paths, 'NodePath', parentPathFor);
+    return Observable.from(nodes).filter(pathFilter)
+      .map(rawNodeToSingleNode).toArray();
   }
 
   @Bind
-  querySummaryNodes(path: string): Observable<SummaryNode> {
-    path = normalizePath(path);
+  querySummaryNodes(paths: string | string[]): Observable<SummaryNode[]> {
+    const pathFilter = makePathFilter(paths, 'NodePath');
+    const entries = (subtreeBreakdown as any[]).filter(pathFilter);
+    const byPath = groupBy(entries, 'NodePath');
+    const summaryNodes = Observable.from(Object.entries(byPath))
+      .map(([path, rawNodes]) => {
+        const byLevel = groupBy(rawNodes as any[], 'SubtreeLevel');
+        return Object.entries(byLevel).map(([level, acc]) => {
+          const breakdown = (acc as any[]).map(rawSummaryNodeToSummaryNodeInfo);
+          return {
+            type: 'SummaryNode',
+            level: +level,
+            path: normalizePath(path),
+            breakdown: breakdown
+          } as SummaryNode;
+        }).filter((node) => !isNaN(node.level));
+      });
 
-    const entries = (subtreeBreakdown as any[]).filter((node) => {
-      return normalizePath(node['NodePath']) === path;
-    });
-    const byLevel = entries.reduce((acc, node) => {
-      const level = node['SubtreeLevel'];
-      const nodesAcc = acc[level] || (acc[level] = []);
-      nodesAcc.push(node);
-
-      return acc;
-    }, {});
-    const summaryNodes = Object.entries(byLevel).filter(([level]) => !isNaN(+level)).map(([level, acc]) => {
-      const breakdown = acc.map(rawSummaryNodeToSummaryNodeInfo);
-      return {
-        type: 'SummaryNode',
-        level: +level,
-        path: path,
-        breakdown: breakdown
-      } as SummaryNode;
-    });
-
-
-    return Observable.from(summaryNodes);
+    return summaryNodes;
   }
 }

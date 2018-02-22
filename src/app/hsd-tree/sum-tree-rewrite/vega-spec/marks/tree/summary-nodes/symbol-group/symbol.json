@@ -1,0 +1,14 @@
+{
+  "type": "rect",
+  "from": {
+    "data": "breakdown"
+  },
+  "encode": {
+    "enter": {
+
+    },
+    "update": {
+
+    }
+  }
+}
