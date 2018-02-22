@@ -23,7 +23,8 @@ import {
   filterLeafs
 } from '../shared/node';
 import {
-  InternalNode, InternalSingleNode, InternalSummaryNode
+  InternalNode, InternalSingleNode, InternalSummaryNode,
+  convertToInternalSingleNode, convertToInternalSummaryNode
 } from './internal-nodes';
 import vegaSpec, {
   inputDataSetNames,
@@ -146,49 +147,38 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private setDataTuples(instance: any): Observable<any> {
-    const { summariesName } = inputDataSetNames;
+    const { nodesName, summariesName } = inputDataSetNames;
 
-    const singleNodes = this.setSingleNodeTuples(instance, this.initialNodePaths);
+    const singleNodes = this.queryAndSetDataTuples<InternalSingleNode>(
+      instance, this.initialNodePaths, nodesName, 'queryNodes', (node) => {
+        return convertToInternalSingleNode(node); // TODO additional arguments
+      }
+    );
+
     const leafPaths = singleNodes.map(filterLeafs)
       .map((nodes) => nodes.map((node) => node.path));
-    const summaryNodes = leafPaths.mergeMap((paths) => {
-      return this.setSummaryNodeTuples(instance, paths);
-    });
+
+    const summaryNodes = this.queryAndSetDataTuples(
+      instance, leafPaths, summariesName, 'querySummaryNodes', (node) => {
+        return convertToInternalSummaryNode(node); // TOD additional arguments
+      }
+    );
 
     return summaryNodes;
   }
 
-  private setSingleNodeTuples(instance: any, paths: string[]): Observable<SingleNode[]> {
-    const dataset = inputDataSetNames.nodesName;
-    const nodes = this.service.queryNodes(paths)
-      .reduce((acc, nodeGroup) => acc.concat(nodeGroup), [])
-      .do((allNodes) => {
-        // TODO calculate color + opacity fields
-        instance.insert(dataset, allNodes);
-      });
+  private queryAndSetDataTuples<T>(
+    instance: any, paths: string | string[] | Observable<string[]>,
+    setName: string, queryFunc: string, modifier?: (tuple: any) => T
+  ): Observable<T[]> {
+    paths = typeof paths === 'string' ? [paths] : paths;
+    paths = Array.isArray(paths) ? Observable.of(paths) : paths;
 
-    return nodes;
-  }
+    const rawTuples: Observable<any[]> = paths.mergeMap((paths_) => this.service[queryFunc](paths_));
+    const allRawTuples = rawTuples.reduce((acc, tuples_) => acc.concat(tuples_), []);
+    const tuples = modifier ? allRawTuples.map((tuples_) => tuples_.map(modifier)) : allRawTuples as Observable<T[]>;
 
-  private setSummaryNodeTuples(instance: any, paths: string[]): Observable<SummaryNode[]> {
-    const dataset = inputDataSetNames.summariesName;
-    const nodes = this.service.querySummaryNodes(paths)
-      .reduce((acc, nodeGroup) => acc.concat(nodeGroup), [])
-      .do((allNodes) => {
-        allNodes.forEach((node: any) => {
-          node.count = node.breakdown.reduce((acc, b) => acc + b.numPaths, 0);
-          node.multiplier = 1;
-          node.breakdown.reduce((acc, b) => {
-            b.percentage = b.numPaths / node.count;
-            b.cumPercentage = acc;
-            return acc + b.percentage;
-          }, 0);
-        });
-        // TODO calculate multiplier + percentage + cumPercentage + count + color + opacity
-        instance.insert(dataset, allNodes);
-      });
-
-    return nodes;
+    return tuples.do((tuples_) => instance.insert(setName, tuples_));
   }
 
   // Events

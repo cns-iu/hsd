@@ -5,7 +5,7 @@
     "facet": {
       "name": "rawBreakdown",
       "data": "summaryNodes",
-      "field": "breakdown"
+      "field": "partitions"
     }
   },
   "encode": {

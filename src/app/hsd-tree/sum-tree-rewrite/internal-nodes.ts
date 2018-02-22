@@ -10,7 +10,9 @@ export interface InternalSingleNode extends SingleNode {
   opacity: number;
 }
 
-export interface InternalSummaryNodeInfo extends NodeInfo {
+export interface InternalSummaryNodePartition {
+  numPaths: number;
+
   percentage: number;
   cumPercentage: number;
 
@@ -22,62 +24,36 @@ export interface InternalSummaryNode extends SummaryNode {
   totalNumPaths: number;
   multiplier: number;
 
-  breakdown: InternalSummaryNodeInfo[];
+  partitions: InternalSummaryNodePartition[];
 }
 
 
-// Calculate and set fields
-// InternalSingleNode
-export function setSingleNodeColor(
-  type: ConceptType, node: InternalSingleNode
-): void {
+// Initialization
+export function convertToInternalSingleNode(
+  node: SingleNode // TODO additional arguments
+): InternalSingleNode {
+  const inode = node as InternalSingleNode;
   // TODO
+
+  return inode;
 }
 
-export function setSingleNodeOpacity(
-  type: VisibilityType, node: InternalSingleNode
-): void {
-  // TODO
-}
+export function convertToInternalSummaryNode(
+  node: SummaryNode // TODO additional arguments
+): InternalSummaryNode {
+  const inode = node as InternalSummaryNode;
 
-
-// InternalSummaryNode
-export function setSummaryNodeTotalNumPaths(node: InternalSummaryNode): void {
-  node.totalNumPaths = node.breakdown.reduce((sum, info) => sum + info.numPaths, 0);
-}
-
-export function setSummaryNodeMultiplier(
-  totalNumPaths: number, node: InternalSummaryNode
-): void {
-  // TODO is this correct?
-  node.multiplier = node.totalNumPaths / totalNumPaths;
-}
-
-
-// InternalSummaryNodeInfo
-export function setSummaryNodeInfoPercentage(
-  type: string, node: InternalSummaryNode
-): void {
-  // TODO
-}
-
-export function setSummaryNodeInfoCumPercentage(
-  node: InternalSummaryNode
-): void {
-  node.breakdown.reduce((current, info) => {
-    info.cumPercentage = current;
-    return current + info.percentage;
+  // TODO temporary remove when fixed
+  inode.totalNumPaths = inode.breakdown.reduce((acc, b) => acc + b.numPaths, 0);
+  inode.multiplier = 1;
+  inode.partitions = inode.breakdown as any[];
+  inode.partitions.reduce((acc, b) => {
+    b.percentage = b.numPaths / inode.totalNumPaths;
+    b.cumPercentage = acc;
+    return acc + b.percentage;
   }, 0);
-}
 
-export function setSummaryNodeInfoColor(
-  type: ConceptType, node: InternalSummaryNode
-): void {
   // TODO
-}
 
-export function setSummaryNodeInfoOpacity(
-  type: VisibilityType, node: InternalSummaryNode
-): void {
-  // TODO
+  return inode;
 }
