@@ -100,7 +100,7 @@ export function isParentOf(parent: Node, node: Node): boolean {
 export function isAncestorOf(ancestor: Node, node: Node): boolean {
   if (node.path === ancestor.path && node.level > ancestor.level) {
     return true; // SingleNode/SummaryNode + SummaryNode
-  } else if (node.path.startsWith(ancestor.path)) {
+  } else if (node.path.startsWith(ancestor.path) && node.path !== ancestor.path) {
     return true; // SingleNode + SingleNode/SummaryNode
   } else {
     return false;
