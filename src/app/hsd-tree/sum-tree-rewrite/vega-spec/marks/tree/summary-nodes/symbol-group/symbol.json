@@ -8,7 +8,18 @@
 
     },
     "update": {
-
+      "x": {
+        "field": "x"
+      },
+      "y": {
+        "field": "y"
+      },
+      "width": {
+        "field": "width"
+      },
+      "height": {
+        "field": "height"
+      }
     }
   }
 }

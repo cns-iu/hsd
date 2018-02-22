@@ -3,7 +3,7 @@
   "name": "summaryNodeSymbols",
   "from": {
     "facet": {
-      "name": "breakdown",
+      "name": "rawBreakdown",
       "data": "summaryNodes",
       "field": "breakdown"
     }
