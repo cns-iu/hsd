@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/from';
-import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/toArray';
 
 import { bind as Bind } from 'bind-decorator';
 
@@ -16,6 +16,11 @@ import {
 } from './node';
 
 import { nodes, subtreeBreakdown } from './mock-data';
+
+function normalizeAllPaths(paths: string | string[]): string[] {
+  paths = Array.isArray(paths) ? paths : [paths];
+  return paths.map(normalizePath);
+}
 
 function rawNodeToSingleNode(node: any): SingleNode {
   return {
@@ -48,11 +53,11 @@ export class SumTreeDataService {
   constructor() { }
 
   @Bind
-  queryNode(path: string): Observable<SingleNode> {
-    path = normalizePath(path);
+  queryNodes(paths: string | string[]): Observable<SingleNode[]> {
+    paths = normalizeAllPaths(paths);
     return Observable.from(nodes).filter((node) => {
-      return normalizePath(node['NodePath']) === path;
-    }).map(rawNodeToSingleNode);
+      return paths.includes(normalizePath(node['NodePath']));
+    }).map(rawNodeToSingleNode).toArray();
   }
 
   @Bind

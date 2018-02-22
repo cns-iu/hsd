@@ -1,7 +1,7 @@
 {
   "type": "symbol",
   "shape": "circle",
-  "name": "singleNodesSymbol",
+  "name": "singleNodeSymbols",
   "from": {
     "data": "singleNodes"
   },

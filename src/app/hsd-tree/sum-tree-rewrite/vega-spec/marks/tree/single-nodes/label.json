@@ -1,0 +1,35 @@
+{
+  "type": "text",
+  "name": "singleNodeLabels",
+  "from": {
+    "data": "singleNodeSymbols"
+  },
+  "encode": {
+    "enter": {
+      "text": {
+        "field": "datum.label"
+      },
+      "align": {
+        "value": "center"
+      },
+      "baseline": {
+        "value": "bottom"
+      },
+      "fontSize": {
+        "value": 10
+      },
+      "fill": {
+        "value": "black"
+      }
+    },
+    "update": {
+      "x": {
+        "field": "x"
+      },
+      "y": {
+        "field": "y",
+        "offset": -9
+      }
+    }
+  }
+}

@@ -112,7 +112,7 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
     instance.signal(maxLevelName, 11); // TODO fix value
 
     // Optional
-    instance.signal(yMultiplierName, 25);
+    instance.signal(yMultiplierName, 30);
     // instance.signal(yOffsetName, 30);
 
     return Observable.empty();
@@ -138,7 +138,7 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
     const { nodesName, summariesName } = inputDataSetNames;
 
     // Load and process single nodes
-    const singleNodes = this.loadSingleNodes(this.initialNodePaths).do(
+    const singleNodes = this.service.queryNodes(this.initialNodePaths).do(
       instance.insert.bind(instance, nodesName) // TODO Might have to do some other processing here
     );
 
@@ -156,15 +156,6 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   // Data loading helpers
-  @Bind
-  private loadSingleNodes(paths: string[]): Observable<SingleNode[]> {
-    const nodeObservables = paths.map(this.service.queryNode);
-
-    // toArray ensures all nodes are returned at once since
-    // it would be bad to insert/process a partial tree.
-    return Observable.merge(...nodeObservables).toArray();
-  }
-
   @Bind
   private loadSummaryNodes(paths: string[]): Observable<SummaryNode[]> {
     const nodeObservables = paths.map(this.service.querySummaryNodes);

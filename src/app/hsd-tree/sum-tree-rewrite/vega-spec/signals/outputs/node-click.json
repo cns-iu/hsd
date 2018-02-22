@@ -5,10 +5,14 @@
       "events": [
         {
           "type": "click",
-          "markname": "singleNodesSymbol"
+          "markname": "singleNodeSymbols"
+        },
+        {
+          "type": "click",
+          "markname": "singleNodeValues"
         }
       ],
-      "update": "datum",
+      "update": "datum.datum || datum",
       "force": true
     }
   ]

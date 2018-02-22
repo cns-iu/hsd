@@ -1,0 +1,31 @@
+{
+  "type": "text",
+  "name": "singleNodeValues",
+  "from": {
+    "data": "singleNodeSymbols"
+  },
+  "encode": {
+    "enter": {
+      "text": {
+        "value": "1"
+      },
+      "align": {
+        "value": "center"
+      },
+      "baseline": {
+        "value": "middle"
+      },
+      "fontSize": {
+        "value": 6
+      }
+    },
+    "update": {
+      "x": {
+        "field": "x"
+      },
+      "y": {
+        "field": "y"
+      }
+    }
+  }
+}
