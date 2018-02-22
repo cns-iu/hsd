@@ -149,36 +149,43 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
   private setDataTuples(instance: any): Observable<any> {
     const { nodesName, summariesName } = inputDataSetNames;
 
-    const singleNodes = this.queryAndSetDataTuples<InternalSingleNode>(
-      instance, this.initialNodePaths, nodesName, 'queryNodes', (node) => {
-        return convertToInternalSingleNode(node); // TODO additional arguments
-      }
+    const singleNodes = this.queryAndSetDataTuples(
+      instance, this.initialNodePaths, this.service.queryNodes, nodesName,
+      (node) => convertToInternalSingleNode(node, {
+          // TODO additional arguments
+      })
     );
 
     const leafPaths = singleNodes.map(filterLeafs)
       .map((nodes) => nodes.map((node) => node.path));
 
     const summaryNodes = this.queryAndSetDataTuples(
-      instance, leafPaths, summariesName, 'querySummaryNodes', (node) => {
-        return convertToInternalSummaryNode(node); // TOD additional arguments
-      }
+      instance, leafPaths, this.service.querySummaryNodes, summariesName,
+      (node) => convertToInternalSummaryNode(node, {
+          // TODO additional arguments
+      })
     );
 
     return summaryNodes;
   }
 
-  private queryAndSetDataTuples<T>(
+  private queryAndSetDataTuples<T, U>(
     instance: any, paths: string | string[] | Observable<string[]>,
-    setName: string, queryFunc: string, modifier?: (tuple: any) => T
+    queryFunc: (paths: string[]) => Observable<U[]>,
+    changeset: string | any, modifier?: (tuple: U) => T,
   ): Observable<T[]> {
     paths = typeof paths === 'string' ? [paths] : paths;
     paths = Array.isArray(paths) ? Observable.of(paths) : paths;
 
-    const rawTuples: Observable<any[]> = paths.mergeMap((paths_) => this.service[queryFunc](paths_));
+    const insert = typeof changeset === 'string' ?
+      instance.insert.bind(instance, changeset) :
+      changeset.insert.bind(changeset);
+
+    const rawTuples: Observable<any[]> = paths.mergeMap(queryFunc);
     const allRawTuples = rawTuples.reduce((acc, tuples_) => acc.concat(tuples_), []);
     const tuples = modifier ? allRawTuples.map((tuples_) => tuples_.map(modifier)) : allRawTuples as Observable<T[]>;
 
-    return tuples.do((tuples_) => instance.insert(setName, tuples_));
+    return tuples.do(insert);
   }
 
   // Events
@@ -201,21 +208,27 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
     if (expanded) {
       nodeChanges.remove((inode) => isAncestorOf(node, inode));
       summaryChanges.remove((inode) => isAncestorOf(node, inode));
-      events.push(this.service.querySummaryNodes(node.path).do((snodes) => {
-        // TODO calculate stuff for snodes
-        summaryChanges.insert(snodes);
-      }));
+      events.push(this.queryAndSetDataTuples(
+        instance, node.path, this.service.querySummaryNodes, summaryChanges,
+        (node_) => convertToInternalSummaryNode(node_, {
+            // TODO additional arguments
+        })
+      ));
     } else {
       summaryChanges.remove((inode) => isAncestorOf(node, inode));
-      const childNodes = this.service.queryChildNodes(node.path).do((snodes) => {
-        // TODO calculat stuff for snodes
-        nodeChanges.insert(snodes);
-      });
-      const childSummaryNodes = childNodes.map((snode) => snode.map((n) => n.path))
-        .mergeMap(this.service.querySummaryNodes).do((snodes) => {
-          // TODO calculate stuff for snodes
-          summaryChanges.insert(snodes);
-        });
+      const childNodes = this.queryAndSetDataTuples(
+        instance, node.path, this.service.queryChildNodes, nodeChanges,
+        (node_) => convertToInternalSingleNode(node_, {
+            // TODO additional arguments
+        })
+      );
+      const childNodePaths = childNodes.map((snode) => snode.map((n) => n.path));
+      const childSummaryNodes = this.queryAndSetDataTuples(
+        instance, childNodePaths, this.service.querySummaryNodes, summaryChanges,
+        (node_) => convertToInternalSummaryNode(node_, {
+            // TODO additional arguments
+        })
+      );
 
       events.push(childSummaryNodes);
     }

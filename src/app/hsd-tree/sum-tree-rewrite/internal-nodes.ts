@@ -28,18 +28,28 @@ export interface InternalSummaryNode extends SummaryNode {
 }
 
 
+export interface InternalSingleNodeOptions {
+  // TODO
+}
+
+export interface InternalSummaryNodeOptions {
+  // TODO
+}
+
+
 // Initialization
 export function convertToInternalSingleNode(
-  node: SingleNode // TODO additional arguments
+  node: SingleNode, options: InternalSingleNodeOptions
 ): InternalSingleNode {
   const inode = node as InternalSingleNode;
+
   // TODO
 
   return inode;
 }
 
 export function convertToInternalSummaryNode(
-  node: SummaryNode // TODO additional arguments
+  node: SummaryNode, options: InternalSummaryNodeOptions
 ): InternalSummaryNode {
   const inode = node as InternalSummaryNode;
 
