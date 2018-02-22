@@ -7,6 +7,7 @@ import {
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/empty';
 import 'rxjs/add/observable/merge';
+import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/reduce';
@@ -18,8 +19,12 @@ import { vega, defaultLogLevel } from '../../vega';
 import { SumTreeDataService } from '../shared/sum-tree-data.service';
 import {
   Node, SingleNode, SummaryNode,
+  isParentOf, isAncestorOf,
   filterLeafs
 } from '../shared/node';
+import {
+  InternalNode, InternalSingleNode, InternalSummaryNode
+} from './internal-nodes';
 import vegaSpec, {
   inputDataSetNames,
   inputSignalNames, outputSignalNames
@@ -172,8 +177,14 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
       .do((allNodes) => {
         allNodes.forEach((node: any) => {
           node.count = node.breakdown.reduce((acc, b) => acc + b.numPaths, 0);
+          node.multiplier = 1;
+          node.breakdown.reduce((acc, b) => {
+            b.percentage = b.numPaths / node.count;
+            b.cumPercentage = acc;
+            return acc + b.percentage;
+          }, 0);
         });
-        // TODO calculate multiplier + cumPercentage + count
+        // TODO calculate multiplier + percentage + cumPercentage + count + color + opacity
         instance.insert(dataset, allNodes);
       });
 
@@ -182,7 +193,40 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
 
   // Events
   @Bind
-  private onNodeClick(name: string, node: SingleNode): void {
+  private onNodeClick(name: string, node: InternalSingleNode): void {
+    if (node === undefined) {
+      return;
+    }
+
+    const { nodesName, summariesName } = inputDataSetNames;
+    const instance = this.vegaInstance;
+    const nodes: InternalSingleNode[] = instance.data(nodesName);
+    const expanded = nodes.some((inode) => isParentOf(node, inode));
+    const nodeChanges = vega.changeset();
+    const summaryChanges = vega.changeset();
+    const events: Observable<any>[] = [];
+
+    if (expanded) {
+      nodeChanges.remove((inode) => isAncestorOf(node, inode));
+      summaryChanges.remove((inode) => isAncestorOf(node, inode));
+      events.push(this.service.querySummaryNodes(node.path).do((snodes) => {
+        // TODO calculate stuff for snodes
+        summaryChanges.insert(snodes);
+      }));
+    } else {
+      summaryChanges.remove((inode) => isAncestorOf(node, inode));
+      const childNodes = this.service.queryChildNodes(node.path).do((snodes) => {
+        // TODO calculat stuff for snodes
+        nodeChanges.insert(snodes);
+      });
+      const childSummaryNodes = childNodes.map((snode) => snode.map((n) => n.path))
+        .mergeMap(this.service.querySummaryNodes).do((snodes) => {
+          // TODO calculate stuff for snodes
+          summaryChanges.insert(snodes);
+        });
+
+      events.push(childSummaryNodes);
+    }
     // TODO
     // Outline
     // Determine if node is collapsed or expanded by searching for children
@@ -195,10 +239,17 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
     //  Remove summaries for this node with isAncestorOf
     //  Add direct children
     //  Add summaries for direct children
+
+    // Apply changes after all events have completed and rerun dataflow
+    Observable.merge(...events).subscribe(undefined, undefined, () => {
+      instance.change(nodesName, nodeChanges);
+      instance.change(summariesName, summaryChanges);
+      instance.runAfter(instance.run.bind(instance));
+    });
   }
 
   @Bind
-  private onSummaryClick(name: string, node: SummaryNode): void {
+  private onSummaryClick(name: string, node: InternalSummaryNode): void {
     // TODO
     // Outline
     // Remove this node and direct and indirect children with isAncestorOf
