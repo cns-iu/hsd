@@ -70,7 +70,10 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    // TODO
+    if ('vegaLogLevel' in changes && this.vegaInstance) {
+      this.vegaInstance.logLevel(changes['vegaLogLevel'].currentValue);
+    }
+    // TODO??
   }
 
   ngOnDestroy() {
@@ -98,8 +101,10 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
     // Run visualization
     initialized.subscribe(undefined, undefined, () => instance.run());
 
-    // Temporary - Debugging
-    console.log(instance);
+    // Debugging
+    if (this.vegaLogLevel >= 2) {
+      console.log(instance);
+    }
   }
 
   private destroyVegaInstance(): void {
