@@ -43,7 +43,7 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() maxLevel = 11;
 
-  @Input() summaryType = 'cumulative';
+  @Input() summaryType = 'byLevel';
   @Input() colorField = 'concept';
   @Input() opacityField = 'visibility';
 

@@ -91,10 +91,10 @@ export class SumTreeDataService {
     const pathFilter = makePathFilter(paths, 'NodePath');
     const entries = (subtreeBreakdown as any[]).filter(pathFilter);
     const byPath = groupBy(entries, 'NodePath');
-    const summaryNodes = Observable.from(Object.entries(byPath))
+    const summaryNodesObservable = Observable.from(Object.entries(byPath))
       .map(([path, rawNodes]) => {
         const byLevel = groupBy(rawNodes as any[], 'SubtreeLevel');
-        return Object.entries(byLevel).map(([level, acc]) => {
+        const summaryNodes = Object.entries(byLevel).map(([level, acc]) => {
           const breakdown = (acc as any[]).map(rawSummaryNodeToSummaryNodeInfo);
           return {
             type: 'SummaryNode',
@@ -103,8 +103,13 @@ export class SumTreeDataService {
             breakdown: breakdown
           } as SummaryNode;
         }).filter((node) => !isNaN(node.level));
-      });
+        summaryNodes.sort((a, b) => a.level - b.level);
+        summaryNodes.forEach((node, index, acc) => {
+          node.next = index === acc.length - 1 ? null : acc[index + 1];
+        });
 
-    return summaryNodes;
+        return summaryNodes;
+      });
+    return summaryNodesObservable;
   }
 }
