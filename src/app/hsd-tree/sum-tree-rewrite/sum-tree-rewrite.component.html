@@ -1,25 +1,25 @@
-<div [hidden]="true">
+<div class="vega-input">
   <mat-form-field>
-    <mat-select [(value)]="summaryType">
+    <mat-select placeholder="Summary Type" [(value)]="summaryType">
       <mat-option *ngFor="let type of summaryTypes" [value]="type.value">
         {{ type.viewValue }}
       </mat-option>
     </mat-select>
   </mat-form-field>
   <mat-form-field>
-    <mat-select [(value)]="colorField">
+    <mat-select placeholder="Color Field" [(value)]="colorField">
       <mat-option *ngFor="let type of colorFields" [value]="type.value">
         {{ type.viewValue }}
       </mat-option>
     </mat-select>
   </mat-form-field>
   <mat-form-field>
-    <mat-select [(value)]="opacityField">
+    <mat-select placeholder="Opacity Field" [(value)]="opacityField">
       <mat-option *ngFor="let type of opacityFields" [value]="type.value">
         {{ type.viewValue }}
       </mat-option>
     </mat-select>
   </mat-form-field>
 </div>
+
 <div #vegaVis>Vega Visualization Entry Point</div>
-<div #vegaInput id="vega-input"></div>

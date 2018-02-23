@@ -18,6 +18,7 @@ export interface NodeInfo {
   isSynonym: boolean;
   hasMetaData: boolean;
   numPaths: number;
+  tableName: string;
 }
 
 export interface SingleNode {

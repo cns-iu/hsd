@@ -51,7 +51,8 @@ function rawNodeToSingleNode(node: any): SingleNode {
       visibility: stringToVisibility(node['NodeVisibility']),
       isSynonym: stringToIsSynonym(node['NodeIsSynonym']),
       hasMetaData: stringToHasMetaData(node['NodeHasMetadataXML']),
-      numPaths: +node['NumberOfPaths']
+      numPaths: +node['NumberOfPaths'],
+      tableName: node['NodeTableName'] || ''
     }
   };
 }
@@ -62,7 +63,8 @@ function rawSummaryNodeToSummaryNodeInfo(node: any): NodeInfo {
     visibility: stringToVisibility(node['Visibility']),
     isSynonym: stringToIsSynonym(node['IsSynonym']),
     hasMetaData: stringToHasMetaData(node['HasMetadataXML']),
-    numPaths: +node['NumberOfPaths']
+    numPaths: +node['NumberOfPaths'],
+    tableName: node['TableName'] || ''
   };
 }
 

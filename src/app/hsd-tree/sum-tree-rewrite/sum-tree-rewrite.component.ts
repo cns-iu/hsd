@@ -40,31 +40,30 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
   private vegaInstance: any;
 
   @ViewChild('vegaVis') visElement: ElementRef;
-  @ViewChild('vegaInput') inputElement: ElementRef;
 
   @Input() summaryType = 'cumulative';
   @Input() colorField = 'concept';
   @Input() opacityField = 'visibility';
 
   @Input() summaryTypes = [
-    {value: 'Cummulative', viewValue: 'Cummulative'},
-    {value: 'By Level', viewValue: 'By Level'},
+    {value: 'cumulative', viewValue: 'Cumulative'},
+    {value: 'byLevel', viewValue: 'By Level'},
   ];
 
   @Input() colorFields = [
-    {value: 'Concept', viewValue: 'Concept'},
-    {value: 'Visibility', viewValue: 'Visibility'},
-    {value: 'Table Name', viewValue: 'Table Name'},
-    {value: 'Synonym', viewValue: 'Synonym'},
-    {value: 'Has XML MetaData', viewValue: 'Has XML MetaData'}
+    {value: 'concept', viewValue: 'Concept'},
+    {value: 'visibility', viewValue: 'Visibility'},
+    {value: 'tableName', viewValue: 'Table Name'},
+    {value: 'isSynonym', viewValue: 'Synonym'},
+    {value: 'hasMetaData', viewValue: 'Has XML MetaData'}
   ];
 
   @Input() opacityFields = [
-    {value: 'Concept', viewValue: 'Concept'},
-    {value: 'Visibility', viewValue: 'Visibility'},
-    {value: 'Table Name', viewValue: 'Table Name'},
-    {value: 'Synonym', viewValue: 'Synonym'},
-    {value: 'Has XML MetaData', viewValue: 'Has XML MetaData'}
+    {value: 'concept', viewValue: 'Concept'},
+    {value: 'visibility', viewValue: 'Visibility'},
+    {value: 'tableName', viewValue: 'Table Name'},
+    {value: 'isSynonym', viewValue: 'Synonym'},
+    {value: 'hasMetaData', viewValue: 'Has XML MetaData'}
   ];
 
   @Input() vegaLogLevel = defaultLogLevel;
@@ -110,7 +109,7 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
     const parsedSpec = vega.parse(vegaSpec);
     const instance = this.vegaInstance = new vega.View(parsedSpec)
       .renderer('svg') // In the future this might be replaced by a custom renderer
-      .initialize(this.visElement.nativeElement, this.inputElement.nativeElement)
+      .initialize(this.visElement.nativeElement)
       .logLevel(this.vegaLogLevel)
       .hover(); // Enable default handling of hover
 
