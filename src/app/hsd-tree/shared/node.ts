@@ -110,7 +110,7 @@ export function isAncestorOf(ancestor: Node, node: Node): boolean {
 }
 
 export function filterLeafs(nodes: SingleNode[]): SingleNode[] {
-  const leafMap: {[path: string]: boolean} = nodes.reduce((map, node) => {
+  const leafMap: { [path: string]: boolean } = nodes.reduce((map, node) => {
     map[parentPathFor(node)] = false;
     if (!(node.path in map)) {
       map[node.path] = true;

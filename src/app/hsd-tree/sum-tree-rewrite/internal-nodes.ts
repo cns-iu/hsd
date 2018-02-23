@@ -58,7 +58,7 @@ export function convertToInternalSingleNode(
 
   inode.color = getNodeInfoColor(inode.info, options.colorField);
   inode.opacity = getNodeInfoOpacity(inode.info, options.opacityField);
-  inode.tooltip = getSingleNodeTooltip(inode, options.tooltipField);
+  inode.tooltip = getSingleNodeTooltip(inode, options.summaryType, options.tooltipField);
 
   return inode;
 }
@@ -96,7 +96,7 @@ export function convertToInternalSummaryNode(
   inode.partitions.forEach((part: any) => {
     part.color = getNodeInfoColor(part, options.colorField);
     part.opacity = getNodeInfoOpacity(part, options.opacityField);
-    part.tooltip = getSummaryNodeBreakdownTooltip(node, part, options.tooltipField);
+    part.tooltip = getSummaryNodeBreakdownTooltip(node, part, options.summaryType, options.tooltipField);
   });
 
   inode.label = '' + inode.totalNumPaths;
