@@ -1,6 +1,6 @@
 <div class="vega-input">
   <mat-form-field>
-    <mat-select placeholder="Summary Type" [(value)]="summaryType">
+    <mat-select placeholder="Summary Type" [(value)]="summaryType" (valueChange)="onEncodingChange()">
       <mat-option *ngFor="let type of summaryTypes" [value]="type.value">
         {{ type.viewValue }}
       </mat-option>

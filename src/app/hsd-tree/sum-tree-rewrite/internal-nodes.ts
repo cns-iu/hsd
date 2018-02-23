@@ -33,11 +33,13 @@ export interface InternalSummaryNode extends SummaryNode {
 export interface InternalSingleNodeOptions {
   colorField?: string;
   opacityField?: string;
+  summaryType?: string;
 }
 
 export interface InternalSummaryNodeOptions {
   colorField?: string;
   opacityField?: string;
+  summaryType?: string;
 }
 
 

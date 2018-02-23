@@ -183,7 +183,8 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
       instance, this.initialNodePaths, this.service.queryNodes, nodesName,
       (node) => convertToInternalSingleNode(node, {
         colorField: this.colorField,
-        opacityField: this.opacityField
+        opacityField: this.opacityField,
+        summaryType: this.summaryType
       })
     );
 
@@ -194,7 +195,8 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
       instance, leafPaths, this.service.querySummaryNodes, summariesName,
       (node) => convertToInternalSummaryNode(node, {
         colorField: this.colorField,
-        opacityField: this.opacityField
+        opacityField: this.opacityField,
+        summaryType: this.summaryType
       })
     );
 
@@ -259,7 +261,8 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
         instance, node.path, this.service.querySummaryNodes, summaryChanges,
         (node_) => convertToInternalSummaryNode(node_, {
             colorField: this.colorField,
-            opacityField: this.opacityField
+            opacityField: this.opacityField,
+            summaryType: this.summaryType
         })
       ));
     } else {
@@ -268,7 +271,8 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
         instance, node.path, this.service.queryChildNodes, nodeChanges,
         (node_) => convertToInternalSingleNode(node_, {
           colorField: this.colorField,
-          opacityField: this.opacityField
+          opacityField: this.opacityField,
+          summaryType: this.summaryType
         })
       );
       const childNodePaths = childNodes.map((snode) => snode.map((n) => n.path));
@@ -276,7 +280,8 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
         instance, childNodePaths, this.service.querySummaryNodes, summaryChanges,
         (node_) => convertToInternalSummaryNode(node_, {
           colorField: this.colorField,
-          opacityField: this.opacityField
+          opacityField: this.opacityField,
+          summaryType: this.summaryType
         })
       );
 
