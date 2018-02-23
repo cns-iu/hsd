@@ -48,45 +48,45 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
   @Input() opacityField = 'visibility';
 
   @Input() summaryTypes = [
-    {value: 'cumulative', viewValue: 'Cumulative'},
-    {value: 'byLevel', viewValue: 'By Level'},
+    { value: 'cumulative', viewValue: 'Cumulative' },
+    { value: 'byLevel', viewValue: 'By Level' },
   ];
 
   @Input() colorFields = [
-    {value: 'concept', viewValue: 'Concept'},
-    {value: 'visibility', viewValue: 'Visibility'},
-    {value: 'tableName', viewValue: 'Table Name'},
-    {value: 'isSynonym', viewValue: 'Synonym'},
-    {value: 'hasMetaData', viewValue: 'Has XML MetaData'}
+    { value: 'concept', viewValue: 'Concept' },
+    { value: 'visibility', viewValue: 'Visibility' },
+    { value: 'tableName', viewValue: 'Table Name' },
+    { value: 'isSynonym', viewValue: 'Synonym' },
+    { value: 'hasMetaData', viewValue: 'Has XML MetaData' }
   ];
 
   @Input() opacityFields = [
-    {value: 'concept', viewValue: 'Concept'},
-    {value: 'visibility', viewValue: 'Visibility'},
-    {value: 'tableName', viewValue: 'Table Name'},
-    {value: 'isSynonym', viewValue: 'Synonym'},
-    {value: 'hasMetaData', viewValue: 'Has XML MetaData'}
+    { value: 'concept', viewValue: 'Concept' },
+    { value: 'visibility', viewValue: 'Visibility' },
+    { value: 'tableName', viewValue: 'Table Name' },
+    { value: 'isSynonym', viewValue: 'Synonym' },
+    { value: 'hasMetaData', viewValue: 'Has XML MetaData' }
   ];
 
   @Input() vegaLogLevel = defaultLogLevel;
   @Input() initialNodePaths = [
     '\\pcori',
-      '\\pcori\\demographic',
-      '\\pcori\\diagnosis',
-      '\\pcori\\encounter',
-      '\\pcori\\enrollment',
-      '\\pcori\\lab_result_cm',
-      '\\pcori\\medication',
-      '\\pcori\\procedure',
-        '\\pcori\\procedure\\09',
-        '\\pcori\\procedure\\10',
-        '\\pcori\\procedure\\11',
-        '\\pcori\\procedure\\ch',
-        '\\pcori\\procedure\\lc',
-        '\\pcori\\procedure\\nd',
-        '\\pcori\\procedure\\re',
-        '\\pcori\\procedure\\version',
-      '\\pcori\\vital'
+    '\\pcori\\demographic',
+    '\\pcori\\diagnosis',
+    '\\pcori\\encounter',
+    '\\pcori\\enrollment',
+    '\\pcori\\lab_result_cm',
+    '\\pcori\\medication',
+    '\\pcori\\procedure',
+    '\\pcori\\procedure\\09',
+    '\\pcori\\procedure\\10',
+    '\\pcori\\procedure\\11',
+    '\\pcori\\procedure\\ch',
+    '\\pcori\\procedure\\lc',
+    '\\pcori\\procedure\\nd',
+    '\\pcori\\procedure\\re',
+    '\\pcori\\procedure\\version',
+    '\\pcori\\vital'
   ];
 
   constructor(private service: SumTreeDataService) { }
@@ -260,9 +260,9 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
       events.push(this.queryAndSetDataTuples(
         instance, node.path, this.service.querySummaryNodes, summaryChanges,
         (node_) => convertToInternalSummaryNode(node_, {
-            colorField: this.colorField,
-            opacityField: this.opacityField,
-            summaryType: this.summaryType
+          colorField: this.colorField,
+          opacityField: this.opacityField,
+          summaryType: this.summaryType
         })
       ));
     } else {

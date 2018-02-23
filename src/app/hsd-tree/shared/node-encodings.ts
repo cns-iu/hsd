@@ -68,10 +68,23 @@ export function getNodeInfoOpacity(nodeInfo: NodeInfo, fieldName: string = 'visi
   return opacity;
 }
 
-export function getSingleNodeTooltip(node: SingleNode, summaryType = 'cumulative'): string {
-  return node.path + ' ' + ConceptType[node.info.concept];
+export function getSingleNodeTooltip(
+  node: SingleNode,
+  summaryType = 'cumulative',
+  fieldName = 'tooltip',
+  defaultTooltip = 'Single Node'): string {
+  switch (summaryType) {
+    case 'cumulative': return node.path + ' ' + ConceptType[node.info.concept];
+    case 'byLevel': return 'Level ' + node.level.toString();
+  }
+
 }
 
-export function getSummaryNodeBreakdownTooltip(node: SummaryNode, part: NodeInfo, summaryType = 'cumulative'): string {
+export function getSummaryNodeBreakdownTooltip(
+  node: SummaryNode,
+  part: NodeInfo,
+  summaryType = 'cumulative',
+  fieldName = 'tooltip',
+  defaultTooltip = 'Single Node'): string {
   return '# Concepts: ' + part.numPaths;
 }

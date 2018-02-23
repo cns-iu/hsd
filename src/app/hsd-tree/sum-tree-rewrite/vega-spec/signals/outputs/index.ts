@@ -7,7 +7,7 @@ import * as opacitySignal from './opacity.json';
 
 export const nodeClickName: string = nodeClickSignal['name'];
 export const summaryClickName: string = summaryClickSignal['name'];
-export const  summaryTypeName: string = summaryTypeSignal['name'];
+export const summaryTypeName: string = summaryTypeSignal['name'];
 export const colorName: string = colorSignal['name'];
 export const opacityName: string = opacitySignal['name'];
 
