@@ -108,7 +108,7 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
         color: '#FF0000'
       }
     ]
-  }
+  };
 
   @Input() opacityMappings = {
     'concept': [
@@ -119,55 +119,55 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
       },
       {
         label: 'Folder',
-        color: 'rgba(112,173,71,0.6)'
+        color: 'rgba(91,155,213,0.6)'
       },
       {
         label: 'Leaf',
-        color: 'rgba(255,192,0,0.3)'
+        color: 'rgba(91,155,213,0.3)'
       }
     ],
     'visibility': [
       {
-        label: 'Case',
+        label: 'Active',
         color: 'rgba(91,155,213,1)'
 
       },
       {
-        label: 'Folder',
-        color: 'rgba(112,173,71,0.6)'
+        label: 'Inactive',
+        color: 'rgba(91,155,213,0.6)'
       },
       {
-        label: 'Leaf',
-        color: 'rgba(255,192,0,0.2)'
+        label: 'Hidden',
+        color: 'rgba(91,155,213,0.2)'
       }
     ],
     'tableName': [
       {
         label: 'Coming Soon',
-        color: 'rgba(0,255,255,0.5)'
+        color: 'rgba(91,155,213,1.0)'
       }
     ],
     'isSynonym': [
       {
         label: 'Yes',
-        color: 'rgba(0,255,0,1)'
+        color: 'rgba(91,155,213,1)'
       },
       {
         label: 'No',
-        color: 'rgba(255,0,0,0.5)'
+        color: 'rgba(91,155,213,0.5)'
       }
     ],
     'hasMetaData': [
       {
         label: 'Yes',
-        color: 'rgba(0,255,0,1)'
+        color: 'rgba(91,155,213,1)'
       },
       {
         label: 'No',
-        color: 'rgba(255,0,0,0.5)'
+        color: 'rgba(91,155,213,0.5)'
       }
     ]
-  }
+  };
 
   @Input() colorFields = [
     {
@@ -186,8 +186,6 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
       value: 'hasMetaData', viewValue: 'Has XML MetaData'
     }
   ];
-
-  
 
   @Input() opacityFields = [
     { value: 'concept', viewValue: 'Concept' },

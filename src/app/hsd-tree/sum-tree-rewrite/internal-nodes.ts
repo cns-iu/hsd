@@ -120,6 +120,7 @@ export function convertToInternalSummaryNode(
   }, 0);
 
 
+  // inode.multiplier = inode.totalNumPaths / 403181;
   inode.label = '' + inode.totalNumPaths;
 
   return inode;
