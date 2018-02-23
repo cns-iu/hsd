@@ -42,6 +42,31 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('vegaVis') visElement: ElementRef;
   @ViewChild('vegaInput') inputElement: ElementRef;
 
+  @Input() summaryType = 'cumulative';
+  @Input() colorField = 'concept';
+  @Input() opacityField = 'visibility';
+
+  @Input() summaryTypes = [
+    {value: 'Cummulative', viewValue: 'Cummulative'},
+    {value: 'By Level', viewValue: 'By Level'},
+  ];
+
+  @Input() colorFields = [
+    {value: 'Concept', viewValue: 'Concept'},
+    {value: 'Visibility', viewValue: 'Visibility'},
+    {value: 'Table Name', viewValue: 'Table Name'},
+    {value: 'Synonym', viewValue: 'Synonym'},
+    {value: 'Has XML MetaData', viewValue: 'Has XML MetaData'}
+  ];
+
+  @Input() opacityFields = [
+    {value: 'Concept', viewValue: 'Concept'},
+    {value: 'Visibility', viewValue: 'Visibility'},
+    {value: 'Table Name', viewValue: 'Table Name'},
+    {value: 'Synonym', viewValue: 'Synonym'},
+    {value: 'Has XML MetaData', viewValue: 'Has XML MetaData'}
+  ];
+
   @Input() vegaLogLevel = defaultLogLevel;
   @Input() initialNodePaths = [
     '\\pcori',
@@ -143,10 +168,6 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
 
     instance.addSignalListener(nodeClickName, this.onNodeClick);
     instance.addSignalListener(summaryClickName, this.onSummaryClick);
-
-    instance.addSignalListener(summaryTypeName, this.onSummaryTypeChange);
-    instance.addSignalListener(colorName, this.onColorFieldChange);
-    instance.addSignalListener(opacityName, this.onOpacityFieldChange);
 
     return Observable.empty();
   }
@@ -253,20 +274,5 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
     // Remove this node and direct and indirect children with isAncestorOf
     // Add SingleNodes for this node's parent
     // Add summaries for the inserted nodes
-  }
-
-  @Bind
-  private onSummaryTypeChange(name: string, type: string): void {
-    // TODO
-  }
-
-  @Bind
-  private onColorFieldChange(name: string, value: string): void {
-    // TODO
-  }
-
-  @Bind
-  private onOpacityFieldChange(name: string, value: string): void {
-    // TODO
   }
 }

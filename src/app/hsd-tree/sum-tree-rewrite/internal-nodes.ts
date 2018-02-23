@@ -3,6 +3,8 @@ import {
   ConceptType, VisibilityType
 } from '../shared/node';
 
+import { getNodeInfoColor, getNodeInfoOpacity } from '../shared/node-encodings';
+
 export type InternalNode = InternalSingleNode | InternalSummaryNode;
 
 export interface InternalSingleNode extends SingleNode {
@@ -29,11 +31,13 @@ export interface InternalSummaryNode extends SummaryNode {
 
 
 export interface InternalSingleNodeOptions {
-  // TODO
+  colorField?: string;
+  opacityField?: string;
 }
 
 export interface InternalSummaryNodeOptions {
-  // TODO
+  colorField?: string;
+  opacityField?: string;
 }
 
 
@@ -43,7 +47,8 @@ export function convertToInternalSingleNode(
 ): InternalSingleNode {
   const inode = node as InternalSingleNode;
 
-  // TODO
+  inode.color = getNodeInfoColor(inode.info, options.colorField);
+  inode.opacity = getNodeInfoOpacity(inode.info, options.opacityField);
 
   return inode;
 }
@@ -63,7 +68,10 @@ export function convertToInternalSummaryNode(
     return acc + b.percentage;
   }, 0);
 
-  // TODO
+  inode.partitions.forEach((part: any) => {
+    part.color = getNodeInfoColor(part, options.colorField);
+    part.opacity = getNodeInfoOpacity(part, options.opacityField);
+  });
 
   return inode;
 }

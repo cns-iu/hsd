@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MatSelectModule } from '@angular/material/select';
 
 import { SumTreeDataService } from './shared/sum-tree-data.service';
 
@@ -11,7 +12,8 @@ import { SumTreeRewriteComponent } from './sum-tree-rewrite/sum-tree-rewrite.com
 
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,
+    MatSelectModule
   ],
   exports: [
     SimpleTreeComponent, SumTreeComponent, SumTreeV2Component,

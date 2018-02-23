@@ -13,7 +13,15 @@
       "y": {
         "field": "y"
       },
-
+      "fill": {
+        "field": "color"
+      },
+      "stroke": {
+        "value": "#4374A0"
+      },
+      "opacity": {
+        "field": "opacity"
+      },
       "size": {
         "value": 300
       }
