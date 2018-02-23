@@ -21,6 +21,7 @@ export interface InternalSummaryNodePartition {
 
   color: string;
   opacity: number;
+  groupingKey?: string;
 }
 
 export interface InternalSummaryNode extends SummaryNode {
@@ -49,6 +50,15 @@ export interface InternalSummaryNodeOptions {
   summaryType?: string;
 }
 
+function groupBy(items: any[], field: string): {} {
+  return items.reduce((acc, item) => {
+    const key = item[field];
+    const group = acc[key] || (acc[key] = []);
+
+    group.push(item);
+    return acc;
+  }, {});
+}
 
 // Initialization
 export function convertToInternalSingleNode(
@@ -87,17 +97,28 @@ export function convertToInternalSummaryNode(
     inode.totalNumPaths = inode.cumulativeTotalNumPaths;
   }
 
+  inode.partitions.forEach((part: any) => {
+    part.color = getNodeInfoColor(part, options.colorField);
+    part.opacity = getNodeInfoOpacity(part, options.opacityField);
+    part.tooltip = getSummaryNodeBreakdownTooltip(node, part, options.summaryType, options.tooltipField);
+
+    part.groupingKey = '' + (part.opacity * 100) + '_' + part.color;
+  });
+
+  if (options.summaryType === 'cumulative') {
+    const byPartition = groupBy(inode.partitions, 'groupingKey');
+    inode.partitions = Object.entries(byPartition).map(([part, parts]) => {
+      parts[0].numPaths = (parts as any[]).reduce((acc, b) => acc + b.numPaths, 0);
+      return parts[0];
+    });
+  }
+
   inode.partitions.reduce((acc, b) => {
     b.percentage = b.numPaths / inode.totalNumPaths;
     b.cumPercentage = acc;
     return acc + b.percentage;
   }, 0);
 
-  inode.partitions.forEach((part: any) => {
-    part.color = getNodeInfoColor(part, options.colorField);
-    part.opacity = getNodeInfoOpacity(part, options.opacityField);
-    part.tooltip = getSummaryNodeBreakdownTooltip(node, part, options.summaryType, options.tooltipField);
-  });
 
   inode.label = '' + inode.totalNumPaths;
 
