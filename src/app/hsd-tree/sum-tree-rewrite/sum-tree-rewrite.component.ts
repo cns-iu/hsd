@@ -52,13 +52,142 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
     { value: 'byLevel', viewValue: 'By Level' },
   ];
 
+  @Input() colorMappings = {
+    'concept': [
+      {
+        label: 'Case',
+        color: '#5B9BD5'
+
+      },
+      {
+        label: 'Folder',
+        color: '#70AD47'
+      },
+      {
+        label: 'Leaf',
+        color: '#FFC000'
+      }
+    ],
+    'visibility': [
+      {
+        label: 'Active',
+        color: '#5B9BD5'
+      },
+      {
+        label: 'Inactive',
+        color: '#70AD47'
+      },
+      {
+        label: 'Hidden',
+        color: '#FFC000'
+      }
+    ],
+    'tableName': [
+      {
+        label: 'Coming Soon',
+        color: '#00ffff'
+      }
+    ],
+    'isSynonym': [
+      {
+        label: 'Yes',
+        color: '#00FF00'
+      },
+      {
+        label: 'No',
+        color: '#FF0000'
+      }
+    ],
+    'hasMetaData': [
+      {
+        label: 'Yes',
+        color: '#00FF00'
+      },
+      {
+        label: 'No',
+        color: '#FF0000'
+      }
+    ]
+  }
+
+  @Input() opacityMappings = {
+    'concept': [
+      {
+        label: 'Case',
+        color: 'rgba(91,155,213,1)'
+
+      },
+      {
+        label: 'Folder',
+        color: 'rgba(112,173,71,0.6)'
+      },
+      {
+        label: 'Leaf',
+        color: 'rgba(255,192,0,0.3)'
+      }
+    ],
+    'visibility': [
+      {
+        label: 'Case',
+        color: 'rgba(91,155,213,1)'
+
+      },
+      {
+        label: 'Folder',
+        color: 'rgba(112,173,71,0.6)'
+      },
+      {
+        label: 'Leaf',
+        color: 'rgba(255,192,0,0.2)'
+      }
+    ],
+    'tableName': [
+      {
+        label: 'Coming Soon',
+        color: 'rgba(0,255,255,0.5)'
+      }
+    ],
+    'isSynonym': [
+      {
+        label: 'Yes',
+        color: 'rgba(0,255,0,1)'
+      },
+      {
+        label: 'No',
+        color: 'rgba(255,0,0,0.5)'
+      }
+    ],
+    'hasMetaData': [
+      {
+        label: 'Yes',
+        color: 'rgba(0,255,0,1)'
+      },
+      {
+        label: 'No',
+        color: 'rgba(255,0,0,0.5)'
+      }
+    ]
+  }
+
   @Input() colorFields = [
-    { value: 'concept', viewValue: 'Concept' },
-    { value: 'visibility', viewValue: 'Visibility' },
-    { value: 'tableName', viewValue: 'Table Name' },
-    { value: 'isSynonym', viewValue: 'Synonym' },
-    { value: 'hasMetaData', viewValue: 'Has XML MetaData' }
+    {
+      value: 'concept', viewValue: 'Concept'
+    },
+    {
+      value: 'visibility', viewValue: 'Visibility'
+    },
+    {
+      value: 'tableName', viewValue: 'Table Name'
+    },
+    {
+      value: 'isSynonym', viewValue: 'Synonym'
+    },
+    {
+      value: 'hasMetaData', viewValue: 'Has XML MetaData'
+    }
   ];
+
+  
 
   @Input() opacityFields = [
     { value: 'concept', viewValue: 'Concept' },
