@@ -46,7 +46,7 @@ export function normalizePath(path: string): string {
 }
 
 
-// Convertion utility
+// Conversion utility
 
 const stringToConceptMap = {
   'case': ConceptType.Case,

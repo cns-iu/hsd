@@ -3,13 +3,14 @@ import {
   ConceptType, VisibilityType
 } from '../shared/node';
 
-import { getNodeInfoColor, getNodeInfoOpacity } from '../shared/node-encodings';
+import { getNodeInfoColor, getNodeInfoOpacity, getSingleNodeTooltip, getSummaryNodeBreakdownTooltip } from '../shared/node-encodings';
 
 export type InternalNode = InternalSingleNode | InternalSummaryNode;
 
 export interface InternalSingleNode extends SingleNode {
   color: string;
   opacity: number;
+  tooltip: string;
 }
 
 export interface InternalSummaryNodePartition {
@@ -25,6 +26,7 @@ export interface InternalSummaryNodePartition {
 export interface InternalSummaryNode extends SummaryNode {
   totalNumPaths: number;
   multiplier: number;
+  tooltip: string;
 
   partitions: InternalSummaryNodePartition[];
 }
@@ -33,11 +35,13 @@ export interface InternalSummaryNode extends SummaryNode {
 export interface InternalSingleNodeOptions {
   colorField?: string;
   opacityField?: string;
+  tooltipField?: string;
 }
 
 export interface InternalSummaryNodeOptions {
   colorField?: string;
   opacityField?: string;
+  tooltipField?: string;
 }
 
 
@@ -49,6 +53,7 @@ export function convertToInternalSingleNode(
 
   inode.color = getNodeInfoColor(inode.info, options.colorField);
   inode.opacity = getNodeInfoOpacity(inode.info, options.opacityField);
+  inode.tooltip = getSingleNodeTooltip(inode, options.tooltipField);
 
   return inode;
 }
@@ -71,6 +76,7 @@ export function convertToInternalSummaryNode(
   inode.partitions.forEach((part: any) => {
     part.color = getNodeInfoColor(part, options.colorField);
     part.opacity = getNodeInfoOpacity(part, options.opacityField);
+    part.tooltip = getSummaryNodeBreakdownTooltip(node, part, options.tooltipField);
   });
 
   return inode;

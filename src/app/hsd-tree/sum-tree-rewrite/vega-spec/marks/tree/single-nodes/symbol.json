@@ -24,6 +24,9 @@
       },
       "size": {
         "value": 300
+      },
+      "tooltip": {
+        "field": "tooltip"
       }
     }
   }

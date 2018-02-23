@@ -20,7 +20,7 @@ import { SumTreeDataService } from '../shared/sum-tree-data.service';
 import {
   Node, SingleNode, SummaryNode,
   isParentOf, isAncestorOf,
-  filterLeafs
+  filterLeafs, ConceptType
 } from '../shared/node';
 import {
   InternalNode, InternalSingleNode, InternalSummaryNode,
@@ -274,4 +274,5 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
     // Add SingleNodes for this node's parent
     // Add summaries for the inserted nodes
   }
+
 }
