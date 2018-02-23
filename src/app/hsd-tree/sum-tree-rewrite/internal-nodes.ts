@@ -24,7 +24,10 @@ export interface InternalSummaryNodePartition {
 }
 
 export interface InternalSummaryNode extends SummaryNode {
+  label: string;
   totalNumPaths: number;
+  cumulativeTotalNumPaths: number;
+  byLevelTotalNumPaths: number;
   multiplier: number;
   tooltip: string;
 
@@ -64,11 +67,26 @@ export function convertToInternalSummaryNode(
   node: SummaryNode, options: InternalSummaryNodeOptions
 ): InternalSummaryNode {
   const inode = node as InternalSummaryNode;
-
-  // TODO temporary remove when fixed
-  inode.totalNumPaths = inode.breakdown.reduce((acc, b) => acc + b.numPaths, 0);
   inode.multiplier = 1;
   inode.partitions = inode.breakdown as any[];
+
+  const totalNumPaths = inode.breakdown.reduce((acc, b) => acc + b.numPaths, 0);
+  inode.byLevelTotalNumPaths = totalNumPaths;
+
+  if (options.summaryType === 'byLevel') {
+    inode.totalNumPaths = totalNumPaths;
+    inode.cumulativeTotalNumPaths = 0; // Don't compute it if we don't need it.
+  } else {
+    inode.cumulativeTotalNumPaths = totalNumPaths;
+    let cumNode = inode.next;
+    while (cumNode !== null) {
+      inode.cumulativeTotalNumPaths += cumNode.breakdown.reduce((acc, b) => acc + b.numPaths, 0);
+      inode.partitions = inode.partitions.concat(cumNode.breakdown as any[]);
+      cumNode = cumNode.next;
+    }
+    inode.totalNumPaths = inode.cumulativeTotalNumPaths;
+  }
+
   inode.partitions.reduce((acc, b) => {
     b.percentage = b.numPaths / inode.totalNumPaths;
     b.cumPercentage = acc;
@@ -80,6 +98,8 @@ export function convertToInternalSummaryNode(
     part.opacity = getNodeInfoOpacity(part, options.opacityField);
     part.tooltip = getSummaryNodeBreakdownTooltip(node, part, options.tooltipField);
   });
+
+  inode.label = '' + inode.totalNumPaths;
 
   return inode;
 }

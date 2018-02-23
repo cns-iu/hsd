@@ -34,6 +34,7 @@ export interface SummaryNode {
   level: number;
   path: string;
   breakdown: NodeInfo[];
+  next?: SummaryNode;
 }
 
 

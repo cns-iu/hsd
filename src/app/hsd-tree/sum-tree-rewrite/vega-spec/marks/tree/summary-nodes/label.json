@@ -21,7 +21,7 @@
     },
     "update": {
       "text": {
-        "field": "datum.totalNumPaths"
+        "field": "datum.label"
       },
       "x": {
         "field": "x"
