@@ -7,14 +7,14 @@
     </mat-select>
   </mat-form-field>
   <mat-form-field>
-    <mat-select placeholder="Color Field" [(value)]="colorField">
+    <mat-select placeholder="Color Field" [(value)]="colorField" (valueChange)="onEncodingChange()">
       <mat-option *ngFor="let type of colorFields" [value]="type.value">
         {{ type.viewValue }}
       </mat-option>
     </mat-select>
   </mat-form-field>
   <mat-form-field>
-    <mat-select placeholder="Opacity Field" [(value)]="opacityField">
+    <mat-select placeholder="Opacity Field" [(value)]="opacityField" (valueChange)="onEncodingChange()">
       <mat-option *ngFor="let type of opacityFields" [value]="type.value">
         {{ type.viewValue }}
       </mat-option>
