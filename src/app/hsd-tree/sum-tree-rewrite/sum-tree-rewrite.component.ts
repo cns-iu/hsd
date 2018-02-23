@@ -221,23 +221,18 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   onEncodingChange() {
-    const instance = this.vegaInstance;
-    const { nodesName, summariesName } = inputDataSetNames;
+    // FIXME: This is cheating.
+    this.destroyVegaInstance();
+    this.createVegaInstance();
 
-    console.log(this.colorField, this.opacityField);
-
-    const dataInitialized = this.setDataTuples(instance);
-
-    const initialized = Observable.merge(
-      dataInitialized
-    );
-
-    dataInitialized.subscribe(undefined, undefined, () => {
-      instance.change(nodesName, vega.changeset().reflow());
-      instance.change(summariesName, vega.changeset().reflow());
-      instance.runAfter(instance.run.bind(instance));
-    });
-
+    // const instance = this.vegaInstance;
+    // const { nodesName, summariesName } = inputDataSetNames;
+    // const dataInitialized = this.setDataTuples(instance);
+    // dataInitialized.subscribe(undefined, undefined, () => {
+    //   // instance.change(nodesName, vega.changeset().modify((x) => true).reflow());
+    //   // instance.change(summariesName, vega.changeset().modify((x) => true).reflow());
+    //   instance.runAfter(() => instance.run());
+    // });
   }
 
   // Events
