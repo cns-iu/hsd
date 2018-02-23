@@ -41,6 +41,8 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
 
   @ViewChild('vegaVis') visElement: ElementRef;
 
+  @Input() maxLevel = 11;
+
   @Input() summaryType = 'cumulative';
   @Input() colorField = 'concept';
   @Input() opacityField = 'visibility';
@@ -97,7 +99,10 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
     if ('vegaLogLevel' in changes && this.vegaInstance) {
       this.vegaInstance.logLevel(changes['vegaLogLevel'].currentValue);
     }
-    // TODO??
+    if (('colorField' in changes || 'opacityField' in changes) && this.vegaInstance) {
+      this.onEncodingChange();
+    }
+    console.log(changes);
   }
 
   ngOnDestroy() {
@@ -145,7 +150,7 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
     } = inputSignalNames;
 
     // Required
-    instance.signal(maxLevelName, 11); // TODO fix value
+    instance.signal(maxLevelName, this.maxLevel);
 
     // Optional
     instance.signal(yMultiplierName, 30);
@@ -177,7 +182,9 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
     const singleNodes = this.queryAndSetDataTuples(
       instance, this.initialNodePaths, this.service.queryNodes, nodesName,
       (node) => convertToInternalSingleNode(node, {
-          // TODO additional arguments
+        colorField: this.colorField,
+        opacityField: this.opacityField,
+        summaryType: this.summaryType
       })
     );
 
@@ -187,7 +194,9 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
     const summaryNodes = this.queryAndSetDataTuples(
       instance, leafPaths, this.service.querySummaryNodes, summariesName,
       (node) => convertToInternalSummaryNode(node, {
-          // TODO additional arguments
+        colorField: this.colorField,
+        opacityField: this.opacityField,
+        summaryType: this.summaryType
       })
     );
 
@@ -213,6 +222,21 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
     return tuples.do(insert);
   }
 
+  onEncodingChange() {
+    // FIXME: This is cheating.
+    this.destroyVegaInstance();
+    this.createVegaInstance();
+
+    // const instance = this.vegaInstance;
+    // const { nodesName, summariesName } = inputDataSetNames;
+    // const dataInitialized = this.setDataTuples(instance);
+    // dataInitialized.subscribe(undefined, undefined, () => {
+    //   // instance.change(nodesName, vega.changeset().modify((x) => true).reflow());
+    //   // instance.change(summariesName, vega.changeset().modify((x) => true).reflow());
+    //   instance.runAfter(() => instance.run());
+    // });
+  }
+
   // Events
   // Do not call vegaInstance.run() directly in the callbacks!
   // Use vegaInstance.runAfter(vegaInstance.run.bind(vegaInstance))
@@ -236,7 +260,9 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
       events.push(this.queryAndSetDataTuples(
         instance, node.path, this.service.querySummaryNodes, summaryChanges,
         (node_) => convertToInternalSummaryNode(node_, {
-            // TODO additional arguments
+            colorField: this.colorField,
+            opacityField: this.opacityField,
+            summaryType: this.summaryType
         })
       ));
     } else {
@@ -244,14 +270,18 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
       const childNodes = this.queryAndSetDataTuples(
         instance, node.path, this.service.queryChildNodes, nodeChanges,
         (node_) => convertToInternalSingleNode(node_, {
-            // TODO additional arguments
+          colorField: this.colorField,
+          opacityField: this.opacityField,
+          summaryType: this.summaryType
         })
       );
       const childNodePaths = childNodes.map((snode) => snode.map((n) => n.path));
       const childSummaryNodes = this.queryAndSetDataTuples(
         instance, childNodePaths, this.service.querySummaryNodes, summaryChanges,
         (node_) => convertToInternalSummaryNode(node_, {
-            // TODO additional arguments
+          colorField: this.colorField,
+          opacityField: this.opacityField,
+          summaryType: this.summaryType
         })
       );
 

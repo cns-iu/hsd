@@ -36,12 +36,14 @@ export interface InternalSingleNodeOptions {
   colorField?: string;
   opacityField?: string;
   tooltipField?: string;
+  summaryType?: string;
 }
 
 export interface InternalSummaryNodeOptions {
   colorField?: string;
   opacityField?: string;
   tooltipField?: string;
+  summaryType?: string;
 }
 
 
