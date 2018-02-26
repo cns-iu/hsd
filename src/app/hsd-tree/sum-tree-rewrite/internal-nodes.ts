@@ -21,6 +21,7 @@ export interface InternalSummaryNodePartition {
 
   color: string;
   opacity: number;
+
   groupingKey?: string;
 }
 
@@ -29,6 +30,7 @@ export interface InternalSummaryNode extends SummaryNode {
   totalNumPaths: number;
   cumulativeTotalNumPaths: number;
   byLevelTotalNumPaths: number;
+  numPathsRef: {max: number};
   multiplier: number;
   tooltip: string;
 
@@ -48,9 +50,10 @@ export interface InternalSummaryNodeOptions {
   opacityField?: string;
   tooltipField?: string;
   summaryType?: string;
+  numPathsRef?: {[path: string]: number, max: number};
 }
 
-function groupBy(items: any[], field: string): {} {
+function groupBy<T>(items: T[], field: string): {[key: string]: T[]} {
   return items.reduce((acc, item) => {
     const key = item[field];
     const group = acc[key] || (acc[key] = []);
@@ -58,6 +61,20 @@ function groupBy(items: any[], field: string): {} {
     group.push(item);
     return acc;
   }, {});
+}
+
+function updateNumPathsRef(
+  ref: {[path: string]: number, max: number}, path: string, value: number
+): void {
+  ref[path] = Math.max(ref[path] || 0, value);
+
+  if (ref.max < 0) {
+    ref.max = Object.entries(ref).reduce((acc, [, max]) => {
+      return Math.max(acc, max);
+    }, 0);
+  } else {
+    ref.max = Math.max(ref.max, ref[path]);
+  }
 }
 
 // Initialization
@@ -77,51 +94,90 @@ export function convertToInternalSummaryNode(
   node: SummaryNode, options: InternalSummaryNodeOptions
 ): InternalSummaryNode {
   const inode = node as InternalSummaryNode;
-  inode.multiplier = 1;
-  inode.partitions = inode.breakdown as any[];
 
-  const totalNumPaths = inode.breakdown.reduce((acc, b) => acc + b.numPaths, 0);
-  inode.byLevelTotalNumPaths = totalNumPaths;
+  // Calculate path counts
+  if (inode.byLevelTotalNumPaths === undefined) {
+    inode.byLevelTotalNumPaths = inode.breakdown.reduce((acc, b) => {
+      return acc + b.numPaths;
+    }, 0);
+  }
 
   if (options.summaryType === 'byLevel') {
-    inode.totalNumPaths = totalNumPaths;
-    inode.cumulativeTotalNumPaths = 0; // Don't compute it if we don't need it.
-  } else {
-    inode.cumulativeTotalNumPaths = totalNumPaths;
-    let cumNode = inode.next;
-    while (cumNode !== null) {
-      inode.cumulativeTotalNumPaths += cumNode.breakdown.reduce((acc, b) => acc + b.numPaths, 0);
-      inode.partitions = inode.partitions.concat(cumNode.breakdown as any[]);
-      cumNode = cumNode.next;
+    inode.totalNumPaths = inode.byLevelTotalNumPaths;
+  } else if (options.summaryType === 'cumulative') {
+    if (inode.cumulativeTotalNumPaths === undefined) {
+      let total = inode.byLevelTotalNumPaths;
+      let next = inode.next as InternalSummaryNode;
+
+      if (next != null && next.cumulativeTotalNumPaths !== undefined) {
+        total += next.cumulativeTotalNumPaths;
+      } else {
+        while (next != null) {
+          total += (next.byLevelTotalNumPaths ||
+            (next.byLevelTotalNumPaths = next.breakdown.reduce((acc, b) => {
+              return acc + b.numPaths;
+            }, 0)));
+          next = next.next as InternalSummaryNode;
+        }
+      }
+
+      inode.cumulativeTotalNumPaths = total;
     }
+
     inode.totalNumPaths = inode.cumulativeTotalNumPaths;
   }
 
-  inode.partitions.forEach((part: any) => {
-    part.color = getNodeInfoColor(part, options.colorField);
-    part.opacity = getNodeInfoOpacity(part, options.opacityField);
-    part.tooltip = getSummaryNodeBreakdownTooltip(node, part, options.summaryType, options.tooltipField);
+  // Update numPathsRef
+  inode.numPathsRef = options.numPathsRef;
+  updateNumPathsRef(options.numPathsRef, inode.path, inode.totalNumPaths);
 
-    part.groupingKey = '' + (part.opacity * 100) + '_' + part.color;
-  });
-
+  // Create partitions
+  let breakdowns = inode.breakdown;
   if (options.summaryType === 'cumulative') {
-    const byPartition = groupBy(inode.partitions, 'groupingKey');
-    inode.partitions = Object.entries(byPartition).map(([part, parts]) => {
-      parts[0].numPaths = (parts as any[]).reduce((acc, b) => acc + b.numPaths, 0);
-      return parts[0];
-    });
+    let next = inode.next;
+    while (next != null) {
+      breakdowns = breakdowns.concat(next.breakdown);
+      next = next.next;
+    }
   }
 
-  inode.partitions.reduce((acc, b) => {
-    b.percentage = b.numPaths / inode.totalNumPaths;
-    b.cumPercentage = acc;
-    return acc + b.percentage;
+  const groups = groupBy(breakdowns.map((b) => {
+    const color = getNodeInfoColor(b, options.colorField);
+    const opacity = getNodeInfoOpacity(b, options.opacityField);
+    const id = '' + color + '@' + Math.trunc(opacity * 100);
+
+    return {
+      id, color, opacity,
+      info: b
+    };
+  }), 'id');
+
+  inode.partitions = Object.entries(groups).map(([, blist]) => blist)
+    .map((blist) => blist.reduce((acc, b) => {
+      acc.numPaths += b.info.numPaths;
+      if (acc.color === undefined) {
+        acc.color = b.color;
+        acc.opacity = b.opacity;
+      }
+
+      return acc;
+    }, {
+      numPaths: 0,
+      percentage: 0,
+      cumPercentage: 0,
+      color: undefined,
+      opacity: undefined
+    }));
+
+  const totalNumPaths = inode.partitions.reduce((acc, p) => {
+    return acc + p.numPaths;
+  }, 0);
+  inode.partitions.reduce((acc, p) => {
+    p.percentage = p.numPaths / totalNumPaths;
+    p.cumPercentage = acc;
+    return acc + p.percentage;
   }, 0);
 
-
-  // inode.multiplier = inode.totalNumPaths / 403181;
   inode.label = '' + inode.totalNumPaths;
-
   return inode;
 }

@@ -38,6 +38,7 @@ import vegaSpec, {
 })
 export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
   private vegaInstance: any;
+  private numPathsRef = {max: -1};
 
   @ViewChild('vegaVis') visElement: ElementRef;
 
@@ -317,12 +318,14 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
     const leafPaths = singleNodes.map(filterLeafs)
       .map((nodes) => nodes.map((node) => node.path));
 
+    this.numPathsRef = {max: -1};
     const summaryNodes = this.queryAndSetDataTuples(
       instance, leafPaths, this.service.querySummaryNodes, summariesName,
       (node) => convertToInternalSummaryNode(node, {
         colorField: this.colorField,
         opacityField: this.opacityField,
-        summaryType: this.summaryType
+        summaryType: this.summaryType,
+        numPathsRef: this.numPathsRef
       })
     );
 
@@ -361,10 +364,12 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
       summaryType: this.summaryType
     }));
 
+    this.numPathsRef = {max: -1};
     summariesData.forEach((node) => convertToInternalSummaryNode(node, {
       colorField: this.colorField,
       opacityField: this.opacityField,
-      summaryType: this.summaryType
+      summaryType: this.summaryType,
+      numPathsRef: this.numPathsRef
     }));
 
     instance.change(nodesName, vega.changeset().reflow());
@@ -388,6 +393,8 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
     const nodeChanges = vega.changeset();
     const summaryChanges = vega.changeset();
     const events: Observable<any>[] = [];
+    this.numPathsRef[node.path] = 0;
+    this.numPathsRef.max = 0;
 
     if (expanded) {
       nodeChanges.remove((inode) => isAncestorOf(node, inode));
@@ -397,7 +404,8 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
         (node_) => convertToInternalSummaryNode(node_, {
           colorField: this.colorField,
           opacityField: this.opacityField,
-          summaryType: this.summaryType
+          summaryType: this.summaryType,
+          numPathsRef: this.numPathsRef
         })
       ));
     } else {
@@ -416,7 +424,8 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
         (node_) => convertToInternalSummaryNode(node_, {
           colorField: this.colorField,
           opacityField: this.opacityField,
-          summaryType: this.summaryType
+          summaryType: this.summaryType,
+          numPathsRef: this.numPathsRef
         })
       );
 
