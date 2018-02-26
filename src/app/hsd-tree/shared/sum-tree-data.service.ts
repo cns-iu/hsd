@@ -41,11 +41,18 @@ function groupBy(items: any[], field: string): {} {
 }
 
 function rawNodeToSingleNode(node: any): SingleNode {
+  const path = normalizePath(node['NodePath']);
+  const isLeaf = (nodes as any[]).every((cnode) => {
+    const cpath = normalizePath(cnode['NodePath']);
+    return !cpath.startsWith(path) || cpath === path;
+  });
+
   return {
     type: 'SingleNode',
     level: node['NodeLevel'],
-    path: normalizePath(node['NodePath']),
+    path: path,
     label: node['NodeName'],
+    isLeaf: isLeaf,
     info: {
       concept: stringToConcept(node['NodeType']),
       visibility: stringToVisibility(node['NodeVisibility']),

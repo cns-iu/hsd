@@ -26,6 +26,7 @@ export interface SingleNode {
   level: number;
   path: string;
   label: string;
+  isLeaf: boolean;
   info: NodeInfo;
 }
 

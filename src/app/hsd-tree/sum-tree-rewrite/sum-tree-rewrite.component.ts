@@ -377,7 +377,7 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
   // Use vegaInstance.runAfter(vegaInstance.run.bind(vegaInstance))
   @Bind
   private onNodeClick(name: string, node: InternalSingleNode): void {
-    if (node === undefined) {
+    if (node === undefined || node.isLeaf) {
       return;
     }
 
