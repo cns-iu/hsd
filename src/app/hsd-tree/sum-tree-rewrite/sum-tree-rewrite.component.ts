@@ -293,8 +293,7 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
 
   private attachSignalListeners(instance: any): Observable<any> {
     const {
-      nodeClickName, summaryClickName,
-      summaryTypeName, colorName, opacityName
+      nodeClickName, summaryClickName
     } = outputSignalNames;
 
     instance.addSignalListener(nodeClickName, this.onNodeClick);
