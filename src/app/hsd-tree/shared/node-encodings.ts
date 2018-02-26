@@ -30,6 +30,21 @@ export function getNodeInfoColor(nodeInfo: NodeInfo, fieldName: string = 'concep
     color = nodeInfo.isSynonym ? '#FF0000' : '#00FF00';
   } else if (fieldName === 'hasMetaData') {
     color = nodeInfo.hasMetaData ? '#FF0000' : '#00FF00';
+  } else if (fieldName === 'tableName') {
+    switch (nodeInfo.tableName) {
+      case 'concept_dimension':
+        color = '#5B9BD5';
+        break;
+      case 'patient_dimension':
+        color = '#70AD47';
+        break;
+      case 'visit_dimension':
+        color = '#FFC000';
+        break;
+      default:
+        color = '#00ffff';
+        break;
+    }
   }
   return color;
 }
@@ -64,7 +79,23 @@ export function getNodeInfoOpacity(nodeInfo: NodeInfo, fieldName: string = 'visi
     opacity = nodeInfo.isSynonym ? 1.0 : 0.5;
   } else if (fieldName === 'hasMetaData') {
     opacity = nodeInfo.hasMetaData ? 1.0 : 0.5;
+  } else if (fieldName === 'tableName') {
+    switch (nodeInfo.tableName) {
+      case 'concept_dimension':
+        opacity = 1;
+        break;
+      case 'patient_dimension':
+        opacity = .75;
+        break;
+      case 'visit_dimension':
+        opacity = .5;
+        break;
+      default:
+        opacity = .2;
+        break;
+    }
   }
+
   return opacity;
 }
 

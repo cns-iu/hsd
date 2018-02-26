@@ -85,7 +85,19 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
     ],
     'tableName': [
       {
-        label: 'Coming Soon',
+        label: 'Concept Dim',
+        color: '#5B9BD5'
+      },
+      {
+        label: 'Patient Dim',
+        color: '#70AD47'
+      },
+      {
+        label: 'Visit Dim',
+        color: '#FFC000'
+      },
+      {
+        label: 'Other Table',
         color: '#00ffff'
       }
     ],
@@ -144,8 +156,21 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
     ],
     'tableName': [
       {
-        label: 'Coming Soon',
-        color: 'rgba(91,155,213,1.0)'
+        label: 'Concept Dim',
+        color: 'rgba(91,155,213,1)'
+
+      },
+      {
+        label: 'Patient Dim',
+        color: 'rgba(91,155,213,0.75)'
+      },
+      {
+        label: 'Visit Dim',
+        color: 'rgba(91,155,213,0.5)'
+      },
+      {
+        label: 'Other Table',
+        color: 'rgba(91,155,213,0.2)'
       }
     ],
     'isSynonym': [
