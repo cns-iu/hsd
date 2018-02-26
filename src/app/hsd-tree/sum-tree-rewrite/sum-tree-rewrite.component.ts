@@ -373,7 +373,10 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
     }));
 
     instance.change(nodesName, vega.changeset().reflow());
-    instance.change(summariesName, vega.changeset().reflow());
+    instance.change(
+      summariesName,
+      vega.changeset().encode(() => true, 'totalNumPaths').reflow()
+    );
     instance.run();
   }
 

@@ -14,6 +14,8 @@ export interface InternalSingleNode extends SingleNode {
 }
 
 export interface InternalSummaryNodePartition {
+  used: boolean;
+
   numPaths: number;
 
   percentage: number;
@@ -132,6 +134,10 @@ export function convertToInternalSummaryNode(
   updateNumPathsRef(options.numPathsRef, inode.path, inode.totalNumPaths);
 
   // Create partitions
+  if (inode.partitions === undefined) {
+    inode.partitions = Array(10).fill(0).map(() => ({used: false} as InternalSummaryNodePartition));
+  }
+
   let breakdowns = inode.breakdown;
   if (options.summaryType === 'cumulative') {
     let next = inode.next;
@@ -152,8 +158,8 @@ export function convertToInternalSummaryNode(
     };
   }), 'id');
 
-  inode.partitions = Object.entries(groups).map(([, blist]) => blist)
-    .map((blist) => blist.reduce((acc, b) => {
+  Object.entries(groups).map(([, blist]) => blist)
+    .map((blist, index) => blist.reduce((acc, b) => {
       acc.numPaths += b.info.numPaths;
       if (acc.color === undefined) {
         acc.color = b.color;
@@ -161,18 +167,32 @@ export function convertToInternalSummaryNode(
       }
 
       return acc;
-    }, {
+    }, Object.assign(inode.partitions[index], {
+      used: true,
       numPaths: 0,
       percentage: 0,
       cumPercentage: 0,
       color: undefined,
       opacity: undefined
-    }));
+    })));
 
-  const totalNumPaths = inode.partitions.reduce((acc, p) => {
+  const gcount = Object.entries(groups).length;
+  inode.partitions.slice(gcount).forEach((p) => {
+    p.used = false;
+  });
+
+  const totalNumPaths = inode.partitions.reduce((acc, p, i) => {
+    if (i >= gcount) {
+      return acc;
+    }
+
     return acc + p.numPaths;
   }, 0);
-  inode.partitions.reduce((acc, p) => {
+  inode.partitions.reduce((acc, p, i) => {
+    if (i >= gcount) {
+      return acc;
+    }
+
     p.percentage = p.numPaths / totalNumPaths;
     p.cumPercentage = acc;
     return acc + p.percentage;
