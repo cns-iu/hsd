@@ -352,32 +352,36 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   onEncodingChange() {
-    const { nodesName, summariesName } = inputDataSetNames;
-    const instance = this.vegaInstance;
+    // FIXME Evil hack
+    this.destroyVegaInstance();
+    this.createVegaInstance();
 
-    const nodesData = instance.data(nodesName) as InternalSingleNode[];
-    const summariesData = instance.data(summariesName) as InternalSummaryNode[];
-
-    nodesData.forEach((node) => convertToInternalSingleNode(node, {
-      colorField: this.colorField,
-      opacityField: this.opacityField,
-      summaryType: this.summaryType
-    }));
-
-    this.numPathsRef = {max: -1};
-    summariesData.forEach((node) => convertToInternalSummaryNode(node, {
-      colorField: this.colorField,
-      opacityField: this.opacityField,
-      summaryType: this.summaryType,
-      numPathsRef: this.numPathsRef
-    }));
-
-    instance.change(nodesName, vega.changeset().reflow());
-    instance.change(
-      summariesName,
-      vega.changeset().encode(() => true, 'totalNumPaths').reflow()
-    );
-    instance.run();
+    // const { nodesName, summariesName } = inputDataSetNames;
+    // const instance = this.vegaInstance;
+    //
+    // const nodesData = instance.data(nodesName) as InternalSingleNode[];
+    // const summariesData = instance.data(summariesName) as InternalSummaryNode[];
+    //
+    // nodesData.forEach((node) => convertToInternalSingleNode(node, {
+    //   colorField: this.colorField,
+    //   opacityField: this.opacityField,
+    //   summaryType: this.summaryType
+    // }));
+    //
+    // this.numPathsRef = {max: -1};
+    // summariesData.forEach((node) => convertToInternalSummaryNode(node, {
+    //   colorField: this.colorField,
+    //   opacityField: this.opacityField,
+    //   summaryType: this.summaryType,
+    //   numPathsRef: this.numPathsRef
+    // }));
+    //
+    // instance.change(nodesName, vega.changeset().reflow());
+    // instance.change(
+    //   summariesName,
+    //   vega.changeset().encode(() => true, 'totalNumPaths').reflow()
+    // );
+    // instance.run();
   }
 
   // Events

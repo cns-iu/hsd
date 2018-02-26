@@ -14,8 +14,6 @@ export interface InternalSingleNode extends SingleNode {
 }
 
 export interface InternalSummaryNodePartition {
-  used: boolean;
-
   numPaths: number;
 
   percentage: number;
@@ -23,6 +21,7 @@ export interface InternalSummaryNodePartition {
 
   color: string;
   opacity: number;
+  tooltip: string;
 
   groupingKey?: string;
 }
@@ -134,10 +133,6 @@ export function convertToInternalSummaryNode(
   updateNumPathsRef(options.numPathsRef, inode.path, inode.totalNumPaths);
 
   // Create partitions
-  if (inode.partitions === undefined) {
-    inode.partitions = Array(10).fill(0).map(() => ({used: false} as InternalSummaryNodePartition));
-  }
-
   let breakdowns = inode.breakdown;
   if (options.summaryType === 'cumulative') {
     let next = inode.next;
@@ -158,7 +153,7 @@ export function convertToInternalSummaryNode(
     };
   }), 'id');
 
-  Object.entries(groups).map(([, blist]) => blist)
+  inode.partitions = Object.entries(groups).map(([, blist]) => blist)
     .map((blist, index) => blist.reduce((acc, b) => {
       acc.numPaths += b.info.numPaths;
       if (acc.color === undefined) {
@@ -167,36 +162,28 @@ export function convertToInternalSummaryNode(
       }
 
       return acc;
-    }, Object.assign(inode.partitions[index], {
-      used: true,
+    }, {
       numPaths: 0,
       percentage: 0,
       cumPercentage: 0,
       color: undefined,
-      opacity: undefined
-    })));
+      opacity: undefined,
+      tooltip: undefined
+    }));
 
-  const gcount = Object.entries(groups).length;
-  inode.partitions.slice(gcount).forEach((p) => {
-    p.used = false;
-  });
-
-  const totalNumPaths = inode.partitions.reduce((acc, p, i) => {
-    if (i >= gcount) {
-      return acc;
-    }
-
+  const totalNumPaths = inode.partitions.reduce((acc, p) => {
     return acc + p.numPaths;
   }, 0);
-  inode.partitions.reduce((acc, p, i) => {
-    if (i >= gcount) {
-      return acc;
-    }
-
+  inode.partitions.reduce((acc, p) => {
     p.percentage = p.numPaths / totalNumPaths;
     p.cumPercentage = acc;
     return acc + p.percentage;
   }, 0);
+  inode.partitions.forEach((p) => {
+    p.tooltip = getSummaryNodeBreakdownTooltip(
+      inode, p as any, options.summaryType, options.tooltipField
+    );
+  });
 
   inode.label = '' + inode.totalNumPaths;
   return inode;

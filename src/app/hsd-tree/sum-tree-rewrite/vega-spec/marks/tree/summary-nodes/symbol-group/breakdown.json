@@ -3,10 +3,6 @@
   "source": "rawBreakdown",
   "transform": [
     {
-      "type": "filter",
-      "expr": "datum.used"
-    },
-    {
       "type": "formula",
       "expr": "-summaryBoxSize.width / 2",
       "as": "x"

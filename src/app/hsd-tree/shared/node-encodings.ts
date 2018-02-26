@@ -81,10 +81,10 @@ export function getSingleNodeTooltip(
 }
 
 export function getSummaryNodeBreakdownTooltip(
-  node: SummaryNode,
+  node: any,
   part: NodeInfo,
   summaryType = 'cumulative',
   fieldName = 'tooltip',
   defaultTooltip = 'Single Node'): string {
-  return '# Concepts: ' + part.numPaths;
+  return '# Concepts: ' + part.numPaths + ' / ' + node.totalNumPaths;
 }
