@@ -309,10 +309,10 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
     instance.signal(yMultiplierName, 30);
     // instance.signal(yOffsetName, 30);
 
-    // instance.signal(summaryBoxSizeName, {
-    //   width: 15,
-    //   height: 20
-    // });
+    instance.signal(summaryBoxSizeName, {
+      width: 20,
+      height: 40
+    });
 
     return Observable.empty();
   }
