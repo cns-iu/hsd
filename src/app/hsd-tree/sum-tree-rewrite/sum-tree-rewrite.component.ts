@@ -377,6 +377,12 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   onEncodingChange() {
+    const { nodesName, summariesName } = inputDataSetNames;
+    const instance = this.vegaInstance;
+    const nodesData = instance.data(nodesName) as InternalSingleNode[];
+
+    this.initialNodePaths = nodesData.map((inode) => inode.path);
+
     // FIXME Evil hack
     this.destroyVegaInstance();
     this.createVegaInstance();
