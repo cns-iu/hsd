@@ -1,0 +1,14 @@
+{
+  "name": "opacityField",
+  "value": "Concept",
+  "bind": {
+    "input": "select",
+    "options": [
+      "Concept",
+      "Visibility",
+      "Table Name",
+      "Synonym",
+      "Has XML MetaData"
+    ]
+  }
+}

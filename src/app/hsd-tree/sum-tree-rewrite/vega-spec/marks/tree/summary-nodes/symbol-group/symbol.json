@@ -1,0 +1,40 @@
+{
+  "type": "rect",
+  "from": {
+    "data": "breakdown"
+  },
+  "encode": {
+    "enter": {
+
+    },
+    "update": {
+      "x": {
+        "field": "x"
+      },
+      "y": {
+        "field": "y"
+      },
+      "fill": {
+        "field": "color"
+      },
+      "stroke": {
+        "value": "#4374A0"
+      },
+      "strokeWidth": {
+        "value": 0.7
+      },
+      "opacity": {
+        "field": "opacity"
+      },
+      "width": {
+        "field": "width"
+      },
+      "height": {
+        "field": "height"
+      },
+      "tooltip": {
+        "field": "tooltip"
+      }
+    }
+  }
+}

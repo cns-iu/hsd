@@ -1,0 +1,11 @@
+{
+  "name": "sumTypeField",
+  "value": "Cummulative",
+  "bind": {
+    "input": "select",
+    "options": [
+      "Cummulative",
+      "By Level"
+    ]
+  }
+}

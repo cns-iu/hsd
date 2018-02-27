@@ -1,0 +1,35 @@
+{
+  "type": "text",
+  "name": "summaryNodeLabels",
+  "from": {
+    "data": "summaryNodeSymbols"
+  },
+  "encode": {
+    "enter": {
+      "align": {
+        "value": "center"
+      },
+      "baseline": {
+        "value": "bottom"
+      },
+      "fontSize": {
+        "value": 10
+      },
+      "fill": {
+        "value": "black"
+      }
+    },
+    "update": {
+      "text": {
+        "field": "datum.label"
+      },
+      "x": {
+        "field": "x"
+      },
+      "y": {
+        "field": "y",
+        "offset": -2.5
+      }
+    }
+  }
+}

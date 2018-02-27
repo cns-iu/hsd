@@ -1,0 +1,45 @@
+{
+  "name": "nodeTree",
+  "source": [
+    "nodes",
+    "summaries"
+  ],
+  "transform": [
+    {
+      "type": "stratify",
+      "key": {
+        "expr": "datum.path + ':' + datum.level"
+      },
+      "parentKey": {
+        "expr": "if(datum.level === 0, null, if(datum.type === 'SummaryNode', datum.path, slice(datum.path, 0, lastindexof(datum.path, '\\\\'))) + ':' + (datum.level - 1))"
+      }
+    },
+    {
+      "type": "tree",
+      "method": "cluster",
+      "nodeSize": [
+        1,
+        1
+      ],
+      "as": [
+        "rawY",
+        "__ignore"
+      ]
+    },
+    {
+      "type": "extent",
+      "field": "rawY",
+      "signal": "rawYExtent"
+    },
+    {
+      "type": "formula",
+      "expr": "datum.level * width / maxLevel",
+      "as": "x"
+    },
+    {
+      "type": "formula",
+      "expr": "yMultiplier * (datum.rawY - rawYExtent[0]) + yOffset",
+      "as": "y"
+    }
+  ]
+}

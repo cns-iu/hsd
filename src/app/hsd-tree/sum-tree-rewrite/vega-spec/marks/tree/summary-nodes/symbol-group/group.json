@@ -1,0 +1,23 @@
+{
+  "type": "group",
+  "name": "summaryNodeSymbols",
+  "from": {
+    "facet": {
+      "name": "rawBreakdown",
+      "data": "summaryNodes",
+      "field": "partitions"
+    }
+  },
+  "encode": {
+    "update": {
+      "x": {
+        "field": "x"
+      },
+      "y": {
+        "signal": "datum.y - (datum.multiplier || 1) * summaryBoxSize.height / 2"
+      }
+    }
+  },
+  "data": [],
+  "marks": []
+}

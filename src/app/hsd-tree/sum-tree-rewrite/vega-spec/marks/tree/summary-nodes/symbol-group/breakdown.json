@@ -1,0 +1,26 @@
+{
+  "name": "breakdown",
+  "source": "rawBreakdown",
+  "transform": [
+    {
+      "type": "formula",
+      "expr": "-summaryBoxSize.width / 2",
+      "as": "x"
+    },
+    {
+      "type": "formula",
+      "expr": "summaryBoxSize.width",
+      "as": "width"
+    },
+    {
+      "type": "formula",
+      "expr": "summaryBoxSize.height * parent.multiplier * datum.cumPercentage",
+      "as": "y"
+    },
+    {
+      "type": "formula",
+      "expr": "summaryBoxSize.height * parent.multiplier * datum.percentage",
+      "as": "height"
+    }
+  ]
+}

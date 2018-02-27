@@ -1,0 +1,10 @@
+{
+  "name": "singleNodes",
+  "source": "nodeTree",
+  "transform": [
+    {
+      "type": "filter",
+      "expr": "datum.type === 'SingleNode'"
+    }
+  ]
+}

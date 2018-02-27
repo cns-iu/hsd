@@ -1,0 +1,19 @@
+{
+  "name": "nodeClicked",
+  "on": [
+    {
+      "events": [
+        {
+          "type": "click",
+          "markname": "singleNodesSymbol"
+        },
+        {
+          "type": "click",
+          "markname": "singleNodesValue"
+        }
+      ],
+      "update": "datum.internalNodeId[0]",
+      "force": true
+    }
+  ]
+}

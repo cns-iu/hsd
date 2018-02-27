@@ -1,0 +1,8 @@
+{
+  "name": "treeLevels",
+  "type": "point",
+  "domain": {
+    "signal": "sequence(maxLevel + 1)"
+  },
+  "range": "width"
+}

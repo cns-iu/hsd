@@ -1,0 +1,33 @@
+{
+  "type": "symbol",
+  "shape": "circle",
+  "name": "singleNodeSymbols",
+  "from": {
+    "data": "singleNodes"
+  },
+  "encode": {
+    "update": {
+      "x": {
+        "field": "x"
+      },
+      "y": {
+        "field": "y"
+      },
+      "fill": {
+        "field": "color"
+      },
+      "stroke": {
+        "value": "#4374A0"
+      },
+      "opacity": {
+        "field": "opacity"
+      },
+      "size": {
+        "value": 300
+      },
+      "tooltip": {
+        "field": "tooltip"
+      }
+    }
+  }
+}
