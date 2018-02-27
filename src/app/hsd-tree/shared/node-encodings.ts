@@ -27,9 +27,9 @@ export function getNodeInfoColor(nodeInfo: NodeInfo, fieldName: string = 'concep
         break;
     }
   } else if (fieldName === 'isSynonym') {
-    color = nodeInfo.isSynonym ? '#FF0000' : '#00FF00';
+    color = nodeInfo.isSynonym ? '#00FF00' : '#FF0000';
   } else if (fieldName === 'hasMetaData') {
-    color = nodeInfo.hasMetaData ? '#FF0000' : '#00FF00';
+    color = nodeInfo.hasMetaData ? '#00FF00' : '#FF0000';
   } else if (fieldName === 'tableName') {
     switch (nodeInfo.tableName) {
       case 'concept_dimension':
