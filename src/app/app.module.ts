@@ -5,21 +5,21 @@ import { CoreModule } from './core';
 import { SharedModule } from './shared';
 import { HsdUiModule } from './hsd-ui';
 import { AppComponent } from './app.component';
-import { DinoSumTreeComponent } from './dino-sum-tree/dino-sum-tree.component';
+import { SumTreeModule } from './dino-sum-tree/sum-tree.module';
 
 
 
 @NgModule({
   declarations: [
-    AppComponent,
-    DinoSumTreeComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
     MaterialModule,
     CoreModule,
     SharedModule,
-    HsdUiModule
+    HsdUiModule,
+    SumTreeModule
   ],
   providers: [],
   bootstrap: [AppComponent]
