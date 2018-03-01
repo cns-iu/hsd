@@ -1,27 +1,28 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
-import { NodeInfo, SummaryInfo } from './node';
+
+export interface NodeInfo {
+  id: string;
+  expandable?: boolean;
+}
+
+export interface SummaryInfo {
+  id: string;
+  partitions: SummaryPartition[];
+}
+
+export interface SummaryPartition {
+  percentage: number;
+}
+
 
 @Injectable()
 export abstract class SumTreeService {
   constructor() { }
 
-  // Querying
+  // Tree data
   abstract queryChildIds(id: string): Observable<string>;
   abstract queryNodeInfo(id: string): Observable<NodeInfo>;
   abstract querySummaryInfo(id: string): Observable<SummaryInfo>;
-
-  // Tree utility
-  parentIdFor(id: string): string | null {
-    return null; // TODO
-  }
-
-  isParentOf(parentId: string, id: string): boolean {
-    return false; // TODO
-  }
-
-  isAncestorOf(ancestorId: string, id: string): boolean {
-    return false; // TODO
-  }
 }
