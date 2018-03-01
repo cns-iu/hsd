@@ -1,18 +1,18 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { DinoSumTreeComponent } from './sum-tree/dino-sum-tree.component';
+import { SumTreeComponent } from './components/sum-tree.component';
 
 @NgModule({
   imports: [
     CommonModule
   ],
   exports: [
-    DinoSumTreeComponent
+    SumTreeComponent
   ],
   declarations: [
-    DinoSumTreeComponent
+    SumTreeComponent
   ],
   providers: []
 })
-export class DinoSumTreeModule { }
+export class SumTreeModule { }
