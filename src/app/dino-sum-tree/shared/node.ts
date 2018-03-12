@@ -1,11 +1,42 @@
+import { Seq } from 'immutable';
 import { isString } from 'lodash';
 
 
-export interface Node {
-  id: string;
-  parent: Node | null;
+export class Node {
+  readonly id: string;
 
-  rawData: any;
+  constructor(
+    readonly parent: Node | null,
+    readonly rawData: {id: string}
+  ) {
+    this.id = rawData.id;
+  }
+
+  private static getId(nodeOrId: Node | string): string {
+    return isString(nodeOrId) ? nodeOrId : nodeOrId.id;
+  }
+
+  static isParentOf(parent: Node | string, node: Node): boolean {
+    return node.parent !== null && node.parent.id === Node.getId(parent);
+  }
+
+  static isAncestorOf(ancestor: Node | string, node: Node): boolean {
+    const ancestorId = Node.getId(ancestor);
+    let current = node.parent;
+    while (current !== null) {
+      if (current.id === ancestorId) {
+        return true;
+      }
+
+      current = current.parent;
+    }
+
+    return false;
+  }
+
+  static filterLeafs(nodes: Seq.Indexed<Node>): Seq.Indexed<Node>[] {
+    //
+  }
 }
 
 export interface SingleNode extends Node {
@@ -18,32 +49,6 @@ export interface SummaryNode extends Node {
 
 export interface SummaryNodePartition {
   percentage: number;
-}
-
-
-// Internal Utility
-function getId(node: Node | string): string {
-  return isString(node) ? node as string : (node as Node).id;
-}
-
-// Utility
-export function isParentOf(parent: Node | string, node: Node): boolean {
-  return node.parent !== null && node.parent.id === getId(parent);
-}
-
-export function isAncestorOf(ancestor: Node | string, node: Node): boolean {
-  const ancestorId = getId(ancestor);
-
-  let current: Node | null = node;
-  while (current !== null) {
-    if (current.id === ancestorId) {
-      return true;
-    }
-
-    current = current.parent;
-  }
-
-  return false;
 }
 
 export function leafs(nodes: Node[]): Node[] {
