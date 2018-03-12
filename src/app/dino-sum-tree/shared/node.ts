@@ -35,7 +35,8 @@ export class Node {
   }
 
   static filterLeafs(nodes: Seq.Indexed<Node>): Seq.Indexed<Node>[] {
-    //
+    // FIXME
+    return null;
   }
 }
 
