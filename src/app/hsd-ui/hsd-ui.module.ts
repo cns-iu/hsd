@@ -3,13 +3,14 @@ import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HomeComponent } from './home/home.component';
 import { MainContentComponent } from './main-content/main-content.component';
-import { MaterialModule } from './material.module';
+import { SharedModule } from '../shared';
 import { HsdTreeModule } from '../hsd-tree';
+import { InfoDialogComponent } from './info-dialog/info-dialog.component';
 
 @NgModule({
   imports: [
     CommonModule,
-    MaterialModule,
+    SharedModule,
     BrowserAnimationsModule,
     HsdTreeModule
   ],
@@ -17,6 +18,7 @@ import { HsdTreeModule } from '../hsd-tree';
     MainContentComponent,
     HomeComponent
   ],
-  declarations: [HomeComponent, MainContentComponent]
+  declarations: [HomeComponent, MainContentComponent, InfoDialogComponent],
+  entryComponents: [InfoDialogComponent]
 })
 export class HsdUiModule { }

@@ -1,0 +1,34 @@
+<h1 mat-dialog-title>Health System Dynamics</h1>
+<div mat-dialog-content>
+  <p class="infoIntroText">
+    Informatics for Integrating Biology and the Bedside (i2b2) data is organized by the i2b2 ontology. The SCILHS public i2b2
+    ontology has 490,484 concepts under root path \PCORI and is 11 levels deep and can be found at github:
+    <a href="https://github.com/SCILHS/scilhs-ontology/tree/master/Ontology" target="_blank">https://github.com/SCILHS/scilhs-ontology/tree/master/Ontology</a>.
+  </p>
+  <br>
+  <p class="infoIntroText">This interactive
+    <i>Health System Dynamics</i> ontology visualization enables i2b2 administrators and others to see the overall structure
+    of the ontology, to examine (in)activate paths, hide branches that are not relevant, and facilitates ontology comparisons.
+    The visualization also enables investigators to locate specific codes/diagnosis, and helps determine the breadth of the
+    data.
+  </p>
+  <br>
+  <mat-table #table [dataSource]="dataSource">
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+    </ng-container>
+
+    <!-- Description Column -->
+    <ng-container matColumnDef="description">
+      <mat-header-cell *matHeaderCellDef> Description </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.description}} </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+
+</div>

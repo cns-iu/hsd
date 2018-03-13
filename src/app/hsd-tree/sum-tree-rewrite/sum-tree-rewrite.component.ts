@@ -4,6 +4,8 @@ import {
   ElementRef, SimpleChanges
 } from '@angular/core';
 
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/empty';
 import 'rxjs/add/observable/merge';
@@ -31,6 +33,8 @@ import vegaSpec, {
   inputSignalNames, outputSignalNames
 } from './vega-spec';
 
+import { InfoDialogComponent } from '../../hsd-ui/info-dialog/info-dialog.component';
+
 @Component({
   selector: 'hsd-sum-tree-rewrite',
   templateUrl: './sum-tree-rewrite.component.html',
@@ -38,7 +42,7 @@ import vegaSpec, {
 })
 export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
   private vegaInstance: any;
-  private numPathsRef = {max: -1};
+  private numPathsRef = { max: -1 };
 
   @ViewChild('vegaVis') visElement: ElementRef;
 
@@ -242,7 +246,7 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
     '\\pcori\\vital'
   ];
 
-  constructor(private service: SumTreeDataService) { }
+  constructor(private service: SumTreeDataService, public dialog: MatDialog) { }
 
   ngOnInit() {
     this.createVegaInstance();
@@ -260,6 +264,17 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnDestroy() {
     this.destroyVegaInstance();
+  }
+
+  /* This function opens a dialog on clicking on the info-icon in the legend */
+  openSumTreeInfoDialog() {
+    const dialogRef = this.dialog.open(InfoDialogComponent, {
+      width: '750px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
   }
 
   // Vega setup
@@ -343,7 +358,7 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
     const leafPaths = singleNodes.map(filterLeafs)
       .map((nodes) => nodes.map((node) => node.path));
 
-    this.numPathsRef = {max: -1};
+    this.numPathsRef = { max: -1 };
     const summaryNodes = this.queryAndSetDataTuples(
       instance, leafPaths, this.service.querySummaryNodes, summariesName,
       (node) => convertToInternalSummaryNode(node, {
