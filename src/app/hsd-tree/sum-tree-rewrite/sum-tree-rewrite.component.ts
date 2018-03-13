@@ -59,162 +59,71 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() colorMappings = {
     'concept': [
-      {
-        label: 'Case',
-        color: '#5B9BD5'
-
-      },
-      {
-        label: 'Folder',
-        color: '#70AD47'
-      },
-      {
-        label: 'Leaf',
-        color: '#FFC000'
-      }
+      { label: 'Case', color: '#5B9BD5' },
+      { label: 'Folder', color: '#70AD47' },
+      { label: 'Leaf', color: '#FFC000' }
     ],
     'visibility': [
-      {
-        label: 'Active',
-        color: '#5B9BD5'
-      },
-      {
-        label: 'Inactive',
-        color: '#70AD47'
-      },
-      {
-        label: 'Hidden',
-        color: '#FFC000'
-      }
+      { label: 'Active', color: '#5B9BD5' },
+      { label: 'Inactive', color: '#70AD47' },
+      { label: 'Hidden', color: '#FFC000' }
     ],
     'tableName': [
-      {
-        label: 'Concept Dim',
-        color: '#5B9BD5'
-      },
-      {
-        label: 'Patient Dim',
-        color: '#70AD47'
-      },
-      {
-        label: 'Visit Dim',
-        color: '#FFC000'
-      },
-      {
-        label: 'Other Table',
-        color: '#00ffff'
-      }
+      { label: 'Concept Dim', color: '#5B9BD5' },
+      { label: 'Patient Dim', color: '#70AD47' },
+      { label: 'Visit Dim', color: '#FFC000' },
+      { label: 'Other Table', color: '#00ffff' }
     ],
     'isSynonym': [
-      {
-        label: 'Yes',
-        color: '#00FF00'
-      },
-      {
-        label: 'No',
-        color: '#FF0000'
-      }
+      { label: 'Yes', color: '#00FF00' },
+      { label: 'No', color: '#FF0000' }
     ],
     'hasMetaData': [
-      {
-        label: 'Yes',
-        color: '#00FF00'
-      },
-      {
-        label: 'No',
-        color: '#FF0000'
-      }
+      { label: 'Yes', color: '#00FF00' },
+      { label: 'No', color: '#FF0000' }
+    ],
+    'fixedColor': [
+      { label: 'Fixed Color', color: '#5B9BD5' }
     ]
   };
 
   @Input() opacityMappings = {
     'concept': [
-      {
-        label: 'Case',
-        color: 'rgba(91,155,213,1)'
-
-      },
-      {
-        label: 'Folder',
-        color: 'rgba(91,155,213,0.6)'
-      },
-      {
-        label: 'Leaf',
-        color: 'rgba(91,155,213,0.3)'
-      }
+      { label: 'Case', color: 'rgba(91,155,213,1)' },
+      { label: 'Folder', color: 'rgba(91,155,213,0.6)' },
+      { label: 'Leaf', color: 'rgba(91,155,213,0.3)' }
     ],
     'visibility': [
-      {
-        label: 'Active',
-        color: 'rgba(91,155,213,1)'
-
-      },
-      {
-        label: 'Inactive',
-        color: 'rgba(91,155,213,0.6)'
-      },
-      {
-        label: 'Hidden',
-        color: 'rgba(91,155,213,0.2)'
-      }
+      { label: 'Active', color: 'rgba(91,155,213,1)' },
+      { label: 'Inactive', color: 'rgba(91,155,213,0.6)' },
+      { label: 'Hidden', color: 'rgba(91,155,213,0.2)' }
     ],
     'tableName': [
-      {
-        label: 'Concept Dim',
-        color: 'rgba(91,155,213,1)'
-
-      },
-      {
-        label: 'Patient Dim',
-        color: 'rgba(91,155,213,0.75)'
-      },
-      {
-        label: 'Visit Dim',
-        color: 'rgba(91,155,213,0.5)'
-      },
-      {
-        label: 'Other Table',
-        color: 'rgba(91,155,213,0.2)'
-      }
+      { label: 'Concept Dim', color: 'rgba(91,155,213,1)' },
+      { label: 'Patient Dim', color: 'rgba(91,155,213,0.75)' },
+      { label: 'Visit Dim', color: 'rgba(91,155,213,0.5)' },
+      { label: 'Other Table', color: 'rgba(91,155,213,0.2)' }
     ],
     'isSynonym': [
-      {
-        label: 'Yes',
-        color: 'rgba(91,155,213,1)'
-      },
-      {
-        label: 'No',
-        color: 'rgba(91,155,213,0.5)'
-      }
+      { label: 'Yes', color: 'rgba(91,155,213,1)' },
+      { label: 'No', color: 'rgba(91,155,213,0.5)' }
     ],
     'hasMetaData': [
-      {
-        label: 'Yes',
-        color: 'rgba(91,155,213,1)'
-      },
-      {
-        label: 'No',
-        color: 'rgba(91,155,213,0.5)'
-      }
+      { label: 'Yes', color: 'rgba(91,155,213,1)' },
+      { label: 'No', color: 'rgba(91,155,213,0.5)' }
+    ],
+    'fullyOpaque': [
+      { label: 'Fully Opaque', color: '#5B9BD5' }
     ]
   };
 
   @Input() colorFields = [
-    {
-      value: 'concept', viewValue: 'Concept'
-    },
-    {
-      value: 'visibility', viewValue: 'Visibility'
-    },
-    {
-      value: 'tableName', viewValue: 'Table Name'
-    },
-    {
-      value: 'isSynonym', viewValue: 'Synonym'
-    },
-    {
-      value: 'hasMetaData', viewValue: 'Has XML MetaData'
-    }
+    { value: 'concept', viewValue: 'Concept' },
+    { value: 'visibility', viewValue: 'Visibility' },
+    { value: 'tableName', viewValue: 'Table Name' },
+    { value: 'isSynonym', viewValue: 'Synonym' },
+    { value: 'hasMetaData', viewValue: 'Has XML MetaData' },
+    { value: 'fixedColor', viewValue: 'Fixed Color' }
   ];
 
   @Input() opacityFields = [
@@ -222,7 +131,8 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
     { value: 'visibility', viewValue: 'Visibility' },
     { value: 'tableName', viewValue: 'Table Name' },
     { value: 'isSynonym', viewValue: 'Synonym' },
-    { value: 'hasMetaData', viewValue: 'Has XML MetaData' }
+    { value: 'hasMetaData', viewValue: 'Has XML MetaData' },
+    { value: 'fullyOpaque', viewValue: 'Fully Opaque' }
   ];
 
   @Input() vegaLogLevel = defaultLogLevel;

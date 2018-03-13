@@ -1,6 +1,6 @@
 import { ConceptType, VisibilityType, NodeInfo, SummaryNode, SingleNode } from './node';
 
-export function getNodeInfoColor(nodeInfo: NodeInfo, fieldName: string = 'concept', defaultColor: string = '#00ffff'): string {
+export function getNodeInfoColor(nodeInfo: NodeInfo, fieldName: string = 'concept', defaultColor: string = '#5B9BD5'): string {
   let color = defaultColor;
   if (fieldName === 'concept') {
     switch (nodeInfo.concept) {
@@ -45,6 +45,8 @@ export function getNodeInfoColor(nodeInfo: NodeInfo, fieldName: string = 'concep
         color = '#00ffff';
         break;
     }
+  } else if (fieldName === 'fixedColor') {
+      color = defaultColor;
   }
   return color;
 }
@@ -94,6 +96,8 @@ export function getNodeInfoOpacity(nodeInfo: NodeInfo, fieldName: string = 'visi
         opacity = .2;
         break;
     }
+  } else if (fieldName === 'fullyOpaque') {
+      opacity = 1;
   }
 
   return opacity;
