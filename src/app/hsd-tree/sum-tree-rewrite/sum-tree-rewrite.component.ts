@@ -181,10 +181,6 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
     const dialogRef = this.dialog.open(InfoDialogComponent, {
       width: '750px'
     });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
   }
 
   // Vega setup
