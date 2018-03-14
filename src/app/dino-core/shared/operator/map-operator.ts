@@ -1,8 +1,9 @@
 import { Collection, Seq } from 'immutable';
-import { Operator } from './operator';
+
+import { BaseOperator } from './base-operator';
 
 
-export class MapOperator<In, Out> extends Operator<In, Out> {
+export class MapOperator<In, Out> extends BaseOperator<In, Out> {
   constructor(readonly mapper: (data: In) => Out) {
     super();
   }
@@ -11,7 +12,7 @@ export class MapOperator<In, Out> extends Operator<In, Out> {
     return this.mapper(data);
   }
 
-  protected getState(): Collection<any, any> {
+  getState(): Collection<any, any> {
     return Seq.Indexed.of(this.mapper);
   }
 }

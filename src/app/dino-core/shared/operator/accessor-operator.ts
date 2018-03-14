@@ -1,11 +1,13 @@
 import { Collection, Seq } from 'immutable';
 import { get, toPath } from 'lodash';
 
-import { Operator } from './operator';
+import { BaseOperator } from './base-operator';
 
 
-export class AccessorOperator<Out> extends Operator<any, Out> {
-  constructor(readonly path: string | string[], readonly defaultValue?: any) {
+export type Path = number | string | (number | string)[];
+
+export class AccessorOperator<Out> extends BaseOperator<any, Out> {
+  constructor(readonly path: Path, readonly defaultValue?: Out) {
     super();
   }
 
@@ -13,7 +15,10 @@ export class AccessorOperator<Out> extends Operator<any, Out> {
     return get(data, this.path, this.defaultValue);
   }
 
-  protected getState(): Collection<any, any> {
-    return Seq.Indexed.of(Seq.Indexed(toPath(this.path)), this.defaultValue);
+  getState(): Collection<any, any> {
+    return Seq.Indexed.of<any>(
+      Seq.Indexed(toPath(this.path)),
+      this.defaultValue
+    );
   }
 }

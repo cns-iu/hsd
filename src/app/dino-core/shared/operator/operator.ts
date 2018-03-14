@@ -1,44 +1,59 @@
 import { Collection, Seq, is } from 'immutable';
-import { uniqueId } from 'lodash';
 
-import { AccessorOperator } from './accessor-operator';
+import { BaseOperator } from './base-operator';
+import { AccessorOperator, Path } from './accessor-operator';
 import { ChainOperator } from './chain-operator';
+import { CombineOperator } from './combine-operator';
 import { MapOperator } from './map-operator';
 
 
-export abstract class Operator<In, Out> {
-  readonly id: string = uniqueId('operator_');
+interface OperatorConstructor<In, Out> {
+  new (...args: any[]): BaseOperator<In, Out>;
+}
+
+function create<In, Out>(
+  type: OperatorConstructor<In, Out>, ...args: any[]
+): Operator<In, Out> {
+  return new Operator(new type(...args));
+}
+
+export class Operator<In, Out> extends BaseOperator<In, Out> {
+  constructor(private readonly wrapped: BaseOperator<In, Out>) {
+    super();
+  }
 
   // Creation methods
-  static access<In_ = any, Out_ = any>(
-    path: string | string[], defaultValue?: any
-  ): Operator<In_, Out_> {
-    return new AccessorOperator(path, defaultValue);
+  static access<In = any, Out = any>(
+    path: Path, defaultValue?: Out
+  ): Operator<In, Out> {
+    return create(AccessorOperator, path, defaultValue);
   }
 
-  // Abstract methods to override in subclasses
-  abstract get(data: In): Out;
-  protected abstract getState(): Collection<any, any>;
-
-  // equals and hashCode for use in immutable.js
-  equals(other: any): boolean {
-    if (other instanceof Operator) {
-      return is(this.getState(), other.getState());
-    }
-
-    return false;
+  // Override base class methods
+  get(data: In): Out {
+    return this.wrapped.get(data);
   }
 
-  hashCode(): number {
-    return this.getState().hashCode();
+  getState(): Collection<any, any> {
+    return this.wrapped.getState();
+  }
+
+  unwrap(): BaseOperator<In, Out> {
+    return this.wrapped;
   }
 
   // Convenience methods
-  chain<NewOut>(operator: Operator<Out, NewOut>): Operator<In, NewOut> {
-    return new ChainOperator(this, operator);
+  chain<NewOut>(operator: Operator<Out, NewOut>): Operator<In, NewOut>;
+  chain<NewOut = any>(first: Operator<Out, any>, ...operators: Operator<any, any>[]): Operator<In, NewOut>;
+  chain<NewOut>(...operators: Operator<any, any>[]): Operator<In, NewOut> {
+    return create(ChainOperator, this, ...operators);
+  }
+
+  combine<NewOut>(schema: object | any[]): Operator<In, NewOut> {
+    return this.chain<NewOut>(create(CombineOperator, schema));
   }
 
   map<NewOut>(mapper: (data: Out) => NewOut): Operator<In, NewOut> {
-    return this.chain(new MapOperator(mapper));
+    return this.chain<NewOut>(create(MapOperator, mapper));
   }
 }
