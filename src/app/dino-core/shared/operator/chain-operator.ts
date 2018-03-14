@@ -1,4 +1,4 @@
-import { List, Seq } from 'immutable';
+import { Collection, List, Seq } from 'immutable';
 
 import { Operator } from './operator';
 
@@ -26,5 +26,9 @@ export class ChainOperator<In, Out> extends Operator<In, Out> {
       return op.get(value);
     }, first.get(data));
     return last.get(intermediate);
+  }
+
+  protected getState(): Collection<any, any> {
+    return this.operators;
   }
 }
