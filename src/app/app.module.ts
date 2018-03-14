@@ -1,7 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { CoreModule } from './core';
-import { SharedModule } from './shared';
 import { HsdUiModule } from './hsd-ui';
 import { AppComponent } from './app.component';
 
@@ -12,7 +11,6 @@ import { AppComponent } from './app.component';
   imports: [
     BrowserModule,
     CoreModule,
-    SharedModule,
     HsdUiModule
   ],
   providers: [],

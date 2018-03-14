@@ -1,10 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
 // @import '~@angular/material/theming'
+@import '~material-design-icons/iconfont/material-icons.css'
 @import '~custom-theme.sass'
 @import '~typography.sass'
 
+// FIXME: Hacks
 .mat-tab-body-content
   overflow-y: hidden !important
+
+.mat-select-panel
+  max-height: 512px !important
+// /Hacks
 
 // Colors used throughout the screens
 $spring-green: rgb(0,230,118)

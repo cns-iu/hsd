@@ -1,10 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatSelectModule } from '@angular/material/select';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatIconModule } from '@angular/material/icon';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatTableModule } from '@angular/material/table';
+import { SharedModule } from '../shared';
 
 import { SumTreeDataService } from './shared/sum-tree-data.service';
 
@@ -17,11 +13,7 @@ import { SumTreeRewriteComponent } from './sum-tree-rewrite/sum-tree-rewrite.com
 @NgModule({
   imports: [
     CommonModule,
-    MatSelectModule,
-    MatChipsModule,
-    MatIconModule,
-    MatDialogModule,
-    MatTableModule
+    SharedModule
   ],
   exports: [
     SimpleTreeComponent, SumTreeComponent, SumTreeV2Component,

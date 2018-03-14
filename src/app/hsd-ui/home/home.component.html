@@ -1,1 +1,31 @@
-<hsd-main-content></hsd-main-content>
+<!-- Fork me on GitHub Banner -->
+<a href="https://github.com/cns-iu/hsd"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png" alt="Fork me on GitHub"></a>
+<!-- /Fork me on GitHub Banner -->
+
+<mat-toolbar class="toolbar z-depth-1-half">
+  <span>Health System Dynamics (HSD) Demo</span>
+</mat-toolbar>
+
+<div class="main-content">
+  <mat-tab-group [selectedIndex]="0" #tabs>
+    <mat-tab label="Home">
+      <div class="section">
+        <h1>Health System Dynamics Demo</h1>
+        <h2> This is a work in progress!</h2>
+        Choose a tab to see individual visualizations.
+      </div>
+    </mat-tab>
+    <mat-tab label="Tree">
+      <hsd-simple-tree *ngIf="tabs.selectedIndex == 1"></hsd-simple-tree> -->
+    </mat-tab>
+    <mat-tab label="Sum-Tree-v1">
+      <hsd-sum-tree *ngIf="tabs.selectedIndex == 2"></hsd-sum-tree>
+    </mat-tab>
+    <mat-tab label="Sum-Tree-v2">
+      <hsd-sum-tree-v2 *ngIf="tabs.selectedIndex == 3"></hsd-sum-tree-v2>
+    </mat-tab>
+    <mat-tab label="Sum-Tree-v3">
+      <hsd-sum-tree-rewrite></hsd-sum-tree-rewrite>
+    </mat-tab>
+  </mat-tab-group>
+</div>

@@ -1,5 +1,5 @@
 <h1 mat-dialog-title>Health System Dynamics</h1>
-<div mat-dialog-content>
+<mat-dialog-content>
   <p class="infoIntroText">
     Informatics for Integrating Biology and the Bedside (i2b2) data is organized by the i2b2 ontology. The SCILHS public i2b2
     ontology has 490,484 concepts under root path \PCORI and is 11 levels deep and can be found at github:
@@ -30,5 +30,7 @@
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
   </mat-table>
-
-</div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>Close</button>
+</mat-dialog-actions>

@@ -118,21 +118,21 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
   };
 
   @Input() colorFields = [
+    { value: 'fixedColor', viewValue: 'Fixed Color' },
     { value: 'concept', viewValue: 'Concept' },
     { value: 'visibility', viewValue: 'Visibility' },
     { value: 'tableName', viewValue: 'Table Name' },
     { value: 'isSynonym', viewValue: 'Synonym' },
-    { value: 'hasMetaData', viewValue: 'Has XML MetaData' },
-    { value: 'fixedColor', viewValue: 'Fixed Color' }
+    { value: 'hasMetaData', viewValue: 'Has XML MetaData' }
   ];
 
   @Input() opacityFields = [
+    { value: 'fullyOpaque', viewValue: 'Fully Opaque' },
     { value: 'concept', viewValue: 'Concept' },
     { value: 'visibility', viewValue: 'Visibility' },
     { value: 'tableName', viewValue: 'Table Name' },
     { value: 'isSynonym', viewValue: 'Synonym' },
-    { value: 'hasMetaData', viewValue: 'Has XML MetaData' },
-    { value: 'fullyOpaque', viewValue: 'Fully Opaque' }
+    { value: 'hasMetaData', viewValue: 'Has XML MetaData' }
   ];
 
   @Input() vegaLogLevel = defaultLogLevel;

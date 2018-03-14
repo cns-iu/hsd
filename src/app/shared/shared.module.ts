@@ -1,27 +1,21 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 import {
-  MatButtonModule,
-  MatSidenavModule,
-  MatRadioModule,
-  MatCheckboxModule,
-  MatCardModule,
-  MatToolbarModule,
-  MatTabsModule,
-  MatTableModule
+  MatButtonModule, MatCardModule, MatCheckboxModule, MatChipsModule, MatDialogModule,
+  MatIconModule, MatRadioModule, MatSelectModule, MatSidenavModule, MatTableModule,
+  MatTabsModule, MatToolbarModule
 } from '@angular/material';
 
 const MATERIAL_MODULES: any[] = [
-  MatButtonModule, MatSidenavModule, MatRadioModule, MatCheckboxModule,
-  MatCardModule, MatToolbarModule, MatTabsModule, MatTableModule
+  MatButtonModule, MatCardModule, MatCheckboxModule, MatChipsModule, MatDialogModule,
+  MatIconModule, MatRadioModule, MatSelectModule, MatSidenavModule, MatTableModule,
+  MatTabsModule, MatToolbarModule
 ];
 
 @NgModule({
-  imports: [
-    MATERIAL_MODULES
-  ],
-  exports: [
-    MATERIAL_MODULES
-  ]
+  imports: [ BrowserAnimationsModule, MATERIAL_MODULES ],
+  exports: [ BrowserAnimationsModule, MATERIAL_MODULES ]
 })
 export class SharedModule { }
