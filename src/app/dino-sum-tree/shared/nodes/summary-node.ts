@@ -1,3 +1,5 @@
+import { List } from 'immutable';
+
 import { Node, NodeArgs } from './node';
 
 
@@ -6,7 +8,7 @@ export interface SummaryNodeArgs extends NodeArgs {
 }
 
 export class SummaryNode extends Node {
-  readonly partitions: SummaryNode.Partition;
+  readonly partitions: List<SummaryNode.Partition>;
 
   constructor(args: SummaryNodeArgs) {
     super(args);
@@ -19,6 +21,7 @@ export class SummaryNode extends Node {
 
 export namespace SummaryNode {
   export class Partition {
+    readonly percentage: number;
     // TODO
   }
 }

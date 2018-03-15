@@ -71,6 +71,10 @@ export class Operator<In, Out> extends BaseOperator<In, Out> {
     return this.chain(create(CombineOperator, schema));
   }
 
+  construct<T>(type: {new (args: Out): T}): Operator<In, T> {
+    return this.map((args) => new type(args));
+  }
+
   map<NewOut>(mapper: (data: Out) => NewOut): Operator<In, NewOut> {
     return this.chain(create(MapOperator, mapper));
   }
