@@ -1,74 +1,65 @@
-import { Collection, List, Map, Record, fromJS } from 'immutable';
 import {
-  isArray, isFunction, isPlainObject, isUndefined,
-  cloneDeepWith, identity
+  Collection, Seq,
+  fromJS
+} from 'immutable';
+import {
+  isArray, isFunction, isPlainObject,
+  reduce
 } from 'lodash';
 
 import { BaseOperator } from './base-operator';
 
 
-type Path = List<string | number>;
+export type Path = Seq.Indexed<string | number>;
+export type Schema = object | any[]; // TODO Add additional valid types
+export type CloneFactory = (obj: any, key?: number | string, owner?: any, path?: Path) => any;
 
-class CycleRef extends Record({path: List()}) {
-  constructor(path: Path) {
-    super({path});
+
+const validTypes = Seq.Indexed.of(isArray, isPlainObject);
+
+function defaultCloneFactory(obj: any): any {
+  if (isArray(obj)) {
+    return new Array(obj.length);
+  } else if (isPlainObject(obj)) {
+    return {};
+  } else {
+    return undefined;
   }
 }
 
 
-function acyclicClone(
-  data: any,
-  callback?: (value: any, key: number | string, obj: any, path: Path) => any
-): any {
-  const cycleMemo = Map<any, CycleRef>().asMutable();
-  const pathMemo = Map<any, Path>().asMutable();
-  callback = isFunction(callback) ? callback : identity;
-
-  return cloneDeepWith(data, (value: any, key: number | string, obj: any) => {
-    const path = pathMemo.get(value, List.of('')).push(key);
-
-    if (isArray(value) || isPlainObject(value)) {
-      if (cycleMemo.has(value)) {
-        return cycleMemo.get(value);
-      } else {
-        cycleMemo.set(value, new CycleRef(path));
-      }
-    }
-
-    pathMemo.set(value, path);
-    return callback(value, key, obj, path);
-  });
-}
-
-
+// TODO improve CombineOperator to handle nested schemas
+// Remember to take care of multiple references to the same object
+// Check out lodash deepClone for how they clone objects
 export class CombineOperator<In, Out> extends BaseOperator<In, Out> {
-  private readonly operatorPaths: List<Path>;
   private readonly parsedSchema: Collection<any, any>;
 
-  constructor(readonly schema: object | any[]) {
+  constructor(
+    readonly schema: object | any[],
+    readonly factory?: CloneFactory
+  ) {
     super();
 
-    if (!isArray(schema) && !isPlainObject(schema)) {
-      throw new Error('CombineOperator\'s schema must be an array or a plain object');
+    if (!validTypes.some((pred) => pred(schema))) {
+      throw new Error('Invalid top level schema object type');
     }
 
-    const paths = List<Path>().asMutable();
-    const clone = acyclicClone(schema, (value, _key, _obj, path) => {
-      if (value instanceof BaseOperator) {
-        paths.push(path);
-        return value.unwrap();
-      }
-    });
-
-    this.operatorPaths = paths.asImmutable();
-    this.parsedSchema = fromJS({'': clone});
+    this.factory = isFunction(factory) ? factory : defaultCloneFactory;
+    this.parsedSchema = fromJS(schema);
   }
 
   get(data: In): Out {
-    return undefined; // TODO
+    return reduce(this.schema, (result, value, key) => {
+      if (value instanceof BaseOperator) {
+        value = value.get(data);
+      }
+
+      result[key] = value;
+      return result;
+    }, this.factory(this.schema, undefined, undefined, Seq.Indexed()));
   }
 
   getState(): Collection<any, any> {
-    return this.parsedSchema;
+    return Seq.Indexed.of<any>(this.parsedSchema, this.factory);
   }
 }
