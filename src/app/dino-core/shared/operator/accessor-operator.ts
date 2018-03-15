@@ -1,4 +1,4 @@
-import { Collection, Seq } from 'immutable';
+import { Collection, List } from 'immutable';
 import { get, toPath } from 'lodash';
 
 import { BaseOperator } from './base-operator';
@@ -16,9 +16,6 @@ export class AccessorOperator<Out> extends BaseOperator<any, Out> {
   }
 
   getState(): Collection<any, any> {
-    return Seq.Indexed.of<any>(
-      Seq.Indexed(toPath(this.path)),
-      this.defaultValue
-    );
+    return List.of<any>(List(toPath(this.path)), this.defaultValue);
   }
 }

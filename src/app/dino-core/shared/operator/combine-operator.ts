@@ -38,24 +38,22 @@ function cloneDeepReplaceCycles(obj: any): any {
 
   return cloneDeepWith(obj, (value: any, key: number | string, owner: any) => {
     if (!isObject(value)) {
-      return value;
+      return;
     }
 
     if (cycleMemo.has(value)) {
       return cycleMemo.get(value);
     }
 
-    const path = pathMemo.get(owner, List()).push(key);
+    const path = pathMemo.get(owner, List()).push(key || '');
     pathMemo.set(value, path);
     cycleMemo.set(value, new CycleRef(path));
-
-    return value;
   });
 }
 
 
 // Operator replacement
-function cloneDeepReplaceOperator(obj: any): any {
+function cloneDeepUnwrapOperator(obj: any): any {
   return cloneDeepWith(obj, (value: any) => {
     if (value instanceof BaseOperator) {
       return value.unwrap();
@@ -83,7 +81,7 @@ export class CombineOperator<In, Out> extends BaseOperator<In, Out> {
       throw Error('Invalid schema type');
     }
 
-    this.schema = cloneDeepReplaceOperator(schema);
+    this.schema = cloneDeepUnwrapOperator(schema);
     this.parsedSchema = fromJS(cloneDeepReplaceCycles(this.schema));
   }
 

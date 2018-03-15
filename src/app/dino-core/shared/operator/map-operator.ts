@@ -1,4 +1,4 @@
-import { Collection, Seq } from 'immutable';
+import { Collection, List } from 'immutable';
 
 import { BaseOperator } from './base-operator';
 
@@ -13,6 +13,6 @@ export class MapOperator<In, Out> extends BaseOperator<In, Out> {
   }
 
   getState(): Collection<any, any> {
-    return Seq.Indexed.of(this.mapper);
+    return List.of(this.mapper);
   }
 }

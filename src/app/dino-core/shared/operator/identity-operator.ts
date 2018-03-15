@@ -1,4 +1,4 @@
-import { Collection, Seq } from 'immutable';
+import { Collection, List } from 'immutable';
 
 import { BaseOperator } from './base-operator';
 
@@ -11,6 +11,6 @@ export class IdentityOperator<T> extends BaseOperator<T, T> {
   }
 
   getState(): Collection<any, any> {
-    return Seq.Indexed.of(uniqueObject);
+    return List.of(uniqueObject);
   }
 }
