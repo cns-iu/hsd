@@ -1,77 +1,97 @@
 import {
-  Collection, Seq,
+  Collection, List, Map, Record,
   fromJS
 } from 'immutable';
 import {
-  isArray, isFunction, isPlainObject, isUndefined,
-  reduce
+  isArray, isObject, isPlainObject,
+  cloneDeepWith
 } from 'lodash';
 
 import { BaseOperator } from './base-operator';
 
 
-export type Path = Seq.Indexed<string | number>;
-export type Schema = object | any[]; // TODO Add additional valid types
+export type Path = List<string | number>;
+export type Schema = object | any[];
 export type CloneFactory = (obj: any, key?: number | string, owner?: any, path?: Path) => any;
 
 
-const validTypes = Seq.Indexed.of(isArray, isPlainObject);
+// Schema utility
+const validSchemaTypes: List<(obj: any) => boolean> = List.of(
+  isArray, isPlainObject
+);
 
-function defaultCloneFactory(obj: any): any {
-  if (isArray(obj)) {
-    return new Array(obj.length);
-  } else if (isPlainObject(obj)) {
-    return {};
-  } else {
-    return undefined;
-  }
-}
-
-function makeCloneFactory(factory?: CloneFactory): CloneFactory {
-  if (!isFunction(factory)) {
-    return defaultCloneFactory;
-  }
-
-  return (obj, key, owner, path) => {
-    const clone = factory(obj, key, owner, path);
-    return isUndefined(clone) ? defaultCloneFactory(obj) : clone;
-  };
+function isSchema(obj: any): obj is Schema {
+  return validSchemaTypes.some((test) => test(obj));
 }
 
 
-// TODO improve CombineOperator to handle nested schemas
-// Remember to take care of multiple references to the same object
-// Check out lodash deepClone for how they clone objects
-// Optional: Call unwrap on operators to make a flatter structure
-export class CombineOperator<In, Out> extends BaseOperator<In, Out> {
-  private readonly parsedSchema: Collection<any, any>;
+// Cycle utility
+class CycleRef extends Record({path: List()}) {
+  constructor(path: Path) {
+    super({path});
+  }
+}
 
-  constructor(
-    readonly schema: object | any[],
-    readonly factory?: CloneFactory
-  ) {
-    super();
+function cloneDeepReplaceCycles(obj: any): any {
+  const pathMemo = Map<any, Path>().asMutable();
+  const cycleMemo = Map<any, CycleRef>().asMutable();
 
-    if (!validTypes.some((pred) => pred(schema))) {
-      throw new Error('Invalid top level schema object type');
+  return cloneDeepWith(obj, (value: any, key: number | string, owner: any) => {
+    if (!isObject(value)) {
+      return value;
     }
 
-    this.factory = makeCloneFactory(factory);
-    this.parsedSchema = fromJS(schema);
+    if (cycleMemo.has(value)) {
+      return cycleMemo.get(value);
+    }
+
+    const path = pathMemo.get(owner, List()).push(key);
+    pathMemo.set(value, path);
+    cycleMemo.set(value, new CycleRef(path));
+
+    return value;
+  });
+}
+
+
+// Operator replacement
+function cloneDeepReplaceOperator(obj: any): any {
+  return cloneDeepWith(obj, (value: any) => {
+    if (value instanceof BaseOperator) {
+      return value.unwrap();
+    }
+  });
+}
+
+function cloneDeepEvaluate<In, Out>(obj: any, data: In): Out {
+  return cloneDeepWith(obj, (value: any, ...args) => {
+    if (value instanceof BaseOperator) {
+      return value.get(data);
+    }
+  });
+}
+
+
+export class CombineOperator<In, Out> extends BaseOperator<In, Out> {
+  readonly schema: Schema;
+  private readonly parsedSchema: Collection<any, any>;
+
+  constructor(schema: Schema) {
+    super();
+
+    if (!isSchema(schema)) {
+      throw Error('Invalid schema type');
+    }
+
+    this.schema = cloneDeepReplaceOperator(schema);
+    this.parsedSchema = fromJS(cloneDeepReplaceCycles(this.schema));
   }
 
   get(data: In): Out {
-    return reduce(this.schema, (result, value, key) => {
-      if (value instanceof BaseOperator) {
-        value = value.get(data);
-      }
-
-      result[key] = value;
-      return result;
-    }, this.factory(this.schema, undefined, undefined, Seq.Indexed()));
+    return cloneDeepEvaluate(this.schema, data);
   }
 
   getState(): Collection<any, any> {
-    return Seq.Indexed.of<any>(this.parsedSchema, this.factory);
+    return this.parsedSchema;
   }
 }
