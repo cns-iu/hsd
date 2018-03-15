@@ -4,6 +4,7 @@ import { BaseOperator } from './base-operator';
 import { AccessorOperator, Path } from './accessor-operator';
 import { ChainOperator } from './chain-operator';
 import { CombineOperator } from './combine-operator';
+import { IdentityOperator } from './identity-operator';
 import { MapOperator } from './map-operator';
 
 
@@ -27,6 +28,10 @@ export class Operator<In, Out> extends BaseOperator<In, Out> {
     path: Path, defaultValue?: Out
   ): Operator<In, Out> {
     return create(AccessorOperator, path, defaultValue);
+  }
+
+  static identity<T = any>(): Operator<T, T> {
+    return create(IdentityOperator);
   }
 
   // Override base class methods
