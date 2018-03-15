@@ -1,5 +1,7 @@
 import { Collection, Seq, is } from 'immutable';
 
+import { sum as arraySum } from 'lodash';
+
 import { BaseOperator } from './base-operator';
 import { AccessorOperator, Path } from './accessor-operator';
 import { ChainOperator } from './chain-operator';
@@ -18,6 +20,7 @@ function create<In, Out>(
   return new Operator(new type(...args));
 }
 
+
 export class Operator<In, Out> extends BaseOperator<In, Out> {
   constructor(private readonly wrapped: BaseOperator<In, Out>) {
     super();
@@ -34,6 +37,12 @@ export class Operator<In, Out> extends BaseOperator<In, Out> {
     return create(IdentityOperator);
   }
 
+  static sum<In = any>(
+    ...operators: Operator<In, number>[]
+  ): Operator<In, number> {
+    return Operator.identity().combine(operators).map(arraySum);
+  }
+
   // Override base class methods
   get(data: In): Out {
     return this.wrapped.get(data);
@@ -48,6 +57,10 @@ export class Operator<In, Out> extends BaseOperator<In, Out> {
   }
 
   // Convenience methods
+  add(num: number): Operator<In, number> {
+    return this.map((value: any) => value + num);
+  }
+
   chain<NewOut>(operator: Operator<Out, NewOut>): Operator<In, NewOut>;
   chain<NewOut = any>(first: Operator<Out, any>, ...operators: Operator<any, any>[]): Operator<In, NewOut>;
   chain<NewOut>(...operators: Operator<any, any>[]): Operator<In, NewOut> {
