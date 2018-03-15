@@ -14,10 +14,20 @@ interface OperatorConstructor<In, Out> {
   new (...args: any[]): BaseOperator<In, Out>;
 }
 
+function wrap<In, Out>(op: BaseOperator<In, Out>): Operator<In, Out> {
+  return new Operator(op);
+}
+
+function createRaw<In, Out>(
+  type: OperatorConstructor<In, Out>, ...args: any[]
+): BaseOperator<In, Out> {
+  return new type(...args);
+}
+
 function create<In, Out>(
   type: OperatorConstructor<In, Out>, ...args: any[]
 ): Operator<In, Out> {
-  return new Operator(new type(...args));
+  return wrap(createRaw(type, ...args));
 }
 
 
@@ -68,10 +78,17 @@ export class Operator<In, Out> extends BaseOperator<In, Out> {
   }
 
   combine<NewOut>(schema: object | any[]): Operator<In, NewOut> {
-    return this.chain<NewOut>(create(CombineOperator, schema));
+    return wrap(this.chainRaw(createRaw(CombineOperator, schema)));
   }
 
   map<NewOut>(mapper: (data: Out) => NewOut): Operator<In, NewOut> {
-    return this.chain<NewOut>(create(MapOperator, mapper));
+    return wrap(this.chainRaw(createRaw(MapOperator, mapper)));
+  }
+
+  // Utility methods
+  chainRaw<NewOut>(
+    ...operators: BaseOperator<any, any>[]
+  ): BaseOperator<In, NewOut> {
+    return createRaw(ChainOperator, this.unwrap(), ...operators);
   }
 }

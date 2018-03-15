@@ -1,6 +1,23 @@
-import { Collection, List, Seq } from 'immutable';
+import { Collection, List } from 'immutable';
 
 import { BaseOperator } from './base-operator';
+import { IdentityOperator } from './identity-operator';
+
+
+function normalizeOperator(
+  op: BaseOperator<any, any>
+): Iterable<BaseOperator<any, any>> {
+  op = op.unwrap();
+
+  if (op instanceof ChainOperator) {
+    return op.operators as any;
+  } else if (op instanceof IdentityOperator) {
+    return [];
+  } else {
+    return [op];
+  }
+}
+
 
 export class ChainOperator<In, Out> extends BaseOperator<In, Out> {
   readonly operators: List<BaseOperator<any, any>>;
@@ -8,24 +25,12 @@ export class ChainOperator<In, Out> extends BaseOperator<In, Out> {
   constructor(...operators: BaseOperator<any, any>[]) {
     super();
 
-    if (operators.length < 2) {
-      throw new Error('ChainOperator requires at least two arguments');
-    }
-
-    this.operators = List(Seq.Indexed(operators).flatMap((op) => {
-      op = op.unwrap();
-      return op instanceof ChainOperator ? op.operators : [op];
-    }));
+    this.operators = List(List(operators).flatMap(normalizeOperator));
   }
 
   get(data: In): Out {
-    const first = this.operators.first() as BaseOperator<In, any>;
-    const last = this.operators.last() as BaseOperator<any, Out>;
-
-    const intermediate = this.operators.slice(1, -1).reduce((value, op) => {
-      return op.get(value);
-    }, first.get(data));
-    return last.get(intermediate);
+    const result = this.operators.reduce((value, op) => op.get(value), data);
+    return result as any;
   }
 
   getState(): Collection<any, any> {
