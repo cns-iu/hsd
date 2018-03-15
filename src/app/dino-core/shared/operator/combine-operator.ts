@@ -3,7 +3,7 @@ import {
   fromJS
 } from 'immutable';
 import {
-  isArray, isFunction, isPlainObject,
+  isArray, isFunction, isPlainObject, isUndefined,
   reduce
 } from 'lodash';
 
@@ -27,10 +27,22 @@ function defaultCloneFactory(obj: any): any {
   }
 }
 
+function makeCloneFactory(factory?: CloneFactory): CloneFactory {
+  if (!isFunction(factory)) {
+    return defaultCloneFactory;
+  }
+
+  return (obj, key, owner, path) => {
+    const clone = factory(obj, key, owner, path);
+    return isUndefined(clone) ? defaultCloneFactory(obj) : clone;
+  };
+}
+
 
 // TODO improve CombineOperator to handle nested schemas
 // Remember to take care of multiple references to the same object
 // Check out lodash deepClone for how they clone objects
+// Optional: Call unwrap on operators to make a flatter structure
 export class CombineOperator<In, Out> extends BaseOperator<In, Out> {
   private readonly parsedSchema: Collection<any, any>;
 
@@ -44,7 +56,7 @@ export class CombineOperator<In, Out> extends BaseOperator<In, Out> {
       throw new Error('Invalid top level schema object type');
     }
 
-    this.factory = isFunction(factory) ? factory : defaultCloneFactory;
+    this.factory = makeCloneFactory(factory);
     this.parsedSchema = fromJS(schema);
   }
 
