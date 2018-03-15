@@ -31,9 +31,6 @@
       },
       "height": {
         "field": "height"
-      },
-      "tooltip": {
-        "field": "tooltip"
       }
     }
   }

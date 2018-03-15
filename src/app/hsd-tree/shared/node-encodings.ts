@@ -1,6 +1,10 @@
 import { ConceptType, VisibilityType, NodeInfo, SummaryNode, SingleNode } from './node';
 
-export function getNodeInfoColor(nodeInfo: NodeInfo, fieldName: string = 'concept', defaultColor: string = '#5B9BD5'): string {
+export function getNodeInfoColor(
+  nodeInfo: NodeInfo,
+  fieldName: string = 'concept',
+  defaultColor: string = '#5B9BD5'
+): string {
   let color = defaultColor;
   if (fieldName === 'concept') {
     switch (nodeInfo.concept) {
@@ -51,7 +55,26 @@ export function getNodeInfoColor(nodeInfo: NodeInfo, fieldName: string = 'concep
   return color;
 }
 
-export function getNodeInfoOpacity(nodeInfo: NodeInfo, fieldName: string = 'visibility', defaultOpacity: number = 0.5): number {
+// Returns color-encoding value to show on tooltip
+export function getNodeColorText (
+  nodeInfo: NodeInfo,
+  fieldName: string = 'concept'
+): string {
+    switch (fieldName) {
+      case 'concept': return ConceptType[nodeInfo.concept];
+      case 'visibility': return VisibilityType[nodeInfo.visibility];
+      case 'isSynonym': return nodeInfo.isSynonym.toString();
+      case 'hasMetaData': return nodeInfo.hasMetaData.toString();
+      case 'tableName': return nodeInfo.tableName;
+      case 'fixedColor': return 'Fixed Color';
+    }
+}
+
+export function getNodeInfoOpacity(
+  nodeInfo: NodeInfo,
+  fieldName: string = 'visibility',
+  defaultOpacity: number = 0.5
+): number {
   let opacity = defaultOpacity;
   if (fieldName === 'concept') {
     switch (nodeInfo.concept) {
@@ -101,6 +124,21 @@ export function getNodeInfoOpacity(nodeInfo: NodeInfo, fieldName: string = 'visi
   }
 
   return opacity;
+}
+
+// Returns opacity-encoding value to show on tooltip
+export function getNodeOpacityText (
+  nodeInfo: NodeInfo,
+  fieldName: string = 'visibility'
+): string {
+  switch (fieldName) {
+    case 'concept': return ConceptType[nodeInfo.concept];
+    case 'visibility': return VisibilityType[nodeInfo.visibility];
+    case 'isSynonym': return nodeInfo.isSynonym.toString();
+    case 'hasMetaData': return nodeInfo.hasMetaData.toString();
+    case 'tableName': return nodeInfo.tableName;
+    case 'fullyOpaque': return 'Fully Opaque';
+  }
 }
 
 export function getSingleNodeTooltip(

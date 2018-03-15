@@ -4,6 +4,8 @@ import {
   ElementRef, SimpleChanges
 } from '@angular/core';
 
+import { vega as vegaTooltip } from 'vega-tooltip';
+
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 import { Observable } from 'rxjs/Observable';
@@ -202,7 +204,18 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
     );
 
     // Run visualization
-    initialized.subscribe(undefined, undefined, () => instance.run());
+    initialized.subscribe(undefined, undefined, () => {
+      instance.run();
+
+      vegaTooltip(instance, {
+        showAllFields: false,
+        fields: [
+          { field: 'Color' },
+          { field: 'Opacity' },
+          { field: 'Concepts', formatType: 'number' }
+        ]
+      });
+    });
 
     // Debugging
     if (this.vegaLogLevel >= 2) {

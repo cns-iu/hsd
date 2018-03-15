@@ -3,7 +3,14 @@ import {
   ConceptType, VisibilityType
 } from '../shared/node';
 
-import { getNodeInfoColor, getNodeInfoOpacity, getSingleNodeTooltip, getSummaryNodeBreakdownTooltip } from '../shared/node-encodings';
+import {
+  getNodeInfoColor,
+  getNodeInfoOpacity,
+  getNodeColorText,
+  getNodeOpacityText,
+  getSingleNodeTooltip,
+  getSummaryNodeBreakdownTooltip
+} from '../shared/node-encodings';
 
 export type InternalNode = InternalSingleNode | InternalSummaryNode;
 
@@ -11,6 +18,10 @@ export interface InternalSingleNode extends SingleNode {
   color: string;
   opacity: number;
   tooltip: string;
+
+  Color: string; // color encoding value for tooltip
+  Opacity: string; // opacity encoding value for tooltip
+  Concepts: number; // #Concepts for tooltip
 }
 
 export interface InternalSummaryNodePartition {
@@ -22,6 +33,10 @@ export interface InternalSummaryNodePartition {
   color: string;
   opacity: number;
   tooltip: string;
+
+  Color: string; // color encoding value for tooltip
+  Opacity: string; // opacity encoding value for tooltip
+  Concepts: number; // #Concepts for tooltip
 
   groupingKey?: string;
 }
@@ -86,8 +101,10 @@ export function convertToInternalSingleNode(
 
   inode.color = getNodeInfoColor(inode.info, options.colorField);
   inode.opacity = getNodeInfoOpacity(inode.info, options.opacityField);
-  inode.tooltip = getSingleNodeTooltip(inode, options.summaryType, options.tooltipField);
-
+  inode.tooltip = getSingleNodeTooltip(inode, options.summaryType, options.tooltipField); // not in use as tooltip field
+  inode.Color = getNodeColorText(inode.info, options.colorField);
+  inode.Opacity = getNodeOpacityText(inode.info, options.opacityField);
+  inode.Concepts = 1;
   return inode;
 }
 
@@ -146,10 +163,12 @@ export function convertToInternalSummaryNode(
     const color = getNodeInfoColor(b, options.colorField);
     const opacity = getNodeInfoOpacity(b, options.opacityField);
     const id = '' + color + '@' + Math.trunc(opacity * 100);
+    const Color  = getNodeColorText(b, options.colorField);
+    const Opacity = getNodeOpacityText(b, options.opacityField);
 
     return {
       id, color, opacity,
-      info: b
+      info: b, Color, Opacity
     };
   }), 'id');
 
@@ -159,6 +178,8 @@ export function convertToInternalSummaryNode(
       if (acc.color === undefined) {
         acc.color = b.color;
         acc.opacity = b.opacity;
+        acc.Color = b.Color;
+        acc.Opacity = b.Opacity;
       }
 
       return acc;
@@ -168,7 +189,10 @@ export function convertToInternalSummaryNode(
       cumPercentage: 0,
       color: undefined,
       opacity: undefined,
-      tooltip: undefined
+      tooltip: undefined,
+      Color: undefined,
+      Opacity: undefined,
+      Concepts: undefined
     }));
 
   const totalNumPaths = inode.partitions.reduce((acc, p) => {
@@ -182,7 +206,8 @@ export function convertToInternalSummaryNode(
   inode.partitions.forEach((p) => {
     p.tooltip = getSummaryNodeBreakdownTooltip(
       inode, p as any, options.summaryType, options.tooltipField
-    );
+    ); // not in use as tooltip field
+    p.Concepts = p.numPaths; // #Concepts on tooltip
   });
 
   inode.label = '' + inode.totalNumPaths;
