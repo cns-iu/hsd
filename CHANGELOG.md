@@ -2,6 +2,15 @@
 
 Changelog for the HSD project.
 
+## 0.0.4 - 2018-03-16
+### Added
+    - Fourth Sprint Release for HSD, see updated [demo site](https://cns-iu.github.io/hsd/)
+    - Added an expanded tooltip display
+    - Improved the text and look and feel of the legend display
+    - Added fixed options for both opacity and color encoding
+    - Removed external dependencies such that there are no outside http calls when loading the software
+    - Elements within a Sum Box now have a minimum size of 2px for legibility
+
 ## 0.0.3 - 2018-02-27
 ### Added
     - Third Sprint Release for HSD! [demo site](https://cns-iu.github.io/hsd/)
