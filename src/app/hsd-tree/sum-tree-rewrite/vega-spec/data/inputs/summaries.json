@@ -2,10 +2,5 @@
   "name": "summaries",
   "values": [],
   "transform": [
-    {
-      "type": "formula",
-      "expr": "log(max(1, 100 * datum.totalNumPaths / datum.numPathsRef.max)) / log(100) * .75 + .25",
-      "as": "multiplier"
-    }
   ]
 }

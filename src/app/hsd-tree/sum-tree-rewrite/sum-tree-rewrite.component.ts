@@ -28,7 +28,8 @@ import {
 } from '../shared/node';
 import {
   InternalNode, InternalSingleNode, InternalSummaryNode,
-  convertToInternalSingleNode, convertToInternalSummaryNode
+  convertToInternalSingleNode, convertToInternalSummaryNode,
+  calculateMultiplier
 } from './internal-nodes';
 import vegaSpec, {
   inputDataSetNames,
@@ -286,7 +287,7 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
         summaryType: this.summaryType,
         numPathsRef: this.numPathsRef
       })
-    );
+    ).do(this.adjustPercentages);
 
     return summaryNodes;
   }
@@ -368,6 +369,7 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
     const events: Observable<any>[] = [];
     this.numPathsRef[node.path] = 0;
     this.numPathsRef.max = 0;
+    // this.numPathsRef.maxPixelHeight = 35;
 
     if (expanded) {
       nodeChanges.remove((inode) => isAncestorOf(node, inode));
@@ -380,7 +382,7 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
           summaryType: this.summaryType,
           numPathsRef: this.numPathsRef
         })
-      ));
+      ).do(this.adjustPercentages));
     } else {
       summaryChanges.remove((inode) => isAncestorOf(node, inode));
       const childNodes = this.queryAndSetDataTuples(
@@ -400,7 +402,7 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
           summaryType: this.summaryType,
           numPathsRef: this.numPathsRef
         })
-      );
+      ).do(this.adjustPercentages);
 
       events.push(childSummaryNodes);
     }
@@ -425,4 +427,52 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
     // Add summaries for the inserted nodes
   }
 
+  @Bind
+  private adjustPercentages(nodes: InternalSummaryNode[]) {
+    const { summaryBoxSizeName } = inputSignalNames;
+    const minPixelHeight = 3;
+    const maxPixelHeight = this.vegaInstance.signal(summaryBoxSizeName).height;
+
+    calculateMultiplier(this.numPathsRef, nodes);
+
+    nodes.forEach((n) => {
+      const expected = minPixelHeight / (maxPixelHeight * n.multiplier); // expected percentage for a small partition
+      const indices = []; // for keeping track of indices which have percentage greater than expected
+      let diffSum = 0 ; // sum of differences from expected percentage across all partitions
+
+      // calculates sum of differences and tracks indices which have percentages greater than expected
+      n.partitions.forEach((p, i) => {
+        if (p.percentage !== 0 && p.percentage < expected) {
+          diffSum += expected - p.percentage;
+          p.percentage = expected;
+        } else {
+          indices.push(i);
+        }
+      });
+
+      /* Decreases percentage of partitions, which have percentages greater than expected
+        If by decreasing the percentage of a partition, it in turn becomes smaller than
+        expected, then diffSum is adjusted by removing (expected - partition.percentage 
+        + diff) from it and the partitions percentage is increased to match expected.
+      */
+      indices.forEach((i, j) => {
+        const diff = diffSum / ((indices.length - j) || 1);
+        const p = n.partitions[i];
+
+        if (p.percentage - diff < expected) {
+          diffSum -= expected - p.percentage + diff;
+          p.percentage = expected;
+        } else {
+          diffSum -= diff;
+          p.percentage -= diff;
+        }
+      });
+
+      // cumulative percentage is recalculated to adjust partition offsets.
+      n.partitions.reduce((c, p) => {
+        p.cumPercentage = c;
+        return c + p.percentage;
+      }, 0);
+    });
+  }
 }

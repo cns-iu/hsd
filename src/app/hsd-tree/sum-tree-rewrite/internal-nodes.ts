@@ -203,6 +203,7 @@ export function convertToInternalSummaryNode(
     p.cumPercentage = acc;
     return acc + p.percentage;
   }, 0);
+
   inode.partitions.forEach((p) => {
     p.tooltip = getSummaryNodeBreakdownTooltip(
       inode, p as any, options.summaryType, options.tooltipField
@@ -212,4 +213,10 @@ export function convertToInternalSummaryNode(
 
   inode.label = '' + inode.totalNumPaths;
   return inode;
+}
+
+export function calculateMultiplier(ref: {max: number}, nodes: InternalSummaryNode[]): void {
+  nodes.forEach((node) => {
+    node.multiplier = Math.log(Math.max(1, 100 * node.totalNumPaths / ref.max)) / Math.log(100) * .75 + .25;
+  });
 }
