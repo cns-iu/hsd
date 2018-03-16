@@ -23,7 +23,7 @@ function create<In, Out>(
 
 export class Operator<In, Out> extends BaseOperator<In, Out> {
   constructor(private readonly wrapped: BaseOperator<In, Out>) {
-    super();
+    super(wrapped.cachable);
   }
 
   // Creation methods
@@ -44,16 +44,16 @@ export class Operator<In, Out> extends BaseOperator<In, Out> {
   }
 
   // Override base class methods
-  get(data: In): Out {
+  protected getImpl(data: In): Out {
     return this.wrapped.get(data);
   }
 
-  getState(): Collection<any, any> {
+  protected getStateImpl(): Collection<any, any> {
     return this.wrapped.getState();
   }
 
   unwrap(): BaseOperator<In, Out> {
-    return this.wrapped;
+    return this.wrapped.unwrap();
   }
 
   // Convenience methods

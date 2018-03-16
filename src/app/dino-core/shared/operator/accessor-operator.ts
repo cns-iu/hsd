@@ -8,14 +8,14 @@ export type Path = number | string | (number | string)[];
 
 export class AccessorOperator<Out> extends BaseOperator<any, Out> {
   constructor(readonly path: Path, readonly defaultValue?: Out) {
-    super();
+    super(true);
   }
 
-  get(data: any): Out {
+  protected getImpl(data: any): Out {
     return get(data, this.path, this.defaultValue);
   }
 
-  getState(): Collection<any, any> {
+  protected getStateImpl(): Collection<any, any> {
     return List.of<any>(List(toPath(this.path)), this.defaultValue);
   }
 }

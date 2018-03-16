@@ -72,24 +72,22 @@ function cloneDeepEvaluate<In, Out>(obj: any, data: In): Out {
 
 export class CombineOperator<In, Out> extends BaseOperator<In, Out> {
   readonly schema: Schema;
-  private readonly parsedSchema: Collection<any, any>;
 
   constructor(schema: Schema) {
-    super();
+    super(true);
 
     if (!isSchema(schema)) {
       throw Error('Invalid schema type');
     }
 
     this.schema = cloneDeepUnwrapOperator(schema);
-    this.parsedSchema = fromJS(cloneDeepReplaceCycles(this.schema));
   }
 
-  get(data: In): Out {
+  protected getImpl(data: In): Out {
     return cloneDeepEvaluate(this.schema, data);
   }
 
-  getState(): Collection<any, any> {
-    return this.parsedSchema;
+  protected getStateImpl(): Collection<any, any> {
+    return fromJS(cloneDeepReplaceCycles(this.schema));
   }
 }
