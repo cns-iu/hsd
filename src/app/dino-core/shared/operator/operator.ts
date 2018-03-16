@@ -25,6 +25,10 @@ function create<In, Out>(
 export class Operator<In, Out> extends BaseOperator<In, Out> {
   constructor(private readonly wrapped: BaseOperator<In, Out>) {
     super(wrapped.cachable);
+
+    if (wrapped instanceof Operator) {
+      return wrapped; // Prevent wrapping a wrapper
+    }
   }
 
   // Creation methods
@@ -58,7 +62,7 @@ export class Operator<In, Out> extends BaseOperator<In, Out> {
   }
 
   unwrap(): BaseOperator<In, Out> {
-    return this.wrapped.unwrap();
+    return this.wrapped;
   }
 
   // Convenience methods
