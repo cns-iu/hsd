@@ -310,6 +310,7 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
     return tuples.do(insert);
   }
 
+  @Bind
   onEncodingChange() {
     const { nodesName, summariesName } = inputDataSetNames;
     const instance = this.vegaInstance;
@@ -408,7 +409,10 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
     Observable.merge(...events).subscribe(undefined, undefined, () => {
       instance.change(nodesName, nodeChanges);
       instance.change(summariesName, summaryChanges);
-      instance.runAfter(instance.run.bind(instance));
+      // instance.runAfter(instance.run.bind(instance));
+
+      // Evil Hack Part Deux - For Bug #46
+      instance.runAfter(this.onEncodingChange);
     });
   }
 
