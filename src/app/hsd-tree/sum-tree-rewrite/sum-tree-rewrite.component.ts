@@ -430,7 +430,7 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
   @Bind
   private adjustPercentages(nodes: InternalSummaryNode[]) {
     const { summaryBoxSizeName } = inputSignalNames;
-    const minPixelHeight = 3;
+    const minPixelHeight = 2;
     const maxPixelHeight = this.vegaInstance.signal(summaryBoxSizeName).height;
 
     calculateMultiplier(this.numPathsRef, nodes);
@@ -452,7 +452,7 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
 
       /* Decreases percentage of partitions, which have percentages greater than expected
         If by decreasing the percentage of a partition, it in turn becomes smaller than
-        expected, then diffSum is adjusted by removing (expected - partition.percentage 
+        expected, then diffSum is adjusted by removing (expected - partition.percentage
         + diff) from it and the partitions percentage is increased to match expected.
       */
       indices.forEach((i, j) => {
