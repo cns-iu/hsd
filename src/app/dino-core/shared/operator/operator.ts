@@ -7,6 +7,7 @@ import { AccessorOperator, Path } from './accessor-operator';
 import { ChainOperator } from './chain-operator';
 import { CombineOperator } from './combine-operator';
 import { IdentityOperator } from './identity-operator';
+import { IdGeneratorOperator } from './id-generator-operator';
 import { MapOperator } from './map-operator';
 
 
@@ -35,6 +36,10 @@ export class Operator<In, Out> extends BaseOperator<In, Out> {
 
   static identity<T = any>(): Operator<T, T> {
     return create(IdentityOperator);
+  }
+
+  static idGenerator(prefix?: string, start?: number): Operator<any, string> {
+    return create(IdGeneratorOperator, prefix, start);
   }
 
   static sum<In = any>(
