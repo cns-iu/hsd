@@ -5,9 +5,9 @@ export enum ConceptType {
 }
 
 export enum VisibilityType {
-  Active,
-  Inactive,
-  Hidden
+  Active = 0,
+  Hidden = 1,
+  Inactive = 2
 }
 
 export type Node = SingleNode | SummaryNode;

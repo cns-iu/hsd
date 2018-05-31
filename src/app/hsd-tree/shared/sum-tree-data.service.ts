@@ -75,6 +75,7 @@ function rawSummaryNodeToSummaryNodeInfo(node: any): NodeInfo {
   };
 }
 
+
 @Injectable()
 export class SumTreeDataService {
   constructor() { }
@@ -102,7 +103,8 @@ export class SumTreeDataService {
       .map(([path, rawNodes]) => {
         const byLevel = groupBy(rawNodes as any[], 'SubtreeLevel');
         const summaryNodes = Object.entries(byLevel).map(([level, acc]) => {
-          const breakdown = (acc as any[]).map(rawSummaryNodeToSummaryNodeInfo);
+          const breakdown = (acc as any[]).map(rawSummaryNodeToSummaryNodeInfo)
+            .sort((a, b) => a.visibility - b.visibility);
           return {
             type: 'SummaryNode',
             level: +level,
