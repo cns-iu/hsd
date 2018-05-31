@@ -4,16 +4,16 @@
   <div class="shapeLegend">
     <div class="row">
       <div class="circle1">1</div>
-      <div class="legendShapeText">Single Concept</div>
+      <div class="legendShapeText">1 Concept</div>
     </div>
     <div class="row">
       <div class="square"></div>
-      <div class="legendShapeText">Multiple Concepts</div>
+      <div class="legendShapeText">N Concepts</div>
     </div>
   </div>
   <br>
   <mat-form-field>
-    <mat-select placeholder="Summary Type" [(value)]="summaryType" (valueChange)="onEncodingChange()">
+    <mat-select placeholder="Counts" [(value)]="summaryType" (valueChange)="onEncodingChange()">
       <mat-option *ngFor="let type of summaryTypes" [value]="type.value">
         {{ type.viewValue }}
       </mat-option>

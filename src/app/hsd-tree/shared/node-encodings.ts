@@ -8,7 +8,7 @@ export function getNodeInfoColor(
   let color = defaultColor;
   if (fieldName === 'concept') {
     switch (nodeInfo.concept) {
-      case ConceptType.Case:
+      case ConceptType.Container:
         color = '#5B9BD5';
         break;
       case ConceptType.Folder:
@@ -78,7 +78,7 @@ export function getNodeInfoOpacity(
   let opacity = defaultOpacity;
   if (fieldName === 'concept') {
     switch (nodeInfo.concept) {
-      case ConceptType.Case:
+      case ConceptType.Container:
         opacity = 1.0;
         break;
       case ConceptType.Folder:
@@ -145,7 +145,7 @@ export function getSingleNodeTooltip(
   node: SingleNode,
   summaryType = 'cumulative',
   fieldName = 'tooltip',
-  defaultTooltip = 'Single Node'): string {
+  defaultTooltip = '1 Node'): string {
   switch (summaryType) {
     case 'cumulative': return node.path + ' ' + ConceptType[node.info.concept];
     case 'byLevel': return 'Level ' + node.level.toString();
@@ -158,6 +158,6 @@ export function getSummaryNodeBreakdownTooltip(
   part: NodeInfo,
   summaryType = 'cumulative',
   fieldName = 'tooltip',
-  defaultTooltip = 'Single Node'): string {
+  defaultTooltip = '1 Node'): string {
   return '# Concepts: ' + part.numPaths + ' / ' + node.totalNumPaths;
 }

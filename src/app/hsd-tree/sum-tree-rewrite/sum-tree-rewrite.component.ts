@@ -62,7 +62,7 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() colorMappings = {
     'concept': [
-      { label: 'Case', color: '#5B9BD5' },
+      { label: 'Container', color: '#5B9BD5' },
       { label: 'Folder', color: '#70AD47' },
       { label: 'Leaf', color: '#FFC000' }
     ],
@@ -72,10 +72,10 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
       { label: 'Inactive', color: '#FFC000' }
     ],
     'tableName': [
-      { label: 'Concept Dim', color: '#5B9BD5' },
-      { label: 'Patient Dim', color: '#70AD47' },
-      { label: 'Visit Dim', color: '#FFC000' },
-      { label: 'Other Table', color: '#00ffff' }
+      { label: 'Concept', color: '#5B9BD5' },
+      { label: 'Patient', color: '#70AD47' },
+      { label: 'Visit', color: '#FFC000' },
+      { label: 'Other', color: '#00ffff' }
     ],
     'isSynonym': [
       { label: 'Yes', color: '#00FF00' },
@@ -92,7 +92,7 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() opacityMappings = {
     'concept': [
-      { label: 'Case', color: 'rgba(91,155,213,1)' },
+      { label: 'Container', color: 'rgba(91,155,213,1)' },
       { label: 'Folder', color: 'rgba(91,155,213,0.6)' },
       { label: 'Leaf', color: 'rgba(91,155,213,0.3)' }
     ],
@@ -102,10 +102,10 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
       { label: 'Hidden', color: 'rgba(91,155,213,0.2)' }
     ],
     'tableName': [
-      { label: 'Concept Dim', color: 'rgba(91,155,213,1)' },
-      { label: 'Patient Dim', color: 'rgba(91,155,213,0.75)' },
-      { label: 'Visit Dim', color: 'rgba(91,155,213,0.5)' },
-      { label: 'Other Table', color: 'rgba(91,155,213,0.2)' }
+      { label: 'Concept', color: 'rgba(91,155,213,1)' },
+      { label: 'Patient', color: 'rgba(91,155,213,0.75)' },
+      { label: 'Visit', color: 'rgba(91,155,213,0.5)' },
+      { label: 'Other', color: 'rgba(91,155,213,0.2)' }
     ],
     'isSynonym': [
       { label: 'Yes', color: 'rgba(91,155,213,1)' },
@@ -122,20 +122,20 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() colorFields = [
     { value: 'fixedColor', viewValue: 'Fixed Color' },
-    { value: 'concept', viewValue: 'Concept' },
-    { value: 'visibility', viewValue: 'Visibility' },
-    { value: 'tableName', viewValue: 'Table Name' },
+    { value: 'concept', viewValue: 'Type' },
+    { value: 'visibility', viewValue: 'Status' },
+    { value: 'tableName', viewValue: 'Table' },
     { value: 'isSynonym', viewValue: 'Synonym' },
-    { value: 'hasMetaData', viewValue: 'Has XML MetaData' }
+    { value: 'hasMetaData', viewValue: 'Metadata' }
   ];
 
   @Input() opacityFields = [
     { value: 'fullyOpaque', viewValue: 'Fully Opaque' },
-    { value: 'concept', viewValue: 'Concept' },
-    { value: 'visibility', viewValue: 'Visibility' },
-    { value: 'tableName', viewValue: 'Table Name' },
+    { value: 'concept', viewValue: 'Type' },
+    { value: 'visibility', viewValue: 'Status' },
+    { value: 'tableName', viewValue: 'Table' },
     { value: 'isSynonym', viewValue: 'Synonym' },
-    { value: 'hasMetaData', viewValue: 'Has XML MetaData' }
+    { value: 'hasMetaData', viewValue: 'Metadata' }
   ];
 
   @Input() vegaLogLevel = defaultLogLevel;

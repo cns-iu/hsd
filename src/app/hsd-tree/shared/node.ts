@@ -1,5 +1,5 @@
 export enum ConceptType {
-  Case,
+  Container,
   Folder,
   Leaf
 }
@@ -51,7 +51,7 @@ export function normalizePath(path: string): string {
 // Conversion utility
 
 const stringToConceptMap = {
-  'case': ConceptType.Case,
+  'case': ConceptType.Container,
   'folder': ConceptType.Folder,
   'leaf': ConceptType.Leaf
 };
