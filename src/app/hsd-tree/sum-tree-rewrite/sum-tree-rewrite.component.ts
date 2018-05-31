@@ -98,8 +98,8 @@ export class SumTreeRewriteComponent implements OnInit, OnChanges, OnDestroy {
     ],
     'visibility': [
       { label: 'Active', color: 'rgba(91,155,213,1)' },
-      { label: 'Inactive', color: 'rgba(91,155,213,0.6)' },
-      { label: 'Hidden', color: 'rgba(91,155,213,0.2)' }
+      { label: 'Hidden', color: 'rgba(91,155,213,0.6)' },
+      { label: 'Inactive', color: 'rgba(91,155,213,0.2)' }
     ],
     'tableName': [
       { label: 'Concept', color: 'rgba(91,155,213,1)' },
