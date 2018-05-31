@@ -103,8 +103,7 @@ export class SumTreeDataService {
       .map(([path, rawNodes]) => {
         const byLevel = groupBy(rawNodes as any[], 'SubtreeLevel');
         const summaryNodes = Object.entries(byLevel).map(([level, acc]) => {
-          const breakdown = (acc as any[]).map(rawSummaryNodeToSummaryNodeInfo)
-            .sort((a, b) => a.visibility - b.visibility);
+          const breakdown = (acc as any[]).map(rawSummaryNodeToSummaryNodeInfo);
           return {
             type: 'SummaryNode',
             level: +level,

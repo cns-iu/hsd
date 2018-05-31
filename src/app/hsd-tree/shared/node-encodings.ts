@@ -24,10 +24,10 @@ export function getNodeInfoColor(
         color = '#5B9BD5';
         break;
       case VisibilityType.Inactive:
-        color = '#70AD47';
+        color = '#FFC000';
         break;
       case VisibilityType.Hidden:
-        color = '#FFC000';
+        color = '#70AD47';
         break;
     }
   } else if (fieldName === 'isSynonym') {
