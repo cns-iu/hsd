@@ -4,11 +4,7 @@ import { SharedModule } from '../shared';
 
 import { SumTreeDataService } from './shared/sum-tree-data.service';
 
-import { SimpleTreeComponent } from './simple-tree/simple-tree.component';
 import { SumTreeComponent } from './sum-tree/sum-tree.component';
-import { SumTreeV2Component } from './sum-tree-v2/sum-tree-v2.component';
-import { SumTreeV3Component } from './sum-tree-v3/sum-tree-v3.component';
-import { SumTreeRewriteComponent } from './sum-tree-rewrite/sum-tree-rewrite.component';
 
 @NgModule({
   imports: [
@@ -16,12 +12,10 @@ import { SumTreeRewriteComponent } from './sum-tree-rewrite/sum-tree-rewrite.com
     SharedModule
   ],
   exports: [
-    SimpleTreeComponent, SumTreeComponent, SumTreeV2Component,
-    SumTreeV3Component, SumTreeRewriteComponent
+    SumTreeComponent
   ],
   declarations: [
-    SimpleTreeComponent, SumTreeComponent, SumTreeV2Component,
-    SumTreeV3Component, SumTreeRewriteComponent
+    SumTreeComponent
   ],
   providers: [
     SumTreeDataService

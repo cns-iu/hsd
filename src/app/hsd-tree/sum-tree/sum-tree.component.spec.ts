@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SumTreeComponent } from './sum-tree.component';
+import { SumTreeComponent } from './sum-tree-.component';
 
 describe('SumTreeComponent', () => {
   let component: SumTreeComponent;

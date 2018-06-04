@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SumTreeV3Component } from './sum-tree-v3.component';
+import { LegendComponent } from './legend.component';
 
-describe('SumTreeV3Component', () => {
-  let component: SumTreeV3Component;
-  let fixture: ComponentFixture<SumTreeV3Component>;
+describe('LegendComponent', () => {
+  let component: LegendComponent;
+  let fixture: ComponentFixture<LegendComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SumTreeV3Component ]
+      declarations: [ LegendComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SumTreeV3Component);
+    fixture = TestBed.createComponent(LegendComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

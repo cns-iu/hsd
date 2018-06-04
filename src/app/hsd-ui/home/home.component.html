@@ -3,29 +3,32 @@
 <!-- /Fork me on GitHub Banner -->
 
 <mat-toolbar class="toolbar z-depth-1-half">
+  <mat-icon class="hamburger" (click)="sidenav.toggle()">menu</mat-icon>
   <span>Health System Dynamics (HSD) Demo</span>
+  <img id="cns-logo" src="assets/cns-logo.png" title="Cyberinfrastructure for Network Science Center">
 </mat-toolbar>
 
-<div class="main-content">
-  <mat-tab-group [selectedIndex]="0" #tabs>
-    <mat-tab label="Home">
-      <div class="section">
-        <h1>Health System Dynamics Demo</h1>
-        <h2> This is a work in progress!</h2>
-        Choose a tab to see individual visualizations.
+<mat-sidenav-container>
+    <mat-sidenav #sidenav mode="side"
+      [opened] = "true"
+      class="sidenav-container"
+      (openedChange)="openState=$event">
+        <p class="sidenav-title">Legend</p>
+        <hr>
+        <app-legend #legend></app-legend>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+      <div class="main-content">
+        <mat-tab-group [selectedIndex]="0" #tabs>
+          <mat-tab label="Sum-Tree">
+            <app-sum-tree
+              [summaryType]="legend.summaryType"
+              [colorField]="legend.colorField"
+              [opacityField]="legend.opacityField">
+            </app-sum-tree>
+          </mat-tab>
+        </mat-tab-group>
       </div>
-    </mat-tab>
-    <mat-tab label="Tree">
-      <hsd-simple-tree *ngIf="tabs.selectedIndex == 1"></hsd-simple-tree>
-    </mat-tab>
-    <mat-tab label="Sum-Tree-v1">
-      <hsd-sum-tree *ngIf="tabs.selectedIndex == 2"></hsd-sum-tree>
-    </mat-tab>
-    <mat-tab label="Sum-Tree-v2">
-      <hsd-sum-tree-v2 *ngIf="tabs.selectedIndex == 3"></hsd-sum-tree-v2>
-    </mat-tab>
-    <mat-tab label="Sum-Tree-v3">
-      <hsd-sum-tree-rewrite></hsd-sum-tree-rewrite>
-    </mat-tab>
-  </mat-tab-group>
-</div>
+    </mat-sidenav-content>
+</mat-sidenav-container>

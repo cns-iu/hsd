@@ -1,49 +1,48 @@
-<div class="vega-input">
-  <h2>Legend</h2>
-  <mat-icon class="infoIcon" (click)="openSumTreeInfoDialog()">info</mat-icon>
-  <div class="shapeLegend">
+<mat-icon class="info-icon" (click)="openSumTreeInfoDialog()">info</mat-icon>
+
+  <div class="shape-legend">
     <div class="row">
       <div class="circle1">1</div>
-      <div class="legendShapeText">1 Concept</div>
+      <div class="legend-shape-text">1 Concept</div>
     </div>
     <div class="row">
       <div class="square"></div>
-      <div class="legendShapeText">N Concepts</div>
+      <div class="legend-shape-text">N Concepts</div>
     </div>
   </div>
-  <br>
-  <mat-form-field>
-    <mat-select placeholder="Counts" [(value)]="summaryType" (valueChange)="onEncodingChange()">
+
+  <mat-form-field class="form-field">
+    <mat-select placeholder="Counts" [value]="summaryType" (selectionChange)="summaryType=$event.value">
       <mat-option *ngFor="let type of summaryTypes" [value]="type.value">
         {{ type.viewValue }}
       </mat-option>
     </mat-select>
   </mat-form-field>
+
   <mat-form-field>
-    <mat-select placeholder="Color" [(value)]="colorField" (valueChange)="onEncodingChange()" #colorSelector>
+    <mat-select placeholder="Color" [(value)]="colorField" (selectionChange)="colorField=$event.value" #colorSelector>
       <mat-option *ngFor="let type of colorFields" [value]="type.value">
         {{ type.viewValue }}
       </mat-option>
     </mat-select>
   </mat-form-field>
+
   <mat-chip-list class="mat-chip-list-stacked">
     <mat-chip *ngFor="let chip of colorMappings[colorSelector.selected?.value]" selected="true" [style.background]="chip.color">
       {{chip.label}}
     </mat-chip>
   </mat-chip-list>
-  <br>
-  <mat-form-field>
-    <mat-select placeholder="Opacity" [(value)]="opacityField" (valueChange)="onEncodingChange()" #opacitySelector>
+
+  <mat-form-field class="form-field">
+    <mat-select placeholder="Opacity" [(value)]="opacityField" (selectionChange)="opacityField" #opacitySelector>
       <mat-option *ngFor="let type of opacityFields" [value]="type.value">
         {{ type.viewValue }}
       </mat-option>
     </mat-select>
   </mat-form-field>
+
   <mat-chip-list class="mat-chip-list-stacked">
     <mat-chip *ngFor="let chip of opacityMappings[opacitySelector.selected?.value]" selected="true" [style.background]="chip.color">
       {{chip.label}}
     </mat-chip>
   </mat-chip-list>
-</div>
-
-<div #vegaVis>Vega Visualization Entry Point</div>

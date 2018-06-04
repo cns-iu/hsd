@@ -17,12 +17,38 @@
   height: 100vh
 
 .section
-    margin: 15px
-    h1
-        font-size: 1.7em
-        margin-bottom: 15px
-        font-family: $r-normal
-    h2
-        font-size: 1.4em
-        margin-bottom: 15px
-        font-family: $r-normal
+  margin: 15px
+  h1
+    font-size: 1.7em
+    margin-bottom: 15px
+    font-family: $r-normal
+  h2
+    font-size: 1.4em
+    margin-bottom: 15px
+    font-family: $r-normal
+
+mat-sidenav-container
+  position: fixed
+  width: 100%
+  height: calc(100% - 64px)
+
+.sidenav-container
+  width: 260px
+  padding: 20px
+  overflow-x: hidden
+
+.sidenav-title
+  display: flex
+  flex-direction: row
+  align-items: center
+  justify-content: center
+  font-weight: bolder
+
+.hamburger
+  cursor: pointer
+  padding-right: 10px
+
+#cns-logo
+  position: absolute
+  right: 5px
+  height: 54px

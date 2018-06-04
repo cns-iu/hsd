@@ -6,6 +6,7 @@ import { HsdTreeModule } from '../hsd-tree';
 
 import { HomeComponent } from './home/home.component';
 import { InfoDialogComponent } from './info-dialog/info-dialog.component';
+import { LegendComponent } from './legend/legend.component';
 
 @NgModule({
   imports: [
@@ -14,7 +15,7 @@ import { InfoDialogComponent } from './info-dialog/info-dialog.component';
     HsdTreeModule
   ],
   exports: [HomeComponent, InfoDialogComponent],
-  declarations: [HomeComponent, InfoDialogComponent],
+  declarations: [HomeComponent, InfoDialogComponent, LegendComponent],
   entryComponents: [InfoDialogComponent]
 })
 export class HsdUiModule { }
