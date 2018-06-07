@@ -78,7 +78,8 @@ function rawSummaryNodeToSummaryNodeInfo(node: any): NodeInfo {
 
 @Injectable()
 export class SumTreeDataService {
-  constructor() { }
+  constructor() {
+  }
 
   @Bind
   queryNodes(paths: string | string[]): Observable<SingleNode[]> {
@@ -121,3 +122,4 @@ export class SumTreeDataService {
     return summaryNodesObservable;
   }
 }
+

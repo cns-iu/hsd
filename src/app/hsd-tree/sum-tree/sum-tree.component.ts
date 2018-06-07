@@ -33,6 +33,7 @@ import vegaSpec, {
   inputDataSetNames,
   inputSignalNames, outputSignalNames
 } from './vega-spec';
+import { SumTreeEndpointDataService } from '../shared/sum-tree-endpoint-data-service';
 
 
 @Component({
@@ -73,7 +74,10 @@ export class SumTreeComponent implements OnInit, OnChanges, OnDestroy {
     '\\pcori\\vital'
   ];
 
-  constructor(private service: SumTreeDataService) { }
+  constructor(
+    private service: SumTreeDataService,
+    private service1: SumTreeEndpointDataService // TODO
+  ) { }
 
   ngOnInit() {
     this.createVegaInstance();
