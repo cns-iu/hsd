@@ -1,113 +1,74 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-
 import { Observable } from 'rxjs/Observable';
 import { forkJoin } from 'rxjs/observable/forkJoin';
 import { map } from 'rxjs/operators';
-
 import { bind as Bind } from 'bind-decorator';
-
 import * as x2js from 'x2js';
 
-import {
-  Node, NodeInfo, SingleNode, SummaryNode,
-  ConceptType, VisibilityType,
-  normalizePath,
-  stringToConcept, stringToVisibility, stringToIsSynonym, stringToHasMetaData,
-  parentPathFor
-} from './node';
-
-import { nodes, subtreeBreakdown } from './mock-data';
-import { Summary } from '@angular/compiler';
-
-function makePathFilter(
-  paths: string | string[], field: string, modifier?: (path: string) => string
-): (node: any) => boolean {
-  paths = Array.isArray(paths) ? paths : [paths];
-  paths = paths.map(normalizePath);
-
-  if (modifier === undefined) {
-    return (node) => paths.includes(normalizePath(node[field]));
-  } else {
-    return (node) => paths.includes(modifier(normalizePath(node[field])));
-  }
-}
+import { SingleNode, NodeInfo, normalizePath, SummaryNode } from './node';
+import { EndpointData } from './endpoint-data';
+import { SumTreeDataService } from './sum-tree-data.service';
 
 
 @Injectable()
-export class SumTreeEndpointDataService {
+export class SumTreeEndpointDataService implements SumTreeDataService{
   private baseUrl = 'http://weber.hms.harvard.edu/HealthcareSystemDynamics/SumTreePCORI/GetChildren.asp?parent=';
 
   constructor(private http: HttpClient) {
-    this.queryNodes().subscribe((t) => console.log(t)); // Temp for testing
-    this.getRawDataNodes().subscribe((p) => console.log(p)); // Temp for testing (xml response to js)
+    this.queryNodes([
+      '\\pcori',
+      '\\pcori\\demographic',
+      '\\pcori\\diagnosis',
+      '\\pcori\\encounter',
+      '\\pcori\\enrollment',
+      '\\pcori\\lab_result_cm',
+      '\\pcori\\medication',
+      '\\pcori\\procedure',
+      '\\pcori\\procedure\\09',
+      '\\pcori\\procedure\\10',
+      '\\pcori\\procedure\\11',
+      '\\pcori\\procedure\\ch',
+      '\\pcori\\procedure\\lc',
+      '\\pcori\\procedure\\nd',
+      '\\pcori\\procedure\\re',
+      '\\pcori\\procedure\\version',
+      '\\pcori\\vital'
+    ]).subscribe((t) => console.log(t)); // Temp for testing
   }
 
-  getRawDataNodes() {
-    const level0 = this.http
-      .get(this.baseUrl + '\\', { responseType: 'text' })
-        .map(r => this.parseData(r));
-    const level1 = this.http
-      .get(this.baseUrl + '\\PCORI\\', { responseType: 'text' })
-        .map(r => this.parseData(r));
-    const level2 = this.http
-      .get(this.baseUrl + '\\PCORI\\PROCEDURE\\', { responseType: 'text' })
-        .map(r => this.parseData(r));
-
-    return forkJoin(level0, level1, level2);
+  @Bind
+  queryNodes(paths: string | string[]): Observable<SingleNode[]> {
+    return this.getRawDataNodes(paths).map((conceptLists) => {
+      console.log('singlenode', conceptLists);
+      return [].concat(...conceptLists.map((c) => c.singleNodes));
+    });
   }
 
-  parseData(response: string): any {
-    return new x2js().xml2js(response);
+  @Bind
+  queryChildNodes(paths: string | string[]): Observable<SingleNode[]> {
+    return Observable.of([]);
+    // FIXME
+    // return this.queryNodes(paths);
   }
 
-  queryNodes(): Observable<SingleNode[]> {
-    return this.getRawDataNodes().map(
-      (conceptLists) => conceptLists.map(
-        (c) => {
-         if (Array.isArray(c['ConceptList'].Concept)) {
-            return c['ConceptList'].Concept.map(
-              (concept) => this.rawNodeToSingleNode(concept)
-            );
-          } else {
-            return Array.of(this.rawNodeToSingleNode(c['ConceptList'].Concept));
-          }
-        }
-      )
-    );
-  }
-
+  @Bind
   querySummaryNodes(paths: string | string[]): Observable<SummaryNode[]> {
-    const pathFilter = makePathFilter(paths, '_Path');
-    return null;
+    return this.getRawDataNodes(paths).map((conceptLists) => {
+      console.log('summarynode', conceptLists);
+      return [].concat(...conceptLists.map((c) => c.summaryNodes));
+    });
   }
 
-  rawNodeToSingleNode(node: any): SingleNode {
-    const path = normalizePath(node['_Path']);
-    const isLeaf = (node['_Type'] === 'Leaf') ? true : false; // TODO
-
-    return {
-      type: 'SingleNode',
-      level: node['_Level'],
-      path: path,
-      label: node['_Name'],
-      isLeaf: isLeaf,
-      info: {
-        concept: stringToConcept(node['_Type']),
-        visibility: stringToVisibility(node['_Status']),
-        isSynonym: stringToIsSynonym(this.abbreviate(node['_Synonym'])),
-        hasMetaData: stringToHasMetaData(this.abbreviate(node['_Metadata'])),
-        numPaths: 0, // TODO
-        tableName: node['_Table'] || ''
-      }
-    };
+  @Bind
+  private getRawDataNodes(paths: string | string[]): Observable<EndpointData[]> {
+    paths = ['\\', '\\PCORI\\', '\\PCORI\\PROCEDURE\\'];
+    return forkJoin(...paths.map(this.queryEndpoint));
   }
 
-  abbreviate(value: string): string {
-    switch (value) {
-      case 'Yes': return 'Y';
-      case 'No': return 'N';
-    }
+  @Bind
+  private queryEndpoint(path: string): Observable<EndpointData> {
+    return this.http.get(this.baseUrl + path, { responseType: 'text' })
+      .map((xml) => new EndpointData(xml));
   }
-
 }

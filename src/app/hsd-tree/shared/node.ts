@@ -53,7 +53,8 @@ export function normalizePath(path: string): string {
 const stringToConceptMap = {
   'case': ConceptType.Container,
   'folder': ConceptType.Folder,
-  'leaf': ConceptType.Leaf
+  'leaf': ConceptType.Leaf,
+  'container': ConceptType.Container
 };
 
 export function stringToConcept(conceptString: string): ConceptType {

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { SharedModule } from '../shared';
 
-import { SumTreeDataService } from './shared/sum-tree-data.service';
+import { SumTreeMockDataService } from './shared/sum-tree-mock-data.service';
 
 import { SumTreeComponent } from './sum-tree/sum-tree.component';
 import { SumTreeEndpointDataService } from './shared/sum-tree-endpoint-data-service';
@@ -21,7 +21,7 @@ import { SumTreeEndpointDataService } from './shared/sum-tree-endpoint-data-serv
     SumTreeComponent
   ],
   providers: [
-    SumTreeDataService,
+    SumTreeMockDataService,
     SumTreeEndpointDataService
   ]
 })

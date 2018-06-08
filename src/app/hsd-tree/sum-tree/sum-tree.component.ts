@@ -18,7 +18,7 @@ import 'rxjs/add/operator/toArray';
 import { bind as Bind } from 'bind-decorator';
 
 import { vega, defaultLogLevel } from '../../vega';
-import { SumTreeDataService } from '../shared/sum-tree-data.service';
+
 import {
   Node, SingleNode, SummaryNode,
   isParentOf, isAncestorOf,
@@ -33,6 +33,9 @@ import vegaSpec, {
   inputDataSetNames,
   inputSignalNames, outputSignalNames
 } from './vega-spec';
+
+import { SumTreeDataService } from '../shared/sum-tree-data.service';
+import { SumTreeMockDataService } from '../shared/sum-tree-mock-data.service';
 import { SumTreeEndpointDataService } from '../shared/sum-tree-endpoint-data-service';
 
 
@@ -74,10 +77,14 @@ export class SumTreeComponent implements OnInit, OnChanges, OnDestroy {
     '\\pcori\\vital'
   ];
 
+  private service: SumTreeDataService;
+
   constructor(
-    private service: SumTreeDataService,
-    private service1: SumTreeEndpointDataService // TODO
-  ) { }
+    private mockService: SumTreeMockDataService,
+    private endpointService: SumTreeEndpointDataService
+  ) {
+    this.service = mockService;
+  }
 
   ngOnInit() {
     this.createVegaInstance();
@@ -215,7 +222,8 @@ export class SumTreeComponent implements OnInit, OnChanges, OnDestroy {
       instance.insert.bind(instance, changeset) :
       changeset.insert.bind(changeset);
 
-    const rawTuples: Observable<any[]> = paths.mergeMap(queryFunc);
+    const rawTuples: Observable<any[]> = paths.mergeMap(queryFunc).do((q) =>
+      console.log(paths, q));
     const allRawTuples = rawTuples.reduce((acc, tuples_) => acc.concat(tuples_), []);
     const tuples = modifier ? allRawTuples.map((tuples_) => tuples_.map(modifier)) : allRawTuples as Observable<T[]>;
 
