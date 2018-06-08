@@ -222,8 +222,7 @@ export class SumTreeComponent implements OnInit, OnChanges, OnDestroy {
       instance.insert.bind(instance, changeset) :
       changeset.insert.bind(changeset);
 
-    const rawTuples: Observable<any[]> = paths.mergeMap(queryFunc).do((q) =>
-      console.log(paths, q));
+    const rawTuples: Observable<any[]> = paths.mergeMap(queryFunc);
     const allRawTuples = rawTuples.reduce((acc, tuples_) => acc.concat(tuples_), []);
     const tuples = modifier ? allRawTuples.map((tuples_) => tuples_.map(modifier)) : allRawTuples as Observable<T[]>;
 
