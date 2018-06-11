@@ -11,6 +11,7 @@ import 'rxjs/add/observable/empty';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/do';
+import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/reduce';
 import 'rxjs/add/operator/toArray';
@@ -326,10 +327,10 @@ export class SumTreeComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     // Apply changes after all events have completed and rerun dataflow
-    Observable.merge(...events).subscribe(undefined, undefined, () => {
+    Observable.forkJoin(...events).subscribe(undefined, undefined, () => {
       instance.change(nodesName, nodeChanges);
       instance.change(summariesName, summaryChanges);
-      // instance.runAfter(instance.run.bind(instance));
+      instance.runAfter(instance.run.bind(instance));
 
       // Evil Hack Part Deux - For Bug #46
       instance.runAfter(this.onEncodingChange);

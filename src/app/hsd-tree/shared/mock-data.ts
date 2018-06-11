@@ -24,6 +24,3 @@ export const nodes = vegaRead(nodesCsv, {
 }).filter((item) => {
   return item.NodeLevel != null && !Number.isNaN(item.NodeLevel);
 });
-
-console.log('ORIG Nodes', nodes);
-console.log('ORIG Subtree Nodes', subtreeBreakdown);

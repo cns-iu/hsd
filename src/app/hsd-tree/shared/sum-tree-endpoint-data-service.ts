@@ -12,50 +12,42 @@ import { SumTreeDataService } from './sum-tree-data.service';
 import { PathData, PathDataCache } from './path-data-cache';
 
 @Injectable()
-export class SumTreeEndpointDataService implements SumTreeDataService{
+export class SumTreeEndpointDataService implements SumTreeDataService {
   private baseUrl = 'http://weber.hms.harvard.edu/HealthcareSystemDynamics/SumTreePCORI/GetChildren.asp?parent=';
   private cache = new PathDataCache();
+  private seenPath = {};
 
-  constructor(private http: HttpClient) {
-    console.log(this.cache);
-  }
+  constructor(private http: HttpClient) { }
 
   @Bind
   queryNodes(paths: string | string[]): Observable<SingleNode[]> {
-    console.log('queryNodes', paths);
-    return this.getPathData(paths, this.cache.isSingleNodeDataLoaded).map((results) => {
+    return this.getPathData(paths).map((results) => {
       return results.map((pathData) => pathData.singleNode).filter(d => !!d);
-    }).do(console.log);
+    });
   }
 
   @Bind
   queryChildNodes(paths: string | string[]): Observable<SingleNode[]> {
-    console.log('queryChildNodes', paths);
-    return this.getPathData(paths, this.cache.isChildrenDataLoaded, true).map((results) => {
+    return this.getPathData(paths).map((results) => {
       return [].concat(...results.map((pathData) => {
-        return pathData.childPaths.map((child) => this.cache.getPathData(child).singleNode);
+        return (pathData.childPaths || []).map((child) => this.cache.getPathData(child).singleNode);
       })).filter(d => !!d);
-    }).do(console.log);
+    });
   }
 
   @Bind
   querySummaryNodes(paths: string | string[]): Observable<SummaryNode[]> {
-    console.log('querySummaryNodes', paths);
-    return this.getPathData(paths, this.cache.isSummaryNodeDataLoaded).map((results) => {
+    return this.getPathData(paths).map((results) => {
       return [].concat(...results.map((pathData) => pathData.summaryNodes)).filter(d => !!d);
-    }).do(console.log);
+    });
   }
 
   @Bind
-  private getPathData(paths: string | string[], isCached: (string) => boolean, getChildren?: boolean): Observable<PathData[]> {
+  private getPathData(paths: string | string[], queryChildren = false): Observable<PathData[]> {
     const allPaths = (Array.isArray(paths) ? paths : [paths]);
-    let queryPaths = allPaths.filter((p) => !isCached(p));
-    if (!getChildren) {
-      queryPaths = this.getParentPaths(queryPaths);
-    }
+    const queryPaths = allPaths.concat(this.getParentPaths(allPaths));
     return this.getRawDataNodes(queryPaths).map((results) => {
-      console.log(results);
-      results.forEach((endpointData, index) => {
+      results.filter(ep => !!ep).forEach((endpointData, index) => {
         this.cache.addChildData(queryPaths[index], endpointData);
       });
       return allPaths.map(this.cache.getPathData);
@@ -69,6 +61,15 @@ export class SumTreeEndpointDataService implements SumTreeDataService{
 
   @Bind
   private queryEndpoint(path: string): Observable<EndpointData> {
+    if (!this.seenPath.hasOwnProperty(path)) {
+      this.seenPath[path] = true;
+      return this.rawQueryEndpoint(path);
+    } else {
+      return Observable.of(null);
+    }
+  }
+
+  private rawQueryEndpoint(path: string): Observable<EndpointData> {
     path = path.endsWith('\\') ? path : (path + '\\');
     return this.http.get(this.baseUrl + path, { responseType: 'text' })
       .map((xml) => new EndpointData(xml));
