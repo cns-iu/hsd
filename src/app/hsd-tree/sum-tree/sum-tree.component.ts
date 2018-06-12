@@ -50,6 +50,8 @@ export class SumTreeComponent implements OnInit, OnChanges, OnDestroy {
 
   @ViewChild('vegaVis') visElement: ElementRef;
 
+  @Input() isCompact = false;
+
   @Input() maxLevel = 11;
 
   @Input() summaryType = 'byLevel';
@@ -158,10 +160,8 @@ export class SumTreeComponent implements OnInit, OnChanges, OnDestroy {
     // Required
     instance.signal(maxLevelName, this.maxLevel);
 
-    // Optional
-    instance.signal(yMultiplierName, 30);
     // instance.signal(yOffsetName, 30);
-
+    instance.signal(yMultiplierName, 30);
     instance.signal(summaryBoxSizeName, {
       width: 20,
       height: 40

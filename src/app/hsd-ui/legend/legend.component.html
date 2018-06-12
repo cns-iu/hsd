@@ -12,6 +12,13 @@
     </div>
   </div>
 
+  <mat-slide-toggle *ngIf="false" 
+    (change)="onLayoutToggle()" 
+    [checked]="true"
+    [disabled]="true">
+    Compact Layout
+  </mat-slide-toggle>
+
   <mat-form-field class="form-field">
     <mat-select placeholder="Counts" [value]="summaryType" (selectionChange)="summaryType=$event.value">
       <mat-option *ngFor="let type of summaryTypes" [value]="type.value">

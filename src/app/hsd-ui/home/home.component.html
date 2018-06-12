@@ -2,33 +2,51 @@
 <!-- <a class="github-fork-ribbon right-top" href="https://github.com/cns-iu/hsd" data-ribbon="Fork me on GitHub" title="Fork me on GitHub">Fork me on GitHub</a> -->
 <!-- /Fork me on GitHub Banner -->
 
-<mat-toolbar class="toolbar z-depth-1-half">
+<mat-toolbar class="toolbar z-depth-1-half" [style.height]="toolbarHeight">
   <mat-icon class="hamburger" (click)="sidenav.toggle()">menu</mat-icon>
-  <span>Health System Dynamics (HSD) Demo</span>
-  <img id="cns-logo" src="assets/cns-logo.png" title="Cyberinfrastructure for Network Science Center">
+  <span [style.font-size]="toolbarTextSize">
+    Health System Dynamics (HSD)
+  </span>
+  <img id="cns-logo" 
+    src="assets/cns-logo.png" 
+    title="Cyberinfrastructure for Network Science Center"
+    [style.width]="logoWidth"
+    [style.height]="logoHeight"/>
 </mat-toolbar>
 
 <mat-sidenav-container>
     <mat-sidenav #sidenav mode="side"
       [opened] = "true"
       class="sidenav-container"
+      [style.width]="sidenavWidth"
       (openedChange)="openState=$event">
         <p class="sidenav-title">Legend</p>
         <hr>
-        <app-legend #legend></app-legend>
+        <app-legend (toggleLayout)="toggleLayout($event)" #legend>
+        </app-legend>
     </mat-sidenav>
 
-    <mat-sidenav-content>
+    <mat-sidenav-content [style.margin-left]="sidenavWidth">
       <div class="main-content">
-        <mat-tab-group [selectedIndex]="0" #tabs>
+        <mat-tab-group [selectedIndex]="0" *ngIf="!isCompact; else compactSumTreeLayout" #tabs>
           <mat-tab label="Sum-Tree">
             <app-sum-tree
               [summaryType]="legend.summaryType"
               [colorField]="legend.colorField"
-              [opacityField]="legend.opacityField">
+              [opacityField]="legend.opacityField"
+              [isCompact]="isCompact">
             </app-sum-tree>
           </mat-tab>
         </mat-tab-group>
+
+        <ng-template #compactSumTreeLayout>
+          <app-sum-tree
+          [summaryType]="legend.summaryType"
+          [colorField]="legend.colorField"
+          [opacityField]="legend.opacityField"
+          [isCompact]="isCompact">
+          </app-sum-tree>
+        </ng-template>
       </div>
     </mat-sidenav-content>
 </mat-sidenav-container>

@@ -5,13 +5,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   MatButtonModule, MatCardModule, MatCheckboxModule, MatChipsModule, MatDialogModule,
   MatIconModule, MatRadioModule, MatSelectModule, MatSidenavModule, MatTableModule,
-  MatTabsModule, MatToolbarModule
+  MatTabsModule, MatToolbarModule, MatSlideToggleModule
 } from '@angular/material';
 
 const MATERIAL_MODULES: any[] = [
   MatButtonModule, MatCardModule, MatCheckboxModule, MatChipsModule, MatDialogModule,
   MatIconModule, MatRadioModule, MatSelectModule, MatSidenavModule, MatTableModule,
-  MatTabsModule, MatToolbarModule
+  MatTabsModule, MatToolbarModule, MatSlideToggleModule
 ];
 
 @NgModule({

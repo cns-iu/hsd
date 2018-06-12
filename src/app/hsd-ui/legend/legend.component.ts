@@ -2,9 +2,10 @@ import {
   Component,
   OnInit,
 
-  Input
+  Output,
+  EventEmitter
 } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 
 import { InfoDialogComponent } from '../../hsd-ui/info-dialog/info-dialog.component';
 
@@ -14,9 +15,13 @@ import { InfoDialogComponent } from '../../hsd-ui/info-dialog/info-dialog.compon
   styleUrls: ['./legend.component.sass']
 })
 export class LegendComponent implements OnInit {
+  @Output() toggleLayout = new EventEmitter();
+
   summaryType = 'byLevel';
   colorField = 'concept';
   opacityField = 'visibility';
+
+  isCompact = true;
 
   summaryTypes = [
     { value: 'cumulative', viewValue: 'Cumulative' },
@@ -111,5 +116,10 @@ export class LegendComponent implements OnInit {
     const dialogRef = this.dialog.open(InfoDialogComponent, {
       width: '750px'
     });
+  }
+
+  onLayoutToggle() {
+    this.isCompact = !this.isCompact;
+    this.toggleLayout.emit(this.isCompact);
   }
 }
