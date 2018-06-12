@@ -6,28 +6,28 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home.component.sass']
 })
 export class HomeComponent implements OnInit {
-  private defaultSidenavWidth = '260px';
-  private compactSidenavWidth= '200px';
+  defaultSidenavWidth = '260px';
+  compactSidenavWidth= '200px';
 
-  private defaultToolbarHeight = '70px';
-  private compactToolbarHeight = '35px';
+  defaultToolbarHeight = '70px';
+  compactToolbarHeight = '35px';
 
-  private defaultLogoHeight = '52px';
-  private defaultLogoWidth = '132.34px';
+  defaultLogoHeight = '52px';
+  defaultLogoWidth = '132.34px';
 
-  private compactLogoHeight = '30px';
-  private compactLogoWidth = '70px';
+  compactLogoHeight = '30px';
+  compactLogoWidth = '70px';
 
-  private defaultToolbarTextSize = '22px';
-  private compactToolbarTextSize = '15px';
+  defaultToolbarTextSize = '22px';
+  compactToolbarTextSize = '15px';
 
-  private logoWidth = this.defaultLogoWidth;
-  private logoHeight = this.defaultLogoHeight;
-  private sidenavWidth = this.defaultSidenavWidth;
-  private toolbarHeight = this.defaultToolbarHeight;
-  private toolbarTextSize = this.defaultToolbarTextSize;
+  logoWidth = this.defaultLogoWidth;
+  logoHeight = this.defaultLogoHeight;
+  sidenavWidth = this.defaultSidenavWidth;
+  toolbarHeight = this.defaultToolbarHeight;
+  toolbarTextSize = this.defaultToolbarTextSize;
 
-  private isCompact = true;
+  isCompact = true;
 
   constructor() { }
 

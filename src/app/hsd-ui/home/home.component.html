@@ -7,8 +7,8 @@
   <span [style.font-size]="toolbarTextSize">
     Health System Dynamics (HSD)
   </span>
-  <img id="cns-logo" 
-    src="assets/cns-logo.png" 
+  <img id="cns-logo"
+    src="assets/cns-logo.png"
     title="Cyberinfrastructure for Network Science Center"
     [style.width]="logoWidth"
     [style.height]="logoHeight"/>
@@ -18,8 +18,7 @@
     <mat-sidenav #sidenav mode="side"
       [opened] = "true"
       class="sidenav-container"
-      [style.width]="sidenavWidth"
-      (openedChange)="openState=$event">
+      [style.width]="sidenavWidth">
         <p class="sidenav-title">Legend</p>
         <hr>
         <app-legend (toggleLayout)="toggleLayout($event)" #legend>
