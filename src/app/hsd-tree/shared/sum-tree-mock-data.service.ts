@@ -79,9 +79,8 @@ function rawSummaryNodeToSummaryNodeInfo(node: any): NodeInfo {
 
 
 @Injectable()
-export class SumTreeMockDataService implements SumTreeDataService {
-  constructor() {
-  }
+export class SumTreeMockDataService extends SumTreeDataService {
+  constructor() { super(); }
 
   @Bind
   queryNodes(paths: string | string[]): Observable<SingleNode[]> {

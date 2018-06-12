@@ -13,6 +13,7 @@ import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/operator/mergeMap';
+import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/reduce';
 import 'rxjs/add/operator/toArray';
 
@@ -36,8 +37,6 @@ import vegaSpec, {
 } from './vega-spec';
 
 import { SumTreeDataService } from '../shared/sum-tree-data.service';
-import { SumTreeMockDataService } from '../shared/sum-tree-mock-data.service';
-import { SumTreeEndpointDataService } from '../shared/sum-tree-endpoint-data-service';
 
 
 @Component({
@@ -78,14 +77,7 @@ export class SumTreeComponent implements OnInit, OnChanges, OnDestroy {
     '\\pcori\\vital'
   ];
 
-  private service: SumTreeDataService;
-
-  constructor(
-    private mockService: SumTreeMockDataService,
-    private endpointService: SumTreeEndpointDataService
-  ) {
-    this.service = mockService;
-  }
+  constructor(private service: SumTreeDataService) { }
 
   ngOnInit() {
     this.createVegaInstance();
