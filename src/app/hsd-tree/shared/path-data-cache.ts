@@ -17,7 +17,7 @@ export class PathDataCache {
   @Bind
   hasPathData(path: string): boolean {
     path = normalizePath(path);
-    return this.cache.hasOwnProperty(path);
+    return this.cache.has(path);
   }
 
   @Bind
@@ -39,9 +39,9 @@ export class PathDataCache {
   getPathData(path: string): PathData {
     path = normalizePath(path);
     if (!this.hasPathData(path)) {
-      this.cache[path] = new PathData();
+      this.cache.set(path, new PathData());
     }
-    return this.cache[path];
+    return this.cache.get(path);
   }
 
   addChildData(path: string, endpointData: EndpointData) {
@@ -59,7 +59,9 @@ export class PathDataCache {
 
     endpointData.summaryNodes.filter((node) => !this.isSummaryNodeDataLoaded(node.path)).forEach((node) => {
       const data = this.getPathData(node.path);
-      data.summaryNodes = [];
+      if (!data.summaryNodes) {
+        data.summaryNodes = [];
+      }
       if (!data.summaryNodes.some((snode) => snode.path !== node.path)) {
         data.summaryNodes.push(node);
       }

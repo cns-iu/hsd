@@ -24,7 +24,7 @@ export class EndpointData {
   readonly singleNodes: SingleNode[];
   readonly summaryNodes: SummaryNode[];
 
-  constructor(xmlString: string) {
+  constructor(public xmlString: string) {
     this.data = this.x2js.xml2js(xmlString);
     this.rawNodes = this.getRawNodes(this.data, 'Concept');
     this.singleNodes = this.rawNodes.map(this.rawNodeToSingleNode.bind(this));
@@ -55,7 +55,7 @@ export class EndpointData {
         visibility: stringToVisibility(node['_Status']),
         isSynonym: stringToIsSynonym(this.abbreviate(node['_Synonym'])),
         hasMetaData: stringToHasMetaData(this.abbreviate(node['_Metadata'])),
-        numPaths: 0, // TODO
+        numPaths: 0, // Computed on the fly based on user settings
         tableName: node['_Table'] || ''
       }
     };
