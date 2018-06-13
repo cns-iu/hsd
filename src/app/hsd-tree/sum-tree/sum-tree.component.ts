@@ -1,5 +1,5 @@
 import {
-  Component, OnInit, OnChanges, OnDestroy,
+  Component, OnInit, OnChanges, OnDestroy, DoCheck,
   Input, ViewChild,
   ElementRef, SimpleChanges
 } from '@angular/core';
@@ -44,13 +44,16 @@ import { SumTreeDataService } from '../shared/sum-tree-data.service';
   templateUrl: './sum-tree.component.html',
   styleUrls: ['./sum-tree.component.sass']
 })
-export class SumTreeComponent implements OnInit, OnChanges, OnDestroy {
+export class SumTreeComponent implements OnInit, OnChanges, OnDestroy, DoCheck {
   private vegaInstance: any;
   private numPathsRef = { max: -1 };
 
   @ViewChild('vegaVis') visElement: ElementRef;
 
   @Input() isCompact = false;
+  @Input() autoresize = false;
+  @Input() width: number;
+  @Input() height: number;
 
   @Input() maxLevel = 11;
 
@@ -78,11 +81,16 @@ export class SumTreeComponent implements OnInit, OnChanges, OnDestroy {
     '\\pcori\\procedure\\version',
     '\\pcori\\vital'
   ];
+  @ViewChild('vegaVis') sumTreeElement: ElementRef;
+
+  private elementWidth = 0;
+  private elementHeight = 0;
+
+  private margin = { top: 0, bottom: 0, left: 0, right: 90 }; // TODO - TBD
 
   constructor(private service: SumTreeDataService) { }
 
   ngOnInit() {
-    this.createVegaInstance();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -93,11 +101,34 @@ export class SumTreeComponent implements OnInit, OnChanges, OnDestroy {
     if (('colorField' in changes || 'opacityField' in changes || 'summaryType' in changes) && this.vegaInstance) {
       this.onEncodingChange();
     }
+
+    if ((!this.autoresize) && (('width' in changes) && ('height' in changes))) {
+      this.resize(this.width, this.height);
+    }
+  }
+
+  ngDoCheck() {
+    if (this.autoresize && this.sumTreeElement) {
+      const width = this.sumTreeElement.nativeElement.clientWidth;
+      const height = window.innerHeight - 120; // FIXME - hack
+
+      this.resize(width, height);
+    }
   }
 
   ngOnDestroy() {
     this.destroyVegaInstance();
   }
+
+  private resize(width: number, height: number): void {
+    if (width !== this.elementWidth || height !== this.elementHeight) {
+      this.elementWidth = width;
+      this.elementHeight = height;
+
+      this.destroyVegaInstance();
+      this.createVegaInstance();
+  }
+}
 
   // Vega setup
   private createVegaInstance(): void {
@@ -105,6 +136,8 @@ export class SumTreeComponent implements OnInit, OnChanges, OnDestroy {
     const instance = this.vegaInstance = new vega.View(parsedSpec)
       .renderer('svg') // In the future this might be replaced by a custom renderer
       .initialize(this.visElement.nativeElement)
+      .width(this.elementWidth - this.margin.right)
+      .height(this.elementHeight)
       .logLevel(this.vegaLogLevel)
       .hover(); // Enable default handling of hover
 

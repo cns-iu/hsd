@@ -33,17 +33,24 @@
               [summaryType]="legend.summaryType"
               [colorField]="legend.colorField"
               [opacityField]="legend.opacityField"
-              [isCompact]="isCompact">
+              [isCompact]="isCompact"
+              [width]="width"
+              [height]="height"
+              [autoresize]="autoresize">
             </app-sum-tree>
           </mat-tab>
         </mat-tab-group>
 
-        <ng-template #compactSumTreeLayout>
+        <!-- For Compact View (without tab) -->
+        <ng-template #compactSumTreeLayout> 
           <app-sum-tree
           [summaryType]="legend.summaryType"
           [colorField]="legend.colorField"
           [opacityField]="legend.opacityField"
-          [isCompact]="isCompact">
+          [isCompact]="isCompact"
+          [width]="width"
+          [height]="height"
+          [autoresize]="autoresize">
           </app-sum-tree>
         </ng-template>
       </div>

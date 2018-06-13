@@ -29,10 +29,15 @@ export class HomeComponent implements OnInit {
 
   isCompact = true;
 
+  autoresize = true;
+
+  width = 950; // client defined width when autoresize is false
+  height = 2500; // client defined when autoresize is false
+
   constructor() { }
 
   ngOnInit() {
-    this.toggleLayout(this.isCompact); // default setting
+    this.toggleLayout(this.isCompact); // default setting - client defined
   }
 
   toggleLayout(isCompact: boolean) {
