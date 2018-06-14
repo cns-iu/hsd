@@ -211,7 +211,7 @@ export function convertToInternalSummaryNode(
     p.Concepts = p.numPaths; // #Concepts on tooltip
   });
 
-  inode.label = '' + inode.totalNumPaths;
+  inode.label = inode.totalNumPaths.toLocaleString();
   return inode;
 }
 

@@ -36,12 +36,15 @@ export function getNodeInfoColor(
     color = nodeInfo.hasMetaData ? '#00FF00' : '#FF0000';
   } else if (fieldName === 'tableName') {
     switch (nodeInfo.tableName) {
+      case 'Concept':
       case 'concept_dimension':
         color = '#5B9BD5';
         break;
+      case 'Patient':
       case 'patient_dimension':
         color = '#70AD47';
         break;
+      case 'Visit':
       case 'visit_dimension':
         color = '#FFC000';
         break;
