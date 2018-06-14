@@ -2,6 +2,16 @@
 
 Changelog for the HSD project.
 
+## 0.0.5 - 2018-06-14
+### Added
+    - Fifth Sprint Release for HSD, see updated [demo site](https://cns-iu.github.io/hsd/)
+    - Cleaned up the UI and removed old versions of the SumTree visualization
+    - Visualization now automatically resizes to the user's display
+    - UI should be cleaner and easier to present
+    - Data is now loaded from a custom i2b2 endpoint (the initial data is cached).
+### Known Issues
+    - The i2b2 endpoint's CORS settings are not quite setup right yet, so sometimes it will take clicking twice on a node to get it to open.
+
 ## 0.0.4 - 2018-03-16
 ### Added
     - Fourth Sprint Release for HSD, see updated [demo site](https://cns-iu.github.io/hsd/)
