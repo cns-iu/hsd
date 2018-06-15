@@ -1,7 +1,3 @@
-<!-- Fork me on GitHub Banner -->
-<!-- <a class="github-fork-ribbon right-top" href="https://github.com/cns-iu/hsd" data-ribbon="Fork me on GitHub" title="Fork me on GitHub">Fork me on GitHub</a> -->
-<!-- /Fork me on GitHub Banner -->
-
 <mat-toolbar class="toolbar z-depth-1-half" [style.height]="toolbarHeight">
   <mat-icon class="hamburger" (click)="sidenav.toggle()">menu</mat-icon>
   <span [style.font-size]="toolbarTextSize">
@@ -23,6 +19,10 @@
         <hr>
         <app-legend (toggleLayout)="toggleLayout($event)" #legend>
         </app-legend>
+
+        <!-- Fork me on GitHub Banner -->
+        <a class="github-fork-ribbon left-bottom" href="https://github.com/cns-iu/hsd" data-ribbon="Fork me on GitHub" title="Fork me on GitHub">Fork me on GitHub</a>
+        <!-- /Fork me on GitHub Banner -->
     </mat-sidenav>
 
     <mat-sidenav-content [style.margin-left]="sidenavWidth">
@@ -42,7 +42,7 @@
         </mat-tab-group>
 
         <!-- For Compact View (without tab) -->
-        <ng-template #compactSumTreeLayout> 
+        <ng-template #compactSumTreeLayout>
           <app-sum-tree
           [summaryType]="legend.summaryType"
           [colorField]="legend.colorField"
